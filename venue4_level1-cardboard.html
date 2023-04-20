@@ -7,13 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <style>
-    #panorama1 {
-        width: 50vw;
-        height: 100vh;
-    }
-    </style>
-    <style>
-    #panorama2 {
+    #panorama {
         width: 50vw;
         height: 100vh;
     }
@@ -21,7 +15,8 @@
 </head>
 <body>
 
-<div id="panorama"></div>
+<div id="panorama1"></div>
+<div id="panorama2"></div>
 <script>
 pannellum.viewer('panorama1', {
     "type": "equirectangular",
