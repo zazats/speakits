@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S P E A K I T S</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style>
+    #panorama1 {
+        width: 50vw;
+        height: 100vh;
+    }
+    </style>
+    <style>
+    #panorama2 {
+        width: 50vw;
+        height: 100vh;
+    }
+    </style>
+</head>
+<body>
+
+<div id="panorama"></div>
+<script>
+pannellum.viewer('panorama1', {
+    "type": "equirectangular",
+    "panorama": "/assets/v4_l1.jpg",
+    "autoLoad": true,
+    "autoRotate": -2
+});
+pannellum.viewer('panorama2', {
+    "type": "equirectangular",
+    "panorama": "/assets/v4_l1.jpg",
+    "autoLoad": true,
+    "autoRotate": -2
+});
+</script>
+
+</body>
+</html>
