@@ -7,7 +7,7 @@
     <title>S P E A K I T S</title>
     <script src="speakits_viewer_files/three.min.js"></script>
     <script src="speakits_viewer_files/panolens.min.js"></script>
- 
+<!-- 
     <style>
     html,
     body {
@@ -22,21 +22,22 @@
       height: 100%;
     }
   </style>
+-->
 </head>
 
 <body>
-    <div id="container"></div>
+   <!-- <div id="container"></div> -->
 <script>
     var panorama, viewer, container;
 
-    container = document.querySelector('#container');
+    //container = document.querySelector('#container');
 
     panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
-    viewer = new PANOLENS.Viewer({container : container});
-    
+    //viewer = new PANOLENS.Viewer({container : container});
+    viewer = new PANOLENS.Viewer();
     viewer.add( panorama );
     viewer.enableControl( PANOLENS.Controls.DEVICEORIENTATION );
-    viewer.addPanoramaEventListener(panorama);
+    //viewer.addPanoramaEventListener(panorama);
 
 </script>
 </body>
