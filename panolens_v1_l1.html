@@ -27,6 +27,8 @@
 <body>
    <div id="container"></div>
 <script>
+    DeviceOrientationEvent.requestPermission();
+    
     var panorama, viewer, container;
 
     container = document.querySelector('#container');
