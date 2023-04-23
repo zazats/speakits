@@ -38,8 +38,10 @@
     viewer = new PANOLENS.Viewer({container : container});
     //viewer = new PANOLENS.Viewer();
     viewer.add( panorama );
-    viewer.enableControl( 0 );
+    viewer.enableControl( 1 );
     viewer.enableEffect( 2 );
+    viewer.setCameraControl();
+    viewer.setCameraFov(120);
     //viewer.addPanoramaEventListener(panorama);
 
 </script>
