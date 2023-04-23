@@ -31,7 +31,8 @@
 
     container = document.querySelector('#container');
 
-    panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
+    //panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
+    panorama = new PANOLENS.VideoPanorama( 'assets/v1_l1.jpg' )
     viewer = new PANOLENS.Viewer({container : container});
     //viewer = new PANOLENS.Viewer();
     viewer.add( panorama );
