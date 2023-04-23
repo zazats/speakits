@@ -32,7 +32,7 @@
     container = document.querySelector('#container');
 
     panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
-    viewer = new PANOLENS.Viewer();
+    viewer = new PANOLENS.Viewer({container : container});
     
     viewer.add( panorama );
     viewer.addPanoramaEventListener(panorama);
