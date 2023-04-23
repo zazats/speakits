@@ -25,12 +25,15 @@
 </head>
 
 <body>
-   <div id="container"></div>
+    <button onclick="loadVenue()">Start</button>
+
+    <div id="container"></div>
 <script>
     //DeviceOrientationEvent.requestPermission();
     
     var panorama, viewer, container;
 
+    function loadVenue(){
     container = document.querySelector('#container');
 
     panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
@@ -40,10 +43,10 @@
     viewer.add( panorama );
     viewer.enableControl( 1 );
     viewer.enableEffect( 2 );
-    viewer.setCameraControl();
+    //viewer.setCameraControl();
     viewer.setCameraFov(120);
-    viewer.addPanoramaEventListener(panorama);
-
+    //viewer.addPanoramaEventListener(panorama);
+    }
 </script>
 </body>
 </html>
