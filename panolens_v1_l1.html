@@ -8,6 +8,15 @@
     <script src="speakits_viewer_files/three.min.js"></script>
     <script src="speakits_viewer_files/panolens.min.js"></script>
     <style>
+    .center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 3px solid green; 
+    }
+    </style>
+    <style>
     html,
     body {
       width: 100%;
@@ -25,7 +34,9 @@
 </head>
 
 <body>
-    <button onclick="loadVenue()">Start</button>
+    <div class="center">
+        <button onclick="loadVenue()">Start</button>
+    </div>
 
     <div id="container"></div>
 <script>
