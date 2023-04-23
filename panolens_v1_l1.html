@@ -34,19 +34,22 @@
 </head>
 
 <body>
-    <div class="center">
+    <div id="btn" class="center">
         <button onclick="loadVenue()">Start</button>
     </div>
 
-    <div id="container"></div>
+    <div id="container" visible=false ></div>
 <script>
     //DeviceOrientationEvent.requestPermission();
     
     var panorama, viewer, container;
 
     function loadVenue(){
+    
+    document.getElementById("btn").style.display = "none";
+    
     container = document.querySelector('#container');
-
+    
     panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
     //panorama = new PANOLENS.VideoPanorama( 'assets/360video3.mp4' )
     viewer = new PANOLENS.Viewer({container : container});
