@@ -5,11 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S P E A K I T S</title>
     <script src="speakits_viewer_files/three.min.js"></script>
-    <script src="speakits_viewer_files/panolens.min.js"></script></head>
+    <script src="speakits_viewer_files/panolens.min.js"></script>
+ 
+    <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
 <body>
+    <div id="container"></div>
 <script>
+    var panorama, viewer, container, infospot, infospot2;
+
+    container = document.querySelector('#container');
+
     const panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
-    const viewer = new PANOLENS.Viewer();
+    viewer = new PANOLENS.Viewer({
+      container: container
+    });
+    
     viewer.add( panorama );
 </script>
 </body>
