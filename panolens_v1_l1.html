@@ -35,6 +35,7 @@
     viewer = new PANOLENS.Viewer({container : container});
     
     viewer.add( panorama );
+    viewer.enableControl( PANOLENS.Controls.DEVICEORIENTATION );
     viewer.addPanoramaEventListener(panorama);
 
 </script>
