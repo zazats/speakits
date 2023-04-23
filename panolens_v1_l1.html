@@ -35,9 +35,9 @@
     panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
     //viewer = new PANOLENS.Viewer({container : container});
     viewer = new PANOLENS.Viewer();
-    viewer.add( panorama );
     viewer.enableControl( PANOLENS.Controls.DEVICEORIENTATION );
     viewer.enableEffect( PANOLENS.Controls.CARDBOARD );
+    viewer.add( panorama );
     //viewer.addPanoramaEventListener(panorama);
 
 </script>
