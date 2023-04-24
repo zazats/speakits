@@ -63,6 +63,7 @@
     document.getElementById("btn").style.display = "none";
     
     container = document.querySelector('#container');
+    const urlParams = new URL(window.location.toLocaleString()).searchParams;
     imageFile = urlParams.get('image');
     panorama = new PANOLENS.ImagePanorama( 'assets/' + imageFile );
     //panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
