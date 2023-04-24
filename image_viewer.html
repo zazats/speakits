@@ -49,6 +49,7 @@
 
 <body>
     <div id="btn" class="center">
+        <a Turn your phone to the horizontal position, click the Start button below and inset it in the VR Set </a>
         <button class="button" onclick="loadVenue()">Start</button>
     </div>
 
@@ -75,7 +76,7 @@
     viewer.enableEffect( 2 );
     //viewer.setCameraControl();
     viewer.setCameraFov(130);
-    container.requestFullscreen();   
+    //container.requestFullscreen(); //doesn't work for Safari. Also, dosn't look great in the VR Set
     }
 </script>
 </body>
