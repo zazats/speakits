@@ -78,7 +78,12 @@
     container = document.querySelector('#container');
     const urlParams = new URL(window.location.toLocaleString()).searchParams;
     imageFile = urlParams.get('image');
+    if (imageFile == "imagine"){
+       var rnd = Math.floor(Math.random() * 5) + 1;
+	imageFile = "imagine" + rnd;
+    }
     panorama = new PANOLENS.ImagePanorama( 'assets/' + imageFile );
+    
     //panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
     //panorama = new PANOLENS.VideoPanorama( 'assets/360video3.mp4' )
     viewer = new PANOLENS.Viewer({container : container});
