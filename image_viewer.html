@@ -80,7 +80,7 @@
     imageFile = urlParams.get('image');
     if (imageFile == "imagine"){
        var rnd = Math.floor(Math.random() * 5) + 1;
-	imageFile = "imagine" + rnd + "jpeg";
+	imageFile = "imagine" + rnd + ".jpeg";
     }
     panorama = new PANOLENS.ImagePanorama( 'assets/' + imageFile );
     
