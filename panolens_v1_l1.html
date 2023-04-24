@@ -63,8 +63,9 @@
     document.getElementById("btn").style.display = "none";
     
     container = document.querySelector('#container');
-    
-    panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
+    imageFile = urlParams.get('image');
+    panorama = new PANOLENS.ImagePanorama( 'assets/' + imageFile );
+    //panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
     //panorama = new PANOLENS.VideoPanorama( 'assets/360video3.mp4' )
     viewer = new PANOLENS.Viewer({container : container});
     //viewer = new PANOLENS.Viewer();
