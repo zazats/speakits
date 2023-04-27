@@ -90,11 +90,12 @@
     //viewer = new PANOLENS.Viewer();
     viewer.add( panorama );
     
-    var ef = 0; 
+    var ef = 0, ctrl = 0;
     if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
         ef = 2;
+	ctrl = 1;
     }
-    viewer.enableControl( 1 );
+    viewer.enableControl( ctrl );
     viewer.enableEffect( ef );
     //viewer.setCameraControl();
     viewer.setCameraFov(90);
