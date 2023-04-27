@@ -89,8 +89,13 @@
     viewer = new PANOLENS.Viewer({container : container});
     //viewer = new PANOLENS.Viewer();
     viewer.add( panorama );
+    
+    var ef = 0; 
+    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
+        ef = 2;
+    }
     viewer.enableControl( 1 );
-    viewer.enableEffect( 2 );
+    viewer.enableEffect( ef );
     //viewer.setCameraControl();
     viewer.setCameraFov(90);
     //viewer.camera.position.z = 0.01;
