@@ -66,6 +66,12 @@
     </div>
 
     <div id="container"></div>
+    
+    <div id="desc-container" style="display:none">
+      <div class="title">China's Forgotten War</div>
+      <div class="text">WWII came to the small town of Tai’erzhuang in central China – and it was never the same again. The town was strategically placed, on the north-south transport railway corridor and the ancient Grand Canal, and so was a focus of the Japanese Imperial army as it advanced. Li Jing Shan was only a child when his family fled the fighting. They returned to find their home, and most of the town, in ruins.</div>
+    </div>	
+	
 <script>
     //DeviceOrientationEvent.requestPermission();
     
@@ -88,10 +94,14 @@
     	
 	infospot.position.set( 0, -1000, -1000);
     	infospot.addHoverText( 'This is your cheat sheet. /n You will be able to upload your own notes via setup. /n Switch between notes by pointing at arrows.' );    
-    
+
+        infospot2 = new PANOLENS.Infospot( 300, PANOLENS.DataImage.Info );
+        infospot2.position.set( -200, -1000, -1000 );
+        infospot2.addHoverElement( document.getElementById( 'desc-container' ), 200 );
+	    
 	panorama = new PANOLENS.ImagePanorama( 'assets/' + imageFile );
 	panorama.add( infospot );
-
+        panorama.add( infospot2 );
     
     //panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
     //panorama = new PANOLENS.VideoPanorama( 'assets/360video3.mp4' )
