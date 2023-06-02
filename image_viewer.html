@@ -37,7 +37,9 @@
     	urlParams = new URL(window.location.toLocaleString()).searchParams;
 	
 	cheatNote = urlParams.get('cheat_note');   
-	document.getElementById('cheat_note').innerHTML = cheatNote;   
+	if (typeof cheatNote === 'string' && cheatNote !== '') {
+	    document.getElementById('cheat_note').innerHTML = cheatNote;   
+	}
     }
 	
     function loadVenue(){
