@@ -8,7 +8,7 @@
     <script src="speakits_viewer_files/three.min.js"></script>
     <script src="speakits_viewer_files/panolens.min.js"></script>
     <link rel="stylesheet" href="viewer.css">	
-    <link rel="stylesheet" href="sketchy.css">	
+    <link rel="stylesheet" href="hand_draw.css">	
 </head>
 
 <body>
@@ -23,7 +23,7 @@
 
     <div id="container"></div>
     
-    <div class="sketchy" id="desc-container" style="display:none">
+    <div id="one" style="display:none">
       <div class="text" id="cheat_note" >Be cool. Everything is allright.</div>
     </div>	
 	
@@ -57,7 +57,7 @@
 	infospot.position.set( 0, -1000, -1000);
     	//infospot.addHoverText( 'This is your cheat sheet. /n You will be able to upload your own notes via setup. /n Switch between notes by pointing at arrows.' );    
         getCheatNote();
-	infospot.addHoverElement( document.getElementById( 'desc-container' ), 0 );
+	infospot.addHoverElement( document.getElementById( 'one' ), 0 );
 
         //infospot2 = new PANOLENS.Infospot( 300, PANOLENS.DataImage.Info );
         //infospot2.position.set( -200, -1000, -1000 );
