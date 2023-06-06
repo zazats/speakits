@@ -1,9 +1,10 @@
 import { NoSleep } from '../libraries/nosleep/index.js';
-import imagesSettings from '../imageSettings.json';
+import imagesSettings from '../imageSettings.js';
 
 const noSleep = new NoSleep();
 //DeviceOrientationEvent.requestPermission();    
 let panorama, viewer, container;
+
 
 window.loadVenue = function loadVenue() {
     noSleep.enable();
@@ -35,6 +36,11 @@ window.loadVenue = function loadVenue() {
 
     panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
     panorama.add(infospot);
+
+    const imagePosition = imageSettings.position;
+    panorama.addEventListener('enter-fade-start', () => {
+        viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
+    })
     //panorama.add( infospot2 );
 
     //panorama = new PANOLENS.ImagePanorama( 'assets/v1_l1.jpg' );
@@ -55,6 +61,7 @@ window.loadVenue = function loadVenue() {
     //viewer.camera.setFoclaLength(34);	    
     //viewer.camera.position.y = -200;
     //viewer.camera.position.set(imageSettings.position[0], imageSettings.position[1], imageSettings.position[2]);
+    
 
     //container.requestFullscreen(); //doesn't work for Safari. Also, dosn't look great in the VR Set
 }
