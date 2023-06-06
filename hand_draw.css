@@ -1,0 +1,23 @@
+div{
+  width:100%; 
+  margin-top:5%; 
+  text-align:center;
+}
+p{
+  display:inline-block;
+  width:20%;
+  margin:5% auto;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  padding:1em;
+  line-height:1.5em;
+  background:hsla(67, 95%, 95%, 1);
+}
+#one {
+  border:solid 5px hsla(0, 95%, 35%, 1);
+}
+#two{
+   border:dotted 5px hsla(0, 95%, 35%, 1);
+}
+#three{
+   border:dashed 5px hsla(0, 95%, 35%, 1);
+}
