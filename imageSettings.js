@@ -10,7 +10,7 @@ export default {
     },
     "v1_l2": {
         "image": "assets/v1_l2.jpg",
-        "audio": "assets/imagine_l1.mp3",
+        "audio": "assets/office-room-tone-32341.mp3",
         "position": [
             200,
             0,
