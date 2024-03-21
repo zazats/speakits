@@ -43,5 +43,68 @@ export default {
             0,
             0
         ]
+    },
+    "imagine0": {
+        "image": "assets/imagine0.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "imagine1": {
+        "image": "assets/imagine1.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "imagine2": {
+        "image": "assets/imagine2.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "imagine3": {
+        "image": "assets/imagine3.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "imagine4": {
+        "image": "assets/imagine4.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "imagine5": {
+        "image": "assets/imagine5.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "imagine6": {
+        "image": "assets/imagine6.jpg",
+        "audio": "assets/imagine_l1.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
     }
 }

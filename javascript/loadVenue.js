@@ -15,7 +15,7 @@ window.loadVenue = function loadVenue() {
     let imageName = urlParams.get('image');
     if (imageName == "imagine") {
         var rnd = Math.floor(Math.random() * 5) + 1;
-        imageName = "imagine" + rnd + ".jpeg";
+        imageName = "imagine" + rnd;
     }
 
     const imageSettings = imagesSettings[imageName];
