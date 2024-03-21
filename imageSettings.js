@@ -45,7 +45,7 @@ export default {
         ]
     },
     "imagine0": {
-        "image": "assets/imagine0.jpg",
+        "image": "assets/imagine0.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
@@ -54,7 +54,7 @@ export default {
         ]
     },
     "imagine1": {
-        "image": "assets/imagine1.jpg",
+        "image": "assets/imagine1.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
@@ -63,7 +63,7 @@ export default {
         ]
     },
     "imagine2": {
-        "image": "assets/imagine2.jpg",
+        "image": "assets/imagine2.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
@@ -72,7 +72,7 @@ export default {
         ]
     },
     "imagine3": {
-        "image": "assets/imagine3.jpg",
+        "image": "assets/imagine3.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
@@ -81,7 +81,7 @@ export default {
         ]
     },
     "imagine4": {
-        "image": "assets/imagine4.jpg",
+        "image": "assets/imagine4.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
@@ -90,7 +90,7 @@ export default {
         ]
     },
     "imagine5": {
-        "image": "assets/imagine5.jpg",
+        "image": "assets/imagine5.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
@@ -99,7 +99,7 @@ export default {
         ]
     },
     "imagine6": {
-        "image": "assets/imagine6.jpg",
+        "image": "assets/imagine6.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
             0,
