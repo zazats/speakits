@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "http://127.0.0.1:3000/image_viewer.html?image=imagine&cheat_note=sky is blue",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/image_viewer.html?image=imagine&cheat_note=sky is blue"
+        }
+    ]
+}

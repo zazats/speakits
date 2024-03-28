@@ -57,9 +57,9 @@ export default {
         "image": "assets/imagine1.jpeg",
         "audio": "assets/imagine_l1.mp3",
         "position": [
+            200,
             0,
-            0,
-            0
+            100
         ]
     },
     "imagine2": {
