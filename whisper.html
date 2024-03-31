@@ -14,7 +14,7 @@
 
     function PlaySound(audioPath) {
       var audio = new Audio(audioPath);
-      audio.loop = true;
+      audio.loop = false;
       audio.play();
     }
 
@@ -79,7 +79,7 @@
             console.log(concatenatedString); // Output will be: "How are you doing? I'm fine, thank you Can you help me with something?"
             document.getElementById('transcription').textContent = 'Final : '+ concatenatedString;
             hiWhisperSpoken=false;
-            const whisperFinalResponsePath = "assets/hello.mp3";
+            const whisperFinalResponsePath = "assets/ok.mp3";
             PlaySound(whisperFinalResponsePath);
             //console.log(event.results);
           }
@@ -89,7 +89,7 @@
           if (transcript.toLowerCase().includes('hey whisper')) {
               hiWhisperSpoken = true;
               document.getElementById('transcription').textContent += 'Recognized: Hey Whisper\n';
-              const whisperInitResponsePath = "assets/hello.mp3"
+              const whisperInitResponsePath = "assets/hi.mp3"
               PlaySound(whisperInitResponsePath);
           } 
         }
