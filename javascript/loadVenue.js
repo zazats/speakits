@@ -32,6 +32,39 @@ const myHeaders = new Headers();
    //imagine_file_url = data2['request']['file_url'];
 }
 
+
+window.startWhisper = async function startWhisper() {
+    container = document.querySelector('#container');
+    noSleep.enable();
+    document.getElementById("btn").style.display = "none";
+    //var audio = new Audio('assets/imagine_l1.mp3');
+    //audio.loop = true;
+    //audio.play();
+  
+    let infospot = new PANOLENS.Infospot(1000, 'assets/talking_head1.gif', true);
+
+    infospot.position.set(0, -0, -1000);
+    //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
+    panorama = new PANOLENS.ImagePanorama('assets/imagine1.jpeg', 50);
+  
+    panorama.addEventListener('enter-fade-start', () => {
+        viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
+    })
+    viewer = new PANOLENS.Viewer({ container: container });
+    panorama.add(infospot);
+    viewer.add(panorama);
+  
+    var ef = 0, ctrl = 0;
+    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
+        ef = 2;
+        ctrl = 1;
+    }
+    viewer.enableControl(ctrl);
+    viewer.enableEffect(1);
+    viewer.setCameraFov(90);
+  }
+  
+
 window.displayImage = async function displayImage(imageSettings) {
   //const imageSettings = imagesSettings[imageName];
 

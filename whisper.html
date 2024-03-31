@@ -1,108 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv=”Permissions-Policy” content=”interest-cohort=()”>
-  <title>Speech to Text</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv=”Permissions-Policy” content=”interest-cohort=()”>
+    <title>S P E A K I T X</title>
+    <script src="speakits_viewer_files/three.min.js"></script>
+    <script src="speakits_viewer_files/panolens.min.js"></script>
+    <link rel="stylesheet" href="viewer.css">	
 </head>
+
 <body>
-  <button id="startButton">Start Listening</button>
-  <p id="transcription"></p>
+    <div id="btn" class="center">
+        <img src="assets/vr.png" class="image">
+        <div class ="text">
+		<h2>Start your S P E A K I T eXperience</h2>
+		<p>Turn your phone to the horizontal position, <br> 
+        click the Start button and inset it in the VR Set.</p>
+	</div>
+        <button class="button" onclick="startWhisper()">Start</button>
+    </div>
 
-  <script>
+    <div id="container"></div>
+    
+    <div style="width:100%;margin-top:5%; text-align:center; display:none" id="cheat_not_container">
+      <p id="cheat_note" style="word-break: break-all; white-space: normal; display:inline-block; width:20%; margin:5% auto; border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:1em; line-height:1.5em; background:hsla(67, 95%, 95%, 1); border:solid 2px hsla(0, 95%, 35%, 1)">
+	    Be cool. Everything is allright.
+      </p>
+    </div>	
 
-    function PlaySound(audioPath) {
-      var audio = new Audio(audioPath);
-      audio.loop = false;
-      audio.play();
-    }
 
-    function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
-      let isConcatenating = false;
-      let result = '';
-      var currentPhrase="";
+    <script>
 
-      for (let i = 0; i < array.length; i++) {
-           currentPhrase += array[i][0].transcript;
+      function PlaySound(audioPath) {
+        var audio = new Audio(audioPath);
+        audio.loop = false;
+        audio.play();
       }
-      const startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
-          
-    // Find all matches
-      let match;
-      while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
-          result += match[1]; // Concatenate the text between the keywords
-      }
-
-      return result;
-      
-    }
-
-    // Check browser support for the Web Speech API
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      // Initialize SpeechRecognition object
-      var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      var recognition = new SpeechRecognition();
-      
-      // Configure recognition settings
-      recognition.continuous = true; // Continue listening for speech
-      recognition.interimResults = false; // Get interim results before final transcription
-      recognition.lang = 'en-US'; // Language setting (adjust as needed)
-
-      // Start listening when button is clicked
-      //document.getElementById('startButton').addEventListener('click', function() {
-      recognition.start();
-      
-      // Variable to track if "Hi Whisper" has been spoken
-      let hiWhisperSpoken = false;
-
   
-
-      // Event handler for receiving transcribed text
-      recognition.onresult = function(event) {
-        if (hiWhisperSpoken) {
-          var result = event.results[event.results.length - 1];
-          var transcript = result[0].transcript;
-          var isFinal = result.isFinal;
-          // Update transcription display
-          document.getElementById('transcription').textContent = transcript;
-
-          // If final result, do something with the text (e.g., send it to server)
-        //  if (isFinal) {
-          if (transcript.toLowerCase().includes('thank you')) {               // Here, you can send the transcript to your server for further processing
-            //console.log('Final Transcript:', transcript);
-
-            const startPhrase = "hey whisper";
-            const stopPhrase = "thank you";
+      function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
+        let isConcatenating = false;
+        let result = '';
+        var currentPhrase="";
+  
+        for (let i = 0; i < array.length; i++) {
+             currentPhrase += array[i][0].transcript;
+        }
+        const startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
             
-            var concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
-            console.log(concatenatedString); // Output will be: "How are you doing? I'm fine, thank you Can you help me with something?"
-            document.getElementById('transcription').textContent = 'Final : '+ concatenatedString;
-            hiWhisperSpoken=false;
-            const whisperFinalResponsePath = "assets/ok.mp3";
-            PlaySound(whisperFinalResponsePath);
-            //console.log(event.results);
+      // Find all matches
+        let match;
+        while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
+            result += match[1]; // Concatenate the text between the keywords
+        }
+  
+        return result;
+        
+      }
+  
+      // Check browser support for the Web Speech API
+      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        // Initialize SpeechRecognition object
+        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+        
+        // Configure recognition settings
+        recognition.continuous = true; // Continue listening for speech
+        recognition.interimResults = false; // Get interim results before final transcription
+        recognition.lang = 'en-US'; // Language setting (adjust as needed)
+  
+        // Start listening when button is clicked
+        //document.getElementById('startButton').addEventListener('click', function() {
+        recognition.start();
+        
+        // Variable to track if "Hi Whisper" has been spoken
+        let hiWhisperSpoken = false;
+  
+    
+  
+        // Event handler for receiving transcribed text
+        recognition.onresult = function(event) {
+          if (hiWhisperSpoken) {
+            var result = event.results[event.results.length - 1];
+            var transcript = result[0].transcript;
+            var isFinal = result.isFinal;
+            if (transcript.toLowerCase().includes('thank you')) {               // Here, you can send the transcript to your server for further processing
+              const startPhrase = "hey whisper";
+              const stopPhrase = "thank you";
+              
+              var concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
+              console.log(concatenatedString); // Output will be: "How are you doing? I'm fine, thank you Can you help me with something?"
+              hiWhisperSpoken=false;
+              const whisperFinalResponsePath = "assets/ok.mp3";
+              PlaySound(whisperFinalResponsePath);
+            }
           }
-        }
-        else {
-          const transcript = event.results[event.results.length - 1][0].transcript;
-          if (transcript.toLowerCase().includes('hey whisper')) {
-              hiWhisperSpoken = true;
-              document.getElementById('transcription').textContent += 'Recognized: Hey Whisper\n';
-              const whisperInitResponsePath = "assets/hi.mp3"
-              PlaySound(whisperInitResponsePath);
-          } 
-        }
-      };
+          else {
+            const transcript = event.results[event.results.length - 1][0].transcript;
+            if (transcript.toLowerCase().includes('hey whisper')) {
+                hiWhisperSpoken = true;
+                const whisperInitResponsePath = "assets/hi.mp3"
+                PlaySound(whisperInitResponsePath);
+            } 
+          }
+        };
+  
+        // Event handler for errors
+        recognition.onerror = function(event) {
+          console.error('Speech recognition error:', event.error);
+        };
+      } else {
+        // Browser doesn't support Web Speech API
+        console.error('Browser does not support Web Speech API');
+      }
+    </script>
 
-      // Event handler for errors
-      recognition.onerror = function(event) {
-        console.error('Speech recognition error:', event.error);
-      };
-    } else {
-      // Browser doesn't support Web Speech API
-      console.error('Browser does not support Web Speech API');
-    }
-  </script>
+<script type="module" src="javascript/loadVenue.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </body>
 </html>
