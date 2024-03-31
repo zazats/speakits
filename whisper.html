@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv=”Permissions-Policy” content=”interest-cohort=()”>
   <title>Speech to Text</title>
 </head>
 <body>
@@ -10,6 +11,33 @@
   <p id="transcription"></p>
 
   <script>
+
+    function PlaySound(audioPath) {
+      var audio = new Audio(audioPath);
+      audio.loop = true;
+      audio.play();
+    }
+
+    function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
+      let isConcatenating = false;
+      let result = '';
+      var currentPhrase="";
+
+      for (let i = 0; i < array.length; i++) {
+           currentPhrase += array[i][0].transcript;
+      }
+      const startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
+          
+    // Find all matches
+      let match;
+      while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
+          result += match[1]; // Concatenate the text between the keywords
+      }
+
+      return result;
+      
+    }
+
     // Check browser support for the Web Speech API
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       // Initialize SpeechRecognition object
@@ -23,22 +51,47 @@
 
       // Start listening when button is clicked
       //document.getElementById('startButton').addEventListener('click', function() {
-        recognition.start();
-      //});
+      recognition.start();
+      
+      // Variable to track if "Hi Whisper" has been spoken
+      let hiWhisperSpoken = false;
+
+  
 
       // Event handler for receiving transcribed text
       recognition.onresult = function(event) {
-        var result = event.results[event.results.length - 1];
-        var transcript = result[0].transcript;
-        var isFinal = result.isFinal;
+        if (hiWhisperSpoken) {
+          var result = event.results[event.results.length - 1];
+          var transcript = result[0].transcript;
+          var isFinal = result.isFinal;
+          // Update transcription display
+          document.getElementById('transcription').textContent = transcript;
 
-        // Update transcription display
-        document.getElementById('transcription').textContent = transcript;
+          // If final result, do something with the text (e.g., send it to server)
+        //  if (isFinal) {
+          if (transcript.toLowerCase().includes('thank you')) {               // Here, you can send the transcript to your server for further processing
+            //console.log('Final Transcript:', transcript);
 
-        // If final result, do something with the text (e.g., send it to server)
-        if (isFinal) {
-          // Here, you can send the transcript to your server for further processing
-          console.log('Final Transcript:', transcript);
+            const startPhrase = "hey whisper";
+            const stopPhrase = "thank you";
+            
+            var concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
+            console.log(concatenatedString); // Output will be: "How are you doing? I'm fine, thank you Can you help me with something?"
+            document.getElementById('transcription').textContent = 'Final : '+ concatenatedString;
+            hiWhisperSpoken=false;
+            const whisperFinalResponsePath = "assets/hello.mp3";
+            PlaySound(whisperFinalResponsePath);
+            //console.log(event.results);
+          }
+        }
+        else {
+          const transcript = event.results[event.results.length - 1][0].transcript;
+          if (transcript.toLowerCase().includes('hey whisper')) {
+              hiWhisperSpoken = true;
+              document.getElementById('transcription').textContent += 'Recognized: Hey Whisper\n';
+              const whisperInitResponsePath = "assets/hello.mp3"
+              PlaySound(whisperInitResponsePath);
+          } 
         }
       };
 
