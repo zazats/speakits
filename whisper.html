@@ -94,6 +94,7 @@
               hiWhisperSpoken=false;
               const whisperFinalResponsePath = "assets/ok_give_me_few_seconds.mp3";
               PlaySound(whisperFinalResponsePath);
+              loadWhisperVenue(concatenatedString);
             }
           }
           else {
@@ -119,6 +120,14 @@
         // Browser doesn't support Web Speech API
         console.error('Browser does not support Web Speech API');
       }
+
+      // Event handler for when speech recognition ends
+    recognition.onend = function() {
+      console.log('Speech recognition ended');
+      // Automatically restart speech recognition after it ends
+      recognition.start();
+    };
+
     </script>
 
 <script type="module" src="javascript/loadVenue.js"></script>
