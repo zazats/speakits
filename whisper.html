@@ -75,6 +75,7 @@
         
         // Variable to track if "Hi Whisper" has been spoken
         let hiWhisperSpoken = false;
+        let welcomeSpoken = false;
   
     
   
@@ -99,7 +100,12 @@
             const transcript = event.results[event.results.length - 1][0].transcript;
             if (transcript.toLowerCase().includes('hey whisper')) {
                 hiWhisperSpoken = true;
-                const whisperInitResponsePath = "assets/hi.mp3"
+                var whisperInitResponsePath = "assets/hi.mp3";
+                if (!welcomeSpoken){
+                  welcomeSpoken = true;
+                }else{
+                   whisperInitResponsePath = "assets/yes.mp3"
+                }
                 PlaySound(whisperInitResponsePath);
             } 
           }
