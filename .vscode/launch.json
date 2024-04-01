@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "AI Image",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/image_viewer.html?image=imagine&cheat_note=sky is blue"
+        },
+        {
+            "type": "chrome",
+            "name": "Whisper",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/whisper.html"
+        }
+
+    ]
+}

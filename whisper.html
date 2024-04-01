@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv=”Permissions-Policy” content=”interest-cohort=()”>
+    <title>S P E A K I T X</title>
+    <script src="speakits_viewer_files/three.min.js"></script>
+    <script src="speakits_viewer_files/panolens.min.js"></script>
+    <link rel="stylesheet" href="viewer.css">	
+</head>
+
+<body>
+    <div id="btn" class="center">
+        <img src="assets/talking_head1.gif" class="image">
+        <div class ="text">
+		<h2>Start your S P E A K I T eXperience</h2>
+		<p>Turn your phone to the horizontal position, <br> 
+        click the Start button and inset it in the VR Set.</p>
+	</div>
+        <button class="button" onclick="startWhisper()">Start</button>
+    </div>
+
+    <div id="container"></div>
+    
+    <div style="width:100%;margin-top:5%; text-align:center; display:none" id="cheat_not_container">
+      <p id="cheat_note" style="word-break: break-all; white-space: normal; display:inline-block; width:20%; margin:5% auto; border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:1em; line-height:1.5em; background:hsla(67, 95%, 95%, 1); border:solid 2px hsla(0, 95%, 35%, 1)">
+	    Be cool. Everything is allright.
+      </p>
+    </div>	
+
+
+    <script>
+
+      function PlaySound(audioPath) {
+        var audio = new Audio(audioPath);
+        audio.loop = false;
+        audio.play();
+      }
+  
+      function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
+        let isConcatenating = false;
+        let result = '';
+        var currentPhrase="";
+  
+        for (let i = 0; i < array.length; i++) {
+             currentPhrase += array[i][0].transcript;
+        }
+        const startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
+            
+      // Find all matches
+        let match;
+        while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
+            result += match[1]; // Concatenate the text between the keywords
+        }
+  
+        return result;
+        
+      }
+  
+      // Check browser support for the Web Speech API
+      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        // Initialize SpeechRecognition object
+        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+        
+        // Configure recognition settings
+        recognition.continuous = true; // Continue listening for speech
+        recognition.interimResults = false; // Get interim results before final transcription
+        recognition.lang = 'en-US'; // Language setting (adjust as needed)
+  
+        // Start listening when button is clicked
+        //document.getElementById('startButton').addEventListener('click', function() {
+        recognition.start();
+        
+        // Variable to track if "Hi Whisper" has been spoken
+        let hiWhisperSpoken = false;
+        let welcomeSpoken = false;
+  
+    
+  
+        // Event handler for receiving transcribed text
+        recognition.onresult = function(event) {
+          if (hiWhisperSpoken) {
+            var result = event.results[event.results.length - 1];
+            var transcript = result[0].transcript;
+            var isFinal = result.isFinal;
+            if (transcript.toLowerCase().includes('thank you')) {               // Here, you can send the transcript to your server for further processing
+              const startPhrase = "hey whisper";
+              const stopPhrase = "thank you";
+              
+              var concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
+              console.log(concatenatedString); // Output will be: "How are you doing? I'm fine, thank you Can you help me with something?"
+              hiWhisperSpoken=false;
+              const whisperFinalResponsePath = "assets/ok_give_me_few_seconds.mp3";
+              PlaySound(whisperFinalResponsePath);
+              loadWhisperVenue(concatenatedString);
+            }
+          }
+          else {
+            const transcript = event.results[event.results.length - 1][0].transcript;
+            if (transcript.toLowerCase().includes('hey whisper')) {
+                hiWhisperSpoken = true;
+                var whisperInitResponsePath = "assets/hi.mp3";
+                if (!welcomeSpoken){
+                  welcomeSpoken = true;
+                }else{
+                   whisperInitResponsePath = "assets/yes.mp3"
+                }
+                PlaySound(whisperInitResponsePath);
+            } 
+          }
+        };
+  
+        // Event handler for errors
+        recognition.onerror = function(event) {
+          console.error('Speech recognition error:', event.error);
+        };
+      } else {
+        // Browser doesn't support Web Speech API
+        console.error('Browser does not support Web Speech API');
+      }
+
+      // Event handler for when speech recognition ends
+    recognition.onend = function() {
+      console.log('Speech recognition ended');
+      // Automatically restart speech recognition after it ends
+      recognition.start();
+    };
+
+    </script>
+
+<script type="module" src="javascript/loadVenue.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+</body>
+</html>
