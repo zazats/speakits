@@ -2,6 +2,7 @@
 // Define the phrase and prompt
 //const phrase = "The cat sat on the mat.";
 //const prompt = `Generate questions related to the following phrase: '${phrase}'`;
+const apiKey = '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';
 
 async function fetchModels() {
     try {
@@ -55,7 +56,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
                       },
                       {
                         "role": "user",
-                        "content": "Today it's going to be very hot "
+                        "content": prompt
                       }
                     ],
                     "temperature": 1,
@@ -73,12 +74,13 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
         // Extract generated questions from the response
        // const generatedQuestions = data.choices.map(choice => choice.text.trim());
         const generatedQuestions = data.choices[0].message.content;
-
+        
+        return data.choices[0].message.content;
         // Print generated questions
-        console.log("Generated Questions:");
-        generatedQuestions.forEach((question, index) => {
-            console.log(`${index + 1}. ${question}`);
-        });
+       //console.log("Generated Questions:");
+       // generatedQuestions.forEach((question, index) => {
+       //     console.log(`${index + 1}. ${question}`);
+       // });
     } catch (error) {
         console.error('Error:', error);
     }

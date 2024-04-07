@@ -1,3 +1,6 @@
+//this one is depricated now, everyting is moved to the globalVars
+
+
 export default {
     "v1_l1": {
         "image": "assets/v1_l1.jpg",
