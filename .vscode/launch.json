@@ -1,5 +1,6 @@
 {
     "configurations": [
+        
         {
             "type": "chrome",
             "name": "AI Image",
@@ -11,6 +12,13 @@
             "name": "Whisper",
             "request": "launch",
             "url": "http://127.0.0.1:3000/whisper.html"
+        },
+        {
+            "type": "chrome",
+            "name": "audioFeedback",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/audioFeedback.html"
+     
         }
 
     ]
