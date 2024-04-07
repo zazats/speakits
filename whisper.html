@@ -7,6 +7,9 @@
     <title>S P E A K I T X</title>
     <script src="speakits_viewer_files/three.min.js"></script>
     <script src="speakits_viewer_files/panolens.min.js"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>    
+    <script type="module" src="/javascript/globalVars.js"></script>
+    <script type="module" src="/javascript/loadVenue.js"></script>
     <link rel="stylesheet" href="viewer.css">	
 </head>
 
@@ -14,13 +17,13 @@
     <div id="btn" class="center">
         <img src="assets/talking_head1.gif" class="image">
         <div class ="text">
-		<h2>Start your S P E A K I T eXperience</h2>
-		<p>Turn your phone to the horizontal position, <br> 
-        click the Start button and inset it in the VR Set.</p>
-	</div>
+		        <h2>Start your S P E A K I T eXperience</h2>
+		        <p>Turn your phone to the horizontal position, <br> 
+               click the Start button and inset it in the VR Set.</p>
+	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
     </div>
-
+    
     <div id="container"></div>
     
     <div style="width:100%;margin-top:5%; text-align:center; display:none" id="cheat_not_container">
@@ -31,33 +34,6 @@
 
 
     <script>
-
-      function PlaySound(audioPath) {
-        var audio = new Audio(audioPath);
-        audio.loop = false;
-        audio.play();
-      }
-  
-      function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
-        let isConcatenating = false;
-        let result = '';
-        var currentPhrase="";
-  
-        for (let i = 0; i < array.length; i++) {
-             currentPhrase += array[i][0].transcript;
-        }
-        const startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
-            
-      // Find all matches
-        let match;
-        while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
-            result += match[1]; // Concatenate the text between the keywords
-        }
-  
-        return result;
-        
-      }
-  
       // Check browser support for the Web Speech API
       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Initialize SpeechRecognition object
@@ -81,26 +57,31 @@
   
         // Event handler for receiving transcribed text
         recognition.onresult = function(event) {
-          if (hiWhisperSpoken) {
+        if (hiWhisperSpoken) {
             var result = event.results[event.results.length - 1];
             var transcript = result[0].transcript;
             var isFinal = result.isFinal;
-            if (transcript.toLowerCase().includes('thank you')) {               // Here, you can send the transcript to your server for further processing
+            if (transcript.toLowerCase().includes('thank you')) { 
               const startPhrase = "hey whisper";
               const stopPhrase = "thank you";
               
               var concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
-              console.log(concatenatedString); // Output will be: "How are you doing? I'm fine, thank you Can you help me with something?"
+              console.log(concatenatedString); 
               hiWhisperSpoken=false;
               const whisperFinalResponsePath = "assets/ok_give_me_few_seconds.mp3";
               PlaySound(whisperFinalResponsePath);
+              hideWhisper();
+              //document.getElementById("count_down").style.display = "compact";
               loadWhisperVenue(concatenatedString);
+            } else if (transcript.toLowerCase().includes('goodbye')) { 
+              PlaySound( "assets/see_you_later.mp3");
+              hideWhisper();
             }
-          }
-          else {
+        }else {
             const transcript = event.results[event.results.length - 1][0].transcript;
             if (transcript.toLowerCase().includes('hey whisper')) {
                 hiWhisperSpoken = true;
+                showWhisper();
                 var whisperInitResponsePath = "assets/hi.mp3";
                 if (!welcomeSpoken){
                   welcomeSpoken = true;
@@ -108,12 +89,15 @@
                    whisperInitResponsePath = "assets/yes.mp3"
                 }
                 PlaySound(whisperInitResponsePath);
-            } 
-          }
-        };
+            } else if (transcript.toLowerCase().includes('any questions')) {
+              PlaySound( "assets/questions_please.mp3");
+              // call ChatGPT API to generate questions from the prompt
+            }
+        }
+      };
   
         // Event handler for errors
-        recognition.onerror = function(event) {
+      recognition.onerror = function(event) {
           console.error('Speech recognition error:', event.error);
         };
       } else {
@@ -122,15 +106,133 @@
       }
 
       // Event handler for when speech recognition ends
-    recognition.onend = function() {
-      console.log('Speech recognition ended');
+      recognition.onend = function() {
+        console.log('Speech recognition ended');
       // Automatically restart speech recognition after it ends
-      recognition.start();
+        recognition.start();
+      };
+
+    window.showWhisper = function showWhisper(){
+      if(infospot == null){
+        infospot = new PANOLENS.Infospot(500, 'assets/talking_head1.gif', true);
+        //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
+        infospot.position.set(0, -0, -1000); //infospot.dispose();
+        panorama.add(infospot);
+      }
+  
+      infospot.show();
+    }
+  
+    window.hideWhisper = function hideWhisper(){
+      if(infospot != null){
+        infospot.hide();
+      }
+    }
+  
+function startWhisper() {
+      container = document.querySelector('#container');
+      noSleep.enable();
+      document.getElementById("btn").style.display = "none";
+      //document.getElementById("count_down").style.display = "none";
+      //var audio = new Audio('assets/imagine_l1.mp3');
+      //audio.loop = true;
+      //audio.play();
+    
+  
+      panorama = new PANOLENS.ImagePanorama('assets/imagine1.jpeg', 50);
+    
+      panorama.addEventListener('enter-fade-start', () => {
+          viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
+      })
+      viewer = new PANOLENS.Viewer({ container: container });
+      viewer.add(panorama);
+    
+      var ef = 1, ctrl = 0;
+      if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
+          ef = 2;
+          ctrl = 1;
+      }
+      viewer.enableControl(ctrl);
+      viewer.enableEffect(ef);
+      viewer.setCameraFov(90);
+      
+}
+
+function PlaySound(audioPath) {
+    var audio = new Audio(audioPath);
+    audio.loop = false;
+    audio.play();
+}
+
+function speak(textToSay) {
+      // Check browser support for SpeechSynthesis
+      if ('speechSynthesis' in window) {
+        // Create a new instance of SpeechSynthesisUtterance
+        var utterance = new SpeechSynthesisUtterance(textToSay);
+
+        // Optionally, configure speech parameters
+        utterance.lang = 'en-US'; // Language setting (adjust as needed)
+
+        // Speak the text
+        window.speechSynthesis.speak(utterance);
+      } else {
+        // Browser doesn't support SpeechSynthesis
+        alert('Your browser does not support text-to-speech.');
+      }
+    }
+
+function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
+    let isConcatenating = false;
+    let result = '';
+    var currentPhrase="";
+
+    for (let i = 0; i < array.length; i++) {
+         currentPhrase += array[i][0].transcript;
+    }
+    const startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
+        
+  // Find all matches
+    let match;
+    while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
+        result += match[1]; // Concatenate the text between the keywords
+    }
+
+    return result;
+    
+}
+
+//Generates the request to the Blockadel API to generate 360 inage from the prompt
+//the function generte asynchronous request. The response will be received by webhook function loadVenueEvent()
+async function loadWhisperVenue(imagePrompt) {
+    
+    speak(imagePrompt); 
+
+    noSleep.enable();
+  
+    document.getElementById("btn").style.display = "none";
+
+    container = document.querySelector('#container');
+              
+    let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
     };
 
-    </script>
+    //const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imagePrompt}`, requestOptions);
+    //const data = await response.json();
 
-<script type="module" src="javascript/loadVenue.js"></script>
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    Pusher.logToConsole = true;
+    pusher = new Pusher('a6a7b7662238ce4494d5', {
+    appId: "1555452",
+    key: "a6a7b7662238ce4494d5",
+    secret: "5b69dc3f0bb7800ed8d0",
+    cluster: "mt1"
+    });
+    
+    //channel = pusher.subscribe(data.pusher_channel);
+   // channel.bind(data.pusher_event, loadVenueEvent);      
+}    
+    </script>
 </body>
 </html>
