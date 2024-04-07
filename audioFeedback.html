@@ -7,14 +7,20 @@
 </head>
 <body>
   <h1>Speech Analysis</h1>
-  <button id="startRecording">Start Recording</button>
+  <button id="generateQuestions">GenerateQuestions</button>
   <button id="stopRecording" style="display: none;">Stop Recording</button>
   
-  
+ 
   <script type="module" src="javascript/audioFeedback.js"></script>
   <script>
     // Add event listener to trigger startRecording() when the "Start Recording" button is clicked
-    document.getElementById('startRecording').addEventListener('click', startRecording);
+    //document.getElementById('generateQuestions').addEventListener('click', generateQuestions);
+
+        document.getElementById('generateQuestions').addEventListener('click', async () => {
+            const phrase = "Todfay it's going to be very hot."; // Define your phrase
+            const prompt = `Generate short question related to the following phrase: '${phrase}'`; // Define your prompt
+            await generateQuestions(phrase, prompt); // Call the function
+        });
   </script>
  
 </body>

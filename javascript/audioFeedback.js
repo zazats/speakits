@@ -1,39 +1,94 @@
-// speechAnalysis.js
+// Set your OpenAI API key
+//const apiKey = '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';
 
-// Create an AudioContext
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const apiKey = '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';
 
-// Function to start recording when the "Start Recording" button is clicked
-function startRecording() {
-    // Create a MediaStreamSourceNode to capture audio from the microphone
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            const audioInput = audioContext.createMediaStreamSource(stream);
 
-            // Create a ScriptProcessorNode to analyze audio data
-            const scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
-            scriptNode.onaudioprocess = event => {
-                const inputBuffer = event.inputBuffer;
-                const inputData = inputBuffer.getChannelData(0);
 
-                // Calculate the average amplitude (volume) of the audio data
-                const amplitude = inputData.reduce((sum, sample) => sum + Math.abs(sample), 0) / inputData.length;
+// Define the phrase and prompt
+//const phrase = "The cat sat on the mat.";
+//const prompt = `Generate questions related to the following phrase: '${phrase}'`;
 
-                // Provide feedback based on the amplitude
-                if (amplitude < 0.1) {
-                    console.log('Voice is too quiet');
-                } else if (amplitude > 0.9) {
-                    console.log('Voice is too loud');
-                } else {
-                    console.log('Voice volume is moderate');
-                }
-            };
+async function fetchModels() {
+    try {
 
-            // Connect the audio input to the scriptNode and output to the destination
-            audioInput.connect(scriptNode);
-            scriptNode.connect(audioContext.destination);
-        })
-        .catch(error => {
-            console.error('Error accessing microphone:', error);
+        // Make a request to the OpenAI API to fetch available models
+        const response = await fetch('https://api.openai.com/v1/engines', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            }
         });
+
+        // Check if the request was successful
+        if (response.ok) {
+            // Parse response
+            const data = await response.json();
+
+            // Extract and print available models
+            const models = data.data.filter(model => !model.deprecated).map(model => model.id);
+            console.log("Available Models:", models);
+        } else {
+            // Handle error if request was not successful
+            console.error('Error:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
+
+// Function to generate questions
+
+window.generateQuestions = async function generateQuestions(phrase, prompt) {
+    try {
+       
+        // Call the function to fetch available models
+   //     fetchModels();
+        // Make a request to the OpenAI API
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                    "model": "gpt-3.5-turbo-0125",
+                    "messages": [
+                      {
+                        "role": "system",
+                        "content": "Generate a question based on user input "
+                      },
+                      {
+                        "role": "user",
+                        "content": "Today it's going to be very hot "
+                      }
+                    ],
+                    "temperature": 1,
+                    "max_tokens": 256,
+                    "top_p": 1,
+                    "frequency_penalty": 0,
+                    "presence_penalty": 0
+                  
+            })
+        });
+
+        // Parse response
+        const data = await response.json();
+        
+        // Extract generated questions from the response
+       // const generatedQuestions = data.choices.map(choice => choice.text.trim());
+        const generatedQuestions = data.choices[0].message.content;
+
+        // Print generated questions
+        console.log("Generated Questions:");
+        generatedQuestions.forEach((question, index) => {
+            console.log(`${index + 1}. ${question}`);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
