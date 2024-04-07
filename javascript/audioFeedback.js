@@ -1,9 +1,3 @@
-// Set your OpenAI API key
-//const apiKey = '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';
-
-const apiKey = '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';
-
-
 
 // Define the phrase and prompt
 //const phrase = "The cat sat on the mat.";
