@@ -23,7 +23,12 @@
     
     <div style="width:100%;margin-top:5%; text-align:center; display:none" id="cheat_not_container">
       <p id="cheat_note" style="word-break: break-all; white-space: normal; display:inline-block; width:20%; margin:5% auto; border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:1em; line-height:1.5em; background:hsla(67, 95%, 95%, 1); border:solid 2px hsla(0, 95%, 35%, 1)">
-	    Be cool. Everything is allright.
+	    1. Switch to Level 1 <br>
+      2. Switch to Level 2 <br>
+      3. Switch to Level 3 <br>
+      4. Questions <br>
+      5. Relax mode <br>
+      6. Exit <br>
       </p>
     </div>	
 
@@ -34,12 +39,11 @@
     <script type="module" src="javascript/audioFeedback.js"></script>
 
     <script>
-
       // Check browser support for the Web Speech API
       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Initialize SpeechRecognition object
-        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        var recognition = new SpeechRecognition();
+        let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
         
         // Configure recognition settings
         recognition.continuous = true; // Continue listening for speech
@@ -58,15 +62,16 @@
   
         // Event handler for receiving transcribed text
         recognition.onresult = function(event) {
-        if (hiWhisperSpoken) {
-            var result = event.results[event.results.length - 1];
-            var transcript = result[0].transcript;
-            var isFinal = result.isFinal;
+          speechBuffer = event.results;
+          if (hiWhisperSpoken) {
+            let result = event.results[event.results.length - 1];
+            let transcript = result[0].transcript;
+            let isFinal = result.isFinal;
             if (transcript.toLowerCase().includes('thank you')) { 
               const startPhrase = "hey whisper";
               const stopPhrase = "thank you";
               
-              var concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
+              let concatenatedString = concatenateAfterSpecificPhrase(event.results, startPhrase, stopPhrase);
               console.log(concatenatedString); 
               hiWhisperSpoken=false;
               const whisperFinalResponsePath = "assets/ok_give_me_few_seconds.mp3";
@@ -75,7 +80,13 @@
               //document.getElementById("count_down").style.display = "compact";
               loadWhisperVenue(concatenatedString);
             } else if (transcript.toLowerCase().includes('goodbye')) { 
+              hiWhisperSpoken=false;
               PlaySound( "assets/see_you_later.mp3");
+              hideWhisper();
+              window.history.go(-1);
+            }else if (transcript.toLowerCase().includes('ignore')) { 
+              hiWhisperSpoken=false;
+              PlaySound( "assets/ok.mp3");
               hideWhisper();
             }
         }else {
@@ -83,7 +94,7 @@
             if (transcript.toLowerCase().includes('hey whisper')) {
                 hiWhisperSpoken = true;
                 showWhisper();
-                var whisperInitResponsePath = "assets/hi.mp3";
+                let whisperInitResponsePath = "assets/hi.mp3";
                 if (!welcomeSpoken){
                   welcomeSpoken = true;
                 }else{
@@ -93,17 +104,24 @@
             } else if (transcript.toLowerCase().includes('any questions') || transcript.toLowerCase().includes('more questions')) {
               //PlaySound( "assets/questions_please.mp3");
               // call ChatGPT API to generate questions from the prompt
-                var concatenatedString = concatenateAfterSpecificPhrase(event.results, null, "any questions");
-                generateQuestions("phrase", concatenatedString).then(function(response){ 
-                speak(response);
-              })
+              startAskingQuestions(true);
             }
         }
       };
   
+      function startAskingQuestions(isFromWhisper){
+        let par2 = null;
+        if(isFromWhisper) par2 = "any questions";
+        let concatenatedString = concatenateAfterSpecificPhrase(speechBuffer, null, par2);
+                generateQuestions("phrase", concatenatedString).then(function(response){ 
+                speak(response);
+              })
+      }
+       
         // Event handler for errors
+      
       recognition.onerror = function(event) {
-          console.error('Speech recognition error:', event.error);
+          //console.error('Speech recognition error:', event.error);
         };
       } else {
         // Browser doesn't support Web Speech API
@@ -112,9 +130,9 @@
 
       // Event handler for when speech recognition ends
       recognition.onend = function() {
-        console.log('Speech recognition ended');
+        //console.log('Speech recognition ended');
       // Automatically restart speech recognition after it ends
-        recognition.start();
+        if(recognition != null) recognition.start();
       };
 
     window.showWhisper = function showWhisper(){
@@ -131,28 +149,162 @@
     window.hideWhisper = function hideWhisper(){
       if(infospot != null){
         infospot.hide();
+        infospot.dispose();
+        infospot = null;
       }
     }
   
-function startWhisper() {
-      container = document.querySelector('#container');
-      noSleep.enable();
-      document.getElementById("btn").style.display = "none";
-      //document.getElementById("count_down").style.display = "none";
-      //var audio = new Audio('assets/imagine_l1.mp3');
-      //audio.loop = true;
+    function startWhisper() {
+          container = document.querySelector('#container');
+          noSleep.enable();
+          document.getElementById("btn").style.display = "none";
+          //document.getElementById("count_down").style.display = "none";
+          //var audio = new Audio('assets/imagine_l1.mp3');
+          //audio.loop = true;
+          //audio.play();
+        
+      
+          panorama1 = new PANOLENS.ImagePanorama('assets/v1_l1.jpg', 50);
+          panorama2 = new PANOLENS.ImagePanorama('assets/v2_l1.jpg', 50);
+          panorama3 = new PANOLENS.ImagePanorama('assets/v3_l1.jpg', 50);
+          
+          panorama = panorama1;
+
+          
+          panorama1.addEventListener('enter-fade-start', () => {
+              viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
+          })
+          panorama2.addEventListener('enter-fade-start', () => {
+              viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
+          })
+          panorama3.addEventListener('enter-fade-start', () => {
+              viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
+          })
+          viewer = new PANOLENS.Viewer({ container: container });
+          viewer.add(panorama, panorama1, panorama2,panorama3);
+        
+          let ef = 1, ctrl = 0;
+          if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
+              ef = 2;
+              ctrl = 1;
+          }
+          viewer.enableControl(ctrl);
+          viewer.enableEffect(ef);
+          viewer.setCameraFov(90);
+
+          exitBtn = createExitButton();
+          questionsBtn = createQuestionsButton();
+          levelBtn = createLevel1Button();
+
+          viewer.setPanorama(panorama);
+    }
+
+    function tougleLevel(){
+      if(currentLevel ==1){
+        currentLevel = 2;
+        panorama = panorama2;
+      }else if(currentLevel ==2){
+        currentLevel = 3;
+        panorama = panorama3;
+      }else if(currentLevel ==3){
+        currentLevel = 1;
+        panorama = panorama1;
+      }
+      
+      viewer.setPanorama(panorama);
+      //anorama.add(infospot); // add Whisper
+      hideWhisper();
+    }
+
+    function PlaySound(audioPath) {
+        let audio = new Audio(audioPath);
+        audio.loop = false;
+        audio.play();
+    }
+
+    function speak(textToSay) {
+          // Check browser support for SpeechSynthesis
+          if ('speechSynthesis' in window) {
+            // Create a new instance of SpeechSynthesisUtterance
+            let utterance = new SpeechSynthesisUtterance(textToSay);
+
+            // Optionally, configure speech parameters
+            utterance.lang = 'en-US'; // Language setting (adjust as needed)
+
+            // Speak the text
+            window.speechSynthesis.speak(utterance);
+          } else {
+            // Browser doesn't support SpeechSynthesis
+            alert('Your browser does not support text-to-speech.');
+          }
+        }
+
+    function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
+        let isConcatenating = false;
+        let result = '';
+        let currentPhrase="";
+
+        for (let i = 0; i < array.length; i++) {
+            currentPhrase += array[i][0].transcript;
+        }
+        let startRegex = "empty";
+        if (startKeyword==null){
+          startRegex = new RegExp('(.*?)' + endKeyword, 'g');
+          if (endKeyword==null){
+            return currentPhrase;
+          }
+        }else{
+          startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
+        }  
+            
+      // Find all matches
+        let match;
+        while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
+            result += match[1]; // Concatenate the text between the keywords
+        }
+
+        return result;
+        
+    }
+
+    async function loadVenueEvent(eventData) {
+      console.log(eventData);
+      if(eventData.status == 'complete'){
+        const imageSettings = imagesSettings["imagine1"];
+        imageSettings.image = eventData.file_url;
+        displayImage(imageSettings)
+      }
+    }
+
+    async function displayImage(imageSettings) {
+      //const imageSettings = imagesSettings[imageName];
+
+      let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
+      audio.loop = true;
       //audio.play();
-    
-  
-      panorama = new PANOLENS.ImagePanorama('assets/imagine1.jpeg', 50);
-    
+
+      //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
+
+      //infospot.position.set(0, -1000, -1000);
+      //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
+      panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+      //panorama.add(infospot);
+
+      const imagePosition = imageSettings.position;
       panorama.addEventListener('enter-fade-start', () => {
-          viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
+          viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
       })
-      viewer = new PANOLENS.Viewer({ container: container });
-      viewer.add(panorama);
-    
-      var ef = 1, ctrl = 0;
+
+      if (viewer == null) {
+        viewer = new PANOLENS.Viewer({ container: container });
+        viewer.add(panorama);
+      }
+      else {
+        viewer.dispose();
+        viewer.add(panorama);
+      }
+
+      let ef = 1, ctrl = 0;
       if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
           ef = 2;
           ctrl = 1;
@@ -160,222 +312,211 @@ function startWhisper() {
       viewer.enableControl(ctrl);
       viewer.enableEffect(ef);
       viewer.setCameraFov(90);
+    }
+
+    async function displayGeneratedImage(imageSettings) {
+        //const imageSettings = imagesSettings[imageName];
       
-}
-
-function PlaySound(audioPath) {
-    var audio = new Audio(audioPath);
-    audio.loop = false;
-    audio.play();
-}
-
-function speak(textToSay) {
-      // Check browser support for SpeechSynthesis
-      if ('speechSynthesis' in window) {
-        // Create a new instance of SpeechSynthesisUtterance
-        var utterance = new SpeechSynthesisUtterance(textToSay);
-
-        // Optionally, configure speech parameters
-        utterance.lang = 'en-US'; // Language setting (adjust as needed)
-
-        // Speak the text
-        window.speechSynthesis.speak(utterance);
-      } else {
-        // Browser doesn't support SpeechSynthesis
-        alert('Your browser does not support text-to-speech.');
+        let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
+        audio.loop = true;
+        audio.play();
+      
+        //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
+      
+        //infospot.position.set(0, -1000, -1000);
+        //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
+        panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+        //panorama.add(infospot);
+      
+        const imagePosition = imageSettings.position;
+        panorama.addEventListener('enter-fade-start', () => {
+            viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
+        })
+        if (viewer == null) {
+            viewer = new PANOLENS.Viewer({ container: container });
+            viewer.add(panorama);
+          }
+          else {
+            viewer.setPanorama(panorama);
+          }
+      
+        let ef = 1, ctrl = 0;
+        if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
+            ef = 2;
+            ctrl = 1;
+        }
+        viewer.enableControl(ctrl);
+        viewer.enableEffect(ef);
+        viewer.setCameraFov(90);
       }
-    }
 
-function concatenateAfterSpecificPhrase(array, startKeyword, endKeyword) {
-    let isConcatenating = false;
-    let result = '';
-    var currentPhrase="";
+      async function loadVenue() {
+          noSleep.enable();
+          document.getElementById("btn").style.display = "none";
 
-    for (let i = 0; i < array.length; i++) {
-         currentPhrase += array[i][0].transcript;
-    }
-    var startRegex = "empty";
-    if (startKeyword==null){
-      startRegex = new RegExp('(.*?)' + endKeyword, 'g');
-    }else{
-      startRegex = new RegExp(startKeyword + '(.*?)' + endKeyword, 'g');
-    }  
+          container = document.querySelector('#container');
+          const urlParams = new URL(window.location.toLocaleString()).searchParams;
+          let imageName = urlParams.get('image');
+          let imageNote = urlParams.get('cheat_note');
+          let imagine_file_url = null;
+          
+          //build AI generated venues
+          if (imageName == "imagine") {
+            let rnd = Math.floor(Math.random() * 5) + 1;
+              imageName = "imagine" + rnd;
+
+              //trying to generate an image from the SkyBox
+            
+      
+              let requestOptions = {
+                  method: "POST",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+
+            const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imageNote}`, requestOptions);
+            //const response = await fetch('https://jsonplaceholder.typicode.com/posts/1',);
+            const data = await response.json();
+            console.log(data);
+
+            Pusher.logToConsole = true;
+            pusher = new Pusher('a6a7b7662238ce4494d5', {
+              appId: "1555452",
+              key: "a6a7b7662238ce4494d5",
+              secret: "5b69dc3f0bb7800ed8d0",
+              cluster: "mt1"
+            });
+            
+            // Subscribe to the channel you want to receive events from
+            channel = pusher.subscribe(data.pusher_channel);
+            channel.bind(data.pusher_event, loadVenueEvent);      
+          }else{
+            displayImage(imagesSettings[imageName]);
+          }
+      }
+
+      //Generates the request to the Blockadel API to generate 360 inage from the prompt
+      //the function generte asynchronous request. The response will be received by webhook function loadVenueEvent()
+      async function loadWhisperVenue(imagePrompt) {
+          
+          noSleep.enable();
         
-  // Find all matches
-    let match;
-    while ((match = startRegex.exec(currentPhrase.toLowerCase())) !== null) {
-        result += match[1]; // Concatenate the text between the keywords
-    }
+          document.getElementById("btn").style.display = "none";
 
-    return result;
-    
-}
+          container = document.querySelector('#container');
+                    
+          let requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              redirect: "follow"
+          };
 
-async function loadVenueEvent(eventData) {
-  console.log(eventData);
-  if(eventData.status == 'complete'){
-     const imageSettings = imagesSettings["imagine1"];
-     imageSettings.image = eventData.file_url;
-     displayImage(imageSettings)
-  }
-}
+          const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imagePrompt}`, requestOptions);
+          const data = await response.json();
 
-async function displayImage(imageSettings) {
-  //const imageSettings = imagesSettings[imageName];
+          Pusher.logToConsole = true;
+          pusher = new Pusher('a6a7b7662238ce4494d5', {
+          appId: "1555452",
+          key: "a6a7b7662238ce4494d5",
+          secret: "5b69dc3f0bb7800ed8d0",
+          cluster: "mt1"
+          });
+          
+          channel = pusher.subscribe(data.pusher_channel);
+          channel.bind(data.pusher_event, loadVenueEvent);         
 
-  var audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
-  audio.loop = true;
-  //audio.play();
+      }    
 
-  //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
+      function createExitButton () {
+        let mesh;
+        mesh = new PANOLENS.Infospot( 150, 'assets/menu_exit.png', true);
+        mesh.visible = true;
+        mesh.name = "Exit";
+        mesh.title = 'Exit';
+        mesh.position.set( -1000, 0, -1000 );
+        mesh.material.opacity = 0;
+        mesh.setCursorHoverStyle( 'default' );
+        mesh.addHoverText( 'Exit');
+        //mesh.addHoverElement(document.getElementById('menu_exit'), 150);
 
-  //infospot.position.set(0, -1000, -1000);
-  //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-  panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
-  //panorama.add(infospot);
 
-  const imagePosition = imageSettings.position;
-  panorama.addEventListener('enter-fade-start', () => {
-      viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
-  })
+        //mesh.addEventListener( 'hoverenter', function () {
+          //speak("Enter");
+        //} );
+        
+        //mesh.addEventListener( 'hoverleave', function () {
+            //speak("Leave");
+        //} );
+        
+        mesh.addEventListener( 'click', function () {
+          PlaySound( "assets/see_you_later.mp3");
+          window.history.go(-1);
+        } );
 
-  if (viewer == null) {
-    viewer = new PANOLENS.Viewer({ container: container });
-    viewer.add(panorama);
-  }
-  else {
-    viewer.dispose();
-    viewer.add(panorama);
-  }
+        panorama.add(mesh);
 
-  var ef = 1, ctrl = 0;
-  if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
-      ef = 2;
-      ctrl = 1;
-  }
-  viewer.enableControl(ctrl);
-  viewer.enableEffect(ef);
-  viewer.setCameraFov(90);
-}
-
-async function displayGeneratedImage(imageSettings) {
-    //const imageSettings = imagesSettings[imageName];
-  
-    var audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
-    audio.loop = true;
-    audio.play();
-  
-    //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
-  
-    //infospot.position.set(0, -1000, -1000);
-    //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-    panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
-    //panorama.add(infospot);
-  
-    const imagePosition = imageSettings.position;
-    panorama.addEventListener('enter-fade-start', () => {
-        viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
-    })
-    if (viewer == null) {
-        viewer = new PANOLENS.Viewer({ container: container });
-        viewer.add(panorama);
+        return mesh;
       }
-      else {
-        viewer.setPanorama(panorama);
-      }
-  
-    var ef = 1, ctrl = 0;
-    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
-        ef = 2;
-        ctrl = 1;
-    }
-    viewer.enableControl(ctrl);
-    viewer.enableEffect(ef);
-    viewer.setCameraFov(90);
-  }
+      function createQuestionsButton () {
+        let mesh;
+        mesh = new PANOLENS.Infospot( 150, 'assets/menu_questions.png', true);
+        mesh.visible = true;
+        mesh.name = "Questions";
+        mesh.title = 'Questions';
+        mesh.position.set( -1000, -200, -1000 );
+        mesh.material.opacity = 0;
+        mesh.setCursorHoverStyle( 'default' );
+        mesh.addHoverText( 'Questions');
+        //mesh.addHoverElement(document.getElementById('menu_questions'), 150);
 
-async function loadVenue() {
-    noSleep.enable();
-    document.getElementById("btn").style.display = "none";
+        //mesh.addEventListener( 'hoverenter', function () {
+          //speak("Enter");
+        //} );
+        
+        //mesh.addEventListener( 'hoverleave', function () {
+            //speak("Leave");
+        //} );
+        
+        mesh.addEventListener( 'click', function () {
+          //PlaySound( "assets/questions_please.mp3");
+          startAskingQuestions(false);
+        } );
 
-    container = document.querySelector('#container');
-    const urlParams = new URL(window.location.toLocaleString()).searchParams;
-    let imageName = urlParams.get('image');
-    let imageNote = urlParams.get('cheat_note');
-    let imagine_file_url = null;
-    
-    //build AI generated venues
-    if (imageName == "imagine") {
-        var rnd = Math.floor(Math.random() * 5) + 1;
-        imageName = "imagine" + rnd;
+        panorama.add(mesh);
 
-        //trying to generate an image from the SkyBox
+        return mesh;
+      }    
       
- 
-        let requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            redirect: "follow"
-        };
+      function createLevel1Button () {
+        let mesh;
+        mesh = new PANOLENS.Infospot( 150, 'assets/menu_level1.png', true);
+        mesh.visible = true;
+        mesh.name = "Level 1";
+        mesh.title = 'Level 1';
+        mesh.position.set( -1000, -400, -1000 );
+        mesh.material.opacity = 0;
+        mesh.setCursorHoverStyle( 'default' );
+        mesh.addHoverText( 'Level 1');
+        //mesh.addHoverElement(document.getElementById('menu_questions'), 150);
 
-       const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imageNote}`, requestOptions);
-       //const response = await fetch('https://jsonplaceholder.typicode.com/posts/1',);
-       const data = await response.json();
-       console.log(data);
+        //mesh.addEventListener( 'hoverenter', function () {
+          //speak("Enter");
+        //} );
+        
+        //mesh.addEventListener( 'hoverleave', function () {
+            //speak("Leave");
+        //} );
+        
+        mesh.addEventListener( 'click', function () {
+          tougleLevel();
+          panorama.add(mesh);
+          panorama.add(questionsBtn);
+          panorama.add(exitBtn);
+        } );
 
-       Pusher.logToConsole = true;
-       pusher = new Pusher('a6a7b7662238ce4494d5', {
-        appId: "1555452",
-        key: "a6a7b7662238ce4494d5",
-        secret: "5b69dc3f0bb7800ed8d0",
-        cluster: "mt1"
-       });
-       
-      // Subscribe to the channel you want to receive events from
-       channel = pusher.subscribe(data.pusher_channel);
-       channel.bind(data.pusher_event, loadVenueEvent);      
-     }else{
-      displayImage(imagesSettings[imageName]);
-     }
-}
-
-//Generates the request to the Blockadel API to generate 360 inage from the prompt
-//the function generte asynchronous request. The response will be received by webhook function loadVenueEvent()
-async function loadWhisperVenue(imagePrompt) {
-    
-    noSleep.enable();
-  
-    document.getElementById("btn").style.display = "none";
-
-    container = document.querySelector('#container');
-              
-    let requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        redirect: "follow"
-    };
-
-    const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imagePrompt}`, requestOptions);
-    const data = await response.json();
-
-    Pusher.logToConsole = true;
-    pusher = new Pusher('a6a7b7662238ce4494d5', {
-    appId: "1555452",
-    key: "a6a7b7662238ce4494d5",
-    secret: "5b69dc3f0bb7800ed8d0",
-    cluster: "mt1"
-    });
-    
-    channel = pusher.subscribe(data.pusher_channel);
-    channel.bind(data.pusher_event, loadVenueEvent);     
-    
-
-}    
-
-
-
-
-
-    </script>
+        panorama.add(mesh);
+        return mesh;
+      }     
+</script>
 </body>
 </html>
