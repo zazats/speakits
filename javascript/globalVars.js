@@ -1,5 +1,4 @@
 import { NoSleep } from '../libraries/nosleep/index.js';
-
 window.noSleep = new NoSleep();
 //DeviceOrientationEvent.requestPermission();    
 window.panorama = null;
@@ -18,8 +17,8 @@ window.recognition = null;
 window.speechBuffer = null;
 window.currentLevel = 1;
  
-window.myHeaders = new Headers();
 
+//myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);
 //settings
 
 window.imagesSettings = {

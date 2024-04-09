@@ -37,6 +37,7 @@
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>    
     <script type="module" src="/javascript/globalVars.js"></script>
     <script type="module" src="javascript/audioFeedback.js"></script>
+    <script type="module" src="keys.js"></script>
 
     <script>
       // Check browser support for the Web Speech API
@@ -362,6 +363,8 @@
           if (imageName == "imagine") {
             let rnd = Math.floor(Math.random() * 5) + 1;
               imageName = "imagine" + rnd;
+              let myHeaders = new Headers();
+              myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);
 
               //trying to generate an image from the SkyBox
             
@@ -402,6 +405,9 @@
           document.getElementById("btn").style.display = "none";
 
           container = document.querySelector('#container');
+
+          let myHeaders = new Headers();
+          myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);
                     
           let requestOptions = {
               method: "POST",

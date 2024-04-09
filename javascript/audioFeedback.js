@@ -1,4 +1,5 @@
 
+
 // Define the phrase and prompt
 //const phrase = "The cat sat on the mat.";
 //const prompt = `Generate questions related to the following phrase: '${phrase}'`;
@@ -11,7 +12,7 @@ async function fetchModels() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+                'Authorization': `Bearer ${CHATGPT_API_KEY}`
             }
         });
 
@@ -44,7 +45,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+                'Authorization': `Bearer ${CHATGPT_API_KEY}`
             },
             body: JSON.stringify({
                     "model": "gpt-3.5-turbo-0125",
