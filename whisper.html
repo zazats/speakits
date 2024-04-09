@@ -163,14 +163,12 @@
           //audio.loop = true;
           //audio.play();
         
-      
           panorama1 = new PANOLENS.ImagePanorama('assets/v1_l1.jpg', 50);
           panorama2 = new PANOLENS.ImagePanorama('assets/v2_l1.jpg', 50);
           panorama3 = new PANOLENS.ImagePanorama('assets/v3_l1.jpg', 50);
           
           panorama = panorama1;
 
-          
           panorama1.addEventListener('enter-fade-start', () => {
               viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
           })
