@@ -1,2 +1,2 @@
-window.CHATGPT = "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";
+window.CHATGPT = "ZAZAsk-XFDNXbmrhDabGoMFylK7T3BlbkFJjPrDzfSeRtfnTyTQ8drwZAZA";
 window.IMAGINE =  "g8Vu69Ip2RJAEuFVgAxoN9QKq7DmViQtW4jfo5CwIENvU7Fk4URYMckq94Mq";
