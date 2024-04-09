@@ -2,7 +2,6 @@
 // Define the phrase and prompt
 //const phrase = "The cat sat on the mat.";
 //const prompt = `Generate questions related to the following phrase: '${phrase}'`;
-const apiKey = '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';
 
 async function fetchModels() {
     try {
