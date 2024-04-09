@@ -19,7 +19,6 @@ window.speechBuffer = null;
 window.currentLevel = 1;
  
 window.myHeaders = new Headers();
-myHeaders.append("x-api-key", "g8Vu69Ip2RJAEuFVgAxoN9QKq7DmViQtW4jfo5CwIENvU7Fk4URYMckq94Mq");
 
 //settings
 
