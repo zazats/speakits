@@ -1,3 +1,2 @@
-window.CHATGPT_API_KEY = "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";
-window.IMAGINE_GEN_API_KEY = "g8Vu69Ip2RJAEuFVgAxoN9QKq7DmViQtW4jfo5CwIENvU7Fk4URYMckq94Mq";
+
   
