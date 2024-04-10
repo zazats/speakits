@@ -45,7 +45,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${CHATGPT_API_KEY}`
+                'Authorization': `Bearer ${CHATGPT1}${CHATGPT2}`
             },
             body: JSON.stringify({
                     "model": "gpt-3.5-turbo-0125",
