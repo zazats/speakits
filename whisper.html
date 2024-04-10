@@ -41,6 +41,8 @@
 
     <script>
       let recognition = null;
+      const MENU_ICON_SIZE = 120;
+      
       // Check browser support for the Web Speech API
       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Initialize SpeechRecognition object
@@ -466,14 +468,14 @@
 
       function createExitButton () {
         let mesh;
-        mesh = new PANOLENS.Infospot( 150, 'assets/menu_exit.png', true);
+        mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/exit.png', true);
         mesh.visible = true;
         mesh.name = "Exit";
         mesh.title = 'Exit';
         mesh.position.set( -1000, 0, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        mesh.addHoverText( 'Exit');
+        //mesh.addHoverText( 'Exit');
         //mesh.addHoverElement(document.getElementById('menu_exit'), 150);
 
 
@@ -496,14 +498,14 @@
       }
       function createQuestionsButton () {
         let mesh;
-        mesh = new PANOLENS.Infospot( 150, 'assets/menu_questions.png', true);
+        mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/ask_me.png', true);
         mesh.visible = true;
         mesh.name = "Questions";
         mesh.title = 'Questions';
         mesh.position.set( -1000, -200, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        mesh.addHoverText( 'Questions');
+        //mesh.addHoverText( 'Questions');
         //mesh.addHoverElement(document.getElementById('menu_questions'), 150);
 
         //mesh.addEventListener( 'hoverenter', function () {
@@ -530,14 +532,14 @@
       
       function createLevel1Button () {
         let mesh;
-        mesh = new PANOLENS.Infospot( 150, 'assets/menu_level1.png', true);
+        mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/tougle.png', true);
         mesh.visible = true;
         mesh.name = "Level 1";
         mesh.title = 'Level 1';
         mesh.position.set( -1000, -400, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        mesh.addHoverText( 'Level 1');
+        //mesh.addHoverText( 'Level 1');
         //mesh.addHoverElement(document.getElementById('menu_questions'), 150);
 
         //mesh.addEventListener( 'hoverenter', function () {
@@ -562,14 +564,14 @@
 
       function createRelaxButton () {
         let mesh;
-        mesh = new PANOLENS.Infospot( 150, 'assets/mike.png', true);
+        mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/relax.png', true);
         mesh.visible = true;
         mesh.name = "Relax";
         mesh.title = 'Relax';
         mesh.position.set( -1000, -600, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        mesh.addHoverText( 'Relax');
+        //mesh.addHoverText( 'Relax');
                 
         mesh.addEventListener( 'click', function () {
           showWhisper();
