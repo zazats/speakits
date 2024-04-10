@@ -40,11 +40,13 @@
     <script type="module" src="keys.js"></script>
 
     <script>
+      let recognition = null;
       // Check browser support for the Web Speech API
       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Initialize SpeechRecognition object
         let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
+        let questionBuffer = null;
         
         // Configure recognition settings
         recognition.continuous = true; // Continue listening for speech
@@ -59,10 +61,10 @@
         let hiWhisperSpoken = false;
         let welcomeSpoken = false;
   
-    
-  
+     
         // Event handler for receiving transcribed text
         recognition.onresult = function(event) {
+        
           speechBuffer = event.results;
           if (hiWhisperSpoken) {
             let result = event.results[event.results.length - 1];
@@ -80,15 +82,26 @@
               hideWhisper();
               //document.getElementById("count_down").style.display = "compact";
               loadWhisperVenue(concatenatedString);
+              if (recognition != null) {
+                recognition.stop();
+              }
+
             } else if (transcript.toLowerCase().includes('goodbye')) { 
               hiWhisperSpoken=false;
               PlaySound( "assets/see_you_later.mp3");
               hideWhisper();
+              if (recognition != null) {
+                recognition.stop();
+              }
               window.history.go(-1);
+              
             }else if (transcript.toLowerCase().includes('ignore')) { 
               hiWhisperSpoken=false;
               PlaySound( "assets/ok.mp3");
               hideWhisper();
+              if (recognition != null) {
+                recognition.stop();
+              }
             }
         }else {
             const transcript = event.results[event.results.length - 1][0].transcript;
@@ -113,8 +126,11 @@
       function startAskingQuestions(isFromWhisper){
         let par2 = null;
         if(isFromWhisper) par2 = "any questions";
-        let concatenatedString = concatenateAfterSpecificPhrase(speechBuffer, null, par2);
-                generateQuestions("phrase", concatenatedString).then(function(response){ 
+        
+        if (questionBuffer == null) {
+          questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, par2);
+        }
+                generateQuestions("phrase", questionBuffer).then(function(response){ 
                 speak(response);
               })
       }
@@ -180,7 +196,7 @@
               viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
           })
           viewer = new PANOLENS.Viewer({ container: container });
-          viewer.add(panorama, panorama1, panorama2,panorama3);
+          viewer.add(panorama1, panorama2,panorama3);
         
           let ef = 1, ctrl = 0;
           if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
@@ -194,20 +210,31 @@
           exitBtn = createExitButton();
           questionsBtn = createQuestionsButton();
           levelBtn = createLevel1Button();
+          relaxBtn = createRelaxButton();
 
           viewer.setPanorama(panorama);
     }
 
     function tougleLevel(){
-      if(currentLevel ==1){
-        currentLevel = 2;
-        panorama = panorama2;
-      }else if(currentLevel ==2){
-        currentLevel = 3;
-        panorama = panorama3;
-      }else if(currentLevel ==3){
+
+      const scene = viewer.getScene();
+      // Count the number of panoramas in the scene
+      const numPanoramas = scene.children.length;
+      if(currentLevel < numPanoramas) {
+        currentLevel = currentLevel + 1;
+      } else {
         currentLevel = 1;
+      }
+      //panorama = scene.children[currentLevel];
+      
+      if(currentLevel == 1){
         panorama = panorama1;
+      }else if(currentLevel ==2){
+        panorama = panorama2;
+      }else if(currentLevel ==3){
+        panorama = panorama3;
+      } else if(currentLevel ==4){
+        panorama = panorama4;
       }
       
       viewer.setPanorama(panorama);
@@ -268,10 +295,15 @@
 
     async function loadVenueEvent(eventData) {
       console.log(eventData);
+      PlaySound('assets/ok_working_on_it.mp3');
       if(eventData.status == 'complete'){
         const imageSettings = imagesSettings["imagine1"];
         imageSettings.image = eventData.file_url;
         displayImage(imageSettings)
+        panorama.add(levelBtn);
+        panorama.add(questionsBtn);
+        panorama.add(exitBtn);
+        panorama.add(relaxBtn);
       }
     }
 
@@ -286,23 +318,24 @@
 
       //infospot.position.set(0, -1000, -1000);
       //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-      panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+
+      panorama4 = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+      panorama = panorama4;
       //panorama.add(infospot);
 
       const imagePosition = imageSettings.position;
-      panorama.addEventListener('enter-fade-start', () => {
+      panorama4.addEventListener('enter-fade-start', () => {
           viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
       })
 
       if (viewer == null) {
         viewer = new PANOLENS.Viewer({ container: container });
-        viewer.add(panorama);
+        //viewer.add(panorama);
       }
-      else {
-        viewer.dispose();
-        viewer.add(panorama);
-      }
-
+             
+      viewer.add(panorama4);
+      viewer.setPanorama(panorama4);
+      
       let ef = 1, ctrl = 0;
       if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
           ef = 2;
@@ -364,7 +397,7 @@
             let rnd = Math.floor(Math.random() * 5) + 1;
               imageName = "imagine" + rnd;
               let myHeaders = new Headers();
-              myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);
+              myHeaders.append("x-api-key", IMAGINE);
 
               //trying to generate an image from the SkyBox
             
@@ -407,7 +440,7 @@
           container = document.querySelector('#container');
 
           let myHeaders = new Headers();
-          myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);
+          myHeaders.append("x-api-key", IMAGINE);
                     
           let requestOptions = {
               method: "POST",
@@ -484,6 +517,10 @@
         mesh.addEventListener( 'click', function () {
           //PlaySound( "assets/questions_please.mp3");
           startAskingQuestions(false);
+          panorama.add(mesh);
+          panorama.add(questionsBtn);
+          panorama.add(exitBtn);
+          panorama.add(relaxBtn);
         } );
 
         panorama.add(mesh);
@@ -516,11 +553,37 @@
           panorama.add(mesh);
           panorama.add(questionsBtn);
           panorama.add(exitBtn);
+          panorama.add(relaxBtn);
         } );
 
         panorama.add(mesh);
         return mesh;
       }     
+
+      function createRelaxButton () {
+        let mesh;
+        mesh = new PANOLENS.Infospot( 150, 'assets/mike.png', true);
+        mesh.visible = true;
+        mesh.name = "Relax";
+        mesh.title = 'Relax';
+        mesh.position.set( -1000, -600, -1000 );
+        mesh.material.opacity = 0;
+        mesh.setCursorHoverStyle( 'default' );
+        mesh.addHoverText( 'Relax');
+                
+        mesh.addEventListener( 'click', function () {
+          showWhisper();
+          PlaySound('assets/im_here.mp3');
+          panorama.add(mesh);
+          panorama.add(questionsBtn);
+          panorama.add(exitBtn);
+          panorama.add(relaxBtn);
+        } );
+
+        panorama.add(mesh);
+        return mesh;
+      }     
+
 </script>
 </body>
 </html>

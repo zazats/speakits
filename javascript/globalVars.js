@@ -5,16 +5,19 @@ window.panorama = null;
 window.panorama1 = null;
 window.panorama2 = null;
 window.panorama3 = null;
+window.panorama4 = null;
 window.viewer = null;
 window.container = null; 
 window.infospot = null;
 window.pusher = null;
 window.channel = null;
 window.exitBtn = null; 
+window.relaxBtn = null; 
 window.questionsBtn = null; 
 window.levelBtn = null;
-window.recognition = null;
+//window.recognition = null;
 window.speechBuffer = null;
+
 window.currentLevel = 1;
  
 
