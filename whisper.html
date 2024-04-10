@@ -299,6 +299,7 @@
       console.log(eventData);
       PlaySound('assets/working_on_it.mp3');
       if(eventData.status == 'complete'){
+        PlaySound('assets/done.mp3');
         const imageSettings = imagesSettings["imagine1"];
         imageSettings.image = eventData.file_url;
         displayImage(imageSettings)
