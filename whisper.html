@@ -42,7 +42,7 @@
     <script>
       let recognition = null;
       const MENU_ICON_SIZE = 120;
-      
+
       // Check browser support for the Web Speech API
       if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Initialize SpeechRecognition object
@@ -297,7 +297,7 @@
 
     async function loadVenueEvent(eventData) {
       console.log(eventData);
-      PlaySound('assets/ok_working_on_it.mp3');
+      PlaySound('assets/working_on_it.mp3');
       if(eventData.status == 'complete'){
         const imageSettings = imagesSettings["imagine1"];
         imageSettings.image = eventData.file_url;
