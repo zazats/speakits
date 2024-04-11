@@ -1,6 +1,7 @@
 import { NoSleep } from '../libraries/nosleep/index.js';
 window.noSleep = new NoSleep();
 //DeviceOrientationEvent.requestPermission();    
+
 window.panorama = null;
 window.panorama1 = null;
 window.panorama2 = null;

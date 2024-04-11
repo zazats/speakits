@@ -182,6 +182,9 @@
     }
   
     function startWhisper() {
+          if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+             DeviceOrientationEvent.requestPermission();  
+          }
           container = document.querySelector('#container');
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
