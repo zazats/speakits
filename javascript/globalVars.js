@@ -5,7 +5,6 @@ window.panorama = null;
 window.panorama1 = null;
 window.panorama2 = null;
 window.panorama3 = null;
-window.panorama4 = null;
 window.viewer = null;
 window.container = null; 
 window.infospot = null;
@@ -18,7 +17,7 @@ window.levelBtn = null;
 //window.recognition = null;
 window.speechBuffer = null;
 
-window.currentLevel = 1;
+window.currentLevel = 0;
  
 
 //myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);
