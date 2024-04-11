@@ -104,6 +104,14 @@
               if (recognition != null) {
                 recognition.stop();
               }
+            }else if (transcript.toLowerCase().includes('next level')) { 
+              hiWhisperSpoken=false;
+              PlaySound( "assets/ok.mp3");
+              hideWhisper();
+              if (recognition != null) {
+                recognition.stop();
+              }
+              tougleLevel();
             }
         }else {
             const transcript = event.results[event.results.length - 1][0].transcript;
@@ -218,27 +226,15 @@
     }
 
     function tougleLevel(){
-
       const scene = viewer.getScene();
       // Count the number of panoramas in the scene
       const numPanoramas = scene.children.length;
-      if(currentLevel < numPanoramas) {
+      if(currentLevel < numPanoramas - 1) {
         currentLevel = currentLevel + 1;
       } else {
-        currentLevel = 1;
-      }
-      //panorama = scene.children[currentLevel];
-      
-      if(currentLevel == 1){
-        panorama = panorama1;
-      }else if(currentLevel ==2){
-        panorama = panorama2;
-      }else if(currentLevel ==3){
-        panorama = panorama3;
-      } else if(currentLevel ==4){
-        panorama = panorama4;
-      }
-      
+        currentLevel = 0;
+      }      
+      panorama = scene.children[currentLevel];
       viewer.setPanorama(panorama);
       //anorama.add(infospot); // add Whisper
       hideWhisper();
@@ -322,7 +318,7 @@
       //infospot.position.set(0, -1000, -1000);
       //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
 
-      panorama4 = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+      let panorama4 = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
       panorama = panorama4;
       //panorama.add(infospot);
 
