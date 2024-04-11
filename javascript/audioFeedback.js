@@ -52,7 +52,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
                     "messages": [
                       {
                         "role": "system",
-                        "content": "Generate a question based on user input "
+                        "content": "Your name is John. You should ask question in the context of the text from user. Say Hi before asking question. Always ask question base on the publications in the relevant area"
                       },
                       {
                         "role": "user",

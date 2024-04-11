@@ -254,6 +254,8 @@
 
             // Optionally, configure speech parameters
             utterance.lang = 'en-US'; // Language setting (adjust as needed)
+            utterance.pitch = 1;
+            utterance.rate = 1;
 
             // Speak the text
             window.speechSynthesis.speak(utterance);
