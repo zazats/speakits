@@ -17,6 +17,9 @@
                click the Start button and inset it in the VR Set.</p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
+        <button id="playSound" class="button" onclick="playSound()">PlaySound</button>
+
+        
     </div>
     
     <div id="container"></div>
@@ -124,6 +127,10 @@
                 }else{
                    whisperInitResponsePath = "assets/yes.mp3"
                 }
+
+                var enableSoundButton = document.getElementById('playSound');
+                enableSoundButton.onclick();
+
                 PlaySound(whisperInitResponsePath);
             } else if (transcript.toLowerCase().includes('any questions') || transcript.toLowerCase().includes('more questions')) {
               //PlaySound( "assets/questions_please.mp3");
@@ -193,8 +200,7 @@
           //audio.loop = true;
           //audio.play();
         
-          PlaySound('assets/working_on_it.mp3');
-          
+                  
           panorama1 = new PANOLENS.ImagePanorama('assets/v1_l1.jpg', 50);
           panorama2 = new PANOLENS.ImagePanorama('assets/v2_l1.jpg', 50);
           panorama3 = new PANOLENS.ImagePanorama('assets/v3_l1.jpg', 50);
@@ -243,6 +249,10 @@
       viewer.setPanorama(panorama);
       //anorama.add(infospot); // add Whisper
       hideWhisper();
+    }
+
+    function playSound(){
+      PlaySound('assets/working_on_it.mp3');
     }
 
     function PlaySound(audioPath) {
