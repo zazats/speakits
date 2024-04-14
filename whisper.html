@@ -39,11 +39,7 @@
     <script type="module" src="javascript/audioFeedback.js"></script>
     <script type="module" src="keys.js"></script>
 
-	<audio id="my-audio" >
-      <source src='assets/ok_working_on_it.mp3' type="audio/mp3" />
-  </audio>
-
-    <script>
+	    <script>
       let recognition = null;
       const MENU_ICON_SIZE = 120;
 
@@ -248,11 +244,10 @@
     }
 
     function PlaySound(audioPath) {
-      /*  let audio = new Audio(audioPath);
+        let audio = new Audio(audioPath);
         audio.loop = false;
-        audio.play();*/
-	var myAudio = document.getElementById("my-audio");
-        myAudio.play();    
+        audio.play();
+	 
     }
 
     function speak(textToSay) {
