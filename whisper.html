@@ -17,6 +17,8 @@
                click the Start button and inset it in the VR Set.</p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
+       
+        
     </div>
     
     <div id="container"></div>
@@ -39,7 +41,7 @@
     <script type="module" src="javascript/audioFeedback.js"></script>
     <script type="module" src="keys.js"></script>
 
-    <script>
+	    <script>
       let recognition = null;
       const MENU_ICON_SIZE = 120;
 
@@ -124,6 +126,7 @@
                 }else{
                    whisperInitResponsePath = "assets/yes.mp3"
                 }
+
                 PlaySound(whisperInitResponsePath);
             } else if (transcript.toLowerCase().includes('any questions') || transcript.toLowerCase().includes('more questions')) {
               //PlaySound( "assets/questions_please.mp3");
@@ -247,6 +250,7 @@
         let audio = new Audio(audioPath);
         audio.loop = false;
         audio.play();
+	 
     }
 
     function speak(textToSay) {
