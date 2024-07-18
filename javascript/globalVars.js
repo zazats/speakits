@@ -35,7 +35,7 @@ window.imagesSettings = {
         ]
     },
     "Session2": {
-        "image": "assets/Lesson2.jpeg",
+        "image": "assets/Lesson2.jpg",
         "audio": "assets/Lesson2Audio.mp3",
         "position": [
             0,
@@ -44,7 +44,7 @@ window.imagesSettings = {
         ]
     },
     "Session3": {
-        "image": "assets/Lesson3.jpeg",
+        "image": "assets/Lesson3.jpg",
         "audio": "assets/Lesson3Audio.mp3",
         "position": [
             0,
@@ -53,7 +53,7 @@ window.imagesSettings = {
         ]
     },
     "Session4": {
-        "image": "assets/Lesson4.jpeg",
+        "image": "assets/Lesson4.jpg",
         "audio": "assets/Lesson4Audio.mp3",
         "position": [
             0,
