@@ -189,14 +189,23 @@
              DeviceOrientationEvent.requestPermission();  
           }
           container = document.querySelector('#container');
+          const urlParams = new URL(window.location.toLocaleString()).searchParams;
+          let imageName = urlParams.get('image');
+          //let imageNote = urlParams.get('cheat_note');
+          //let imagine_file_url = null;
+          //build AI generated venues
+          //if (imageName == "imagine") {
+          displayImage(imagesSettings[imageName]);
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
           //document.getElementById("count_down").style.display = "none";
-          //var audio = new Audio('assets/imagine_l1.mp3');
+          //var audio = new Audio('assets/MBCTDepression-02-Raisin-Exercise.mp3');
           //audio.loop = true;
           //audio.play();
+
+/*
         
-          panorama1 = new PANOLENS.ImagePanorama('assets/start2.jpg', 50);
+          panorama1 = new PANOLENS.ImagePanorama('assets/start.jpg', 50);
           panorama2 = new PANOLENS.ImagePanorama('assets/v2_l1.jpg', 50);
           panorama3 = new PANOLENS.ImagePanorama('assets/v3_l1.jpg', 50);
           
@@ -222,6 +231,7 @@
           viewer.enableControl(ctrl);
           viewer.enableEffect(ef);
           viewer.setCameraFov(90);
+          */
 
           exitBtn = createExitButton();
           questionsBtn = createQuestionsButton();
@@ -229,6 +239,7 @@
           relaxBtn = createRelaxButton();
 
           viewer.setPanorama(panorama);
+          
     }
 
     function tougleLevel(){
@@ -320,19 +331,19 @@
 
       let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
       audio.loop = true;
-      //audio.play();
+      audio.play();
 
       //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
 
       //infospot.position.set(0, -1000, -1000);
       //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
 
-      let panorama4 = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
-      panorama = panorama4;
+      let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+      panorama = newPanorama;
       //panorama.add(infospot);
 
       const imagePosition = imageSettings.position;
-      panorama4.addEventListener('enter-fade-start', () => {
+      newPanorama.addEventListener('enter-fade-start', () => {
           viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
       })
 
@@ -341,8 +352,8 @@
         //viewer.add(panorama);
       }
              
-      viewer.add(panorama4);
-      viewer.setPanorama(panorama4);
+      viewer.add(newPanorama);
+      viewer.setPanorama(newPanorama);
       
       let ef = 1, ctrl = 0;
       if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {

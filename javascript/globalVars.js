@@ -25,6 +25,42 @@ window.currentLevel = 0;
 //settings
 
 window.imagesSettings = {
+    "Session1": {
+        "image": "assets/start2.jpg",
+        "audio": "assets/Lesson1Audio.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "Session2": {
+        "image": "assets/Lesson2.jpeg",
+        "audio": "assets/Lesson2Audio.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "Session3": {
+        "image": "assets/Lesson3.jpeg",
+        "audio": "assets/Lesson3Audio.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
+    "Session4": {
+        "image": "assets/Lesson4.jpeg",
+        "audio": "assets/Lesson4Audio.mp3",
+        "position": [
+            0,
+            0,
+            0
+        ]
+    },
     "v1_l1": {
         "image": "assets/v1_l1.jpg",
         "audio": "assets/imagine_l1.mp3",
