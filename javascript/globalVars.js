@@ -27,7 +27,7 @@ window.currentLevel = 0;
 window.imagesSettings = {
     "Session1": {
         "image": "assets/start2.jpg",
-        "audio": "assets/Lesson1Audio.mp3",
+        "audio": "assets/zendel/MBCTDepression-01-Introduction.mp3",
         "position": [
             0,
             0,
@@ -36,7 +36,7 @@ window.imagesSettings = {
     },
     "Session2": {
         "image": "assets/Lesson2.jpg",
-        "audio": "assets/Lesson2Audio.mp3",
+        "audio": "assets/zendel/MBCTDepression-03-Body-Scan.mp3",
         "position": [
             0,
             0,
@@ -45,7 +45,7 @@ window.imagesSettings = {
     },
     "Session3": {
         "image": "assets/Lesson3.jpg",
-        "audio": "assets/Lesson3Audio.mp3",
+        "audio": "assets/zendel/MBCTDepression-06-Stretch-Breath-Meditation.mp3",
         "position": [
             0,
             0,
@@ -54,7 +54,7 @@ window.imagesSettings = {
     },
     "Session4": {
         "image": "assets/Lesson4.jpg",
-        "audio": "assets/Lesson4Audio.mp3",
+        "audio": "assets/zendel/MBCTDepression-02-Raisin-Exercise.mp3",
         "position": [
             0,
             0,
