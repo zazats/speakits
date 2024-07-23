@@ -188,7 +188,14 @@
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
              DeviceOrientationEvent.requestPermission();  
           }
-          document.documentElement.requestFullscreen();
+          var elem = document.documentElement;
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+          } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+         }
           container = document.querySelector('#container');
           const urlParams = new URL(window.location.toLocaleString()).searchParams;
           let imageName = urlParams.get('image');
