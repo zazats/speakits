@@ -188,14 +188,23 @@
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
              DeviceOrientationEvent.requestPermission();  
           }
-          var elem = document.documentElement;
-          if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-          } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-          } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
-         }
+          if (!document.fullscreenElement) {
+
+let element = document.body;
+let requestFSFunction = element.requestFullScreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen || document.requestFullscreen || document.msRequestFullscreen || document.mozRequestFullScreen;
+if (requestFSFunction) {
+    requestFSFunction.apply(element);
+   
+}
+else {
+    // element.requestFullScreen();jhvhgv
+    console.log("ERR:", "Fullscreen failed!");
+}
+}
+else {
+document.exitFullscreen();
+// console.log("DEBUG:",this.entity.findByTag("buttonText"));
+}
           container = document.querySelector('#container');
           const urlParams = new URL(window.location.toLocaleString()).searchParams;
           let imageName = urlParams.get('image');
