@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv=”Permissions-Policy” content=”interest-cohort=()”>
-    <title>S P E A K I T X</title>
+    <title>MindSpace</title>
     <link rel="stylesheet" href="viewer.css">	
 </head>
 
@@ -190,21 +190,22 @@
           }
           if (!document.fullscreenElement) {
 
-let element = document.body;
-let requestFSFunction = element.requestFullScreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen || document.requestFullscreen || document.msRequestFullscreen || document.mozRequestFullScreen;
-if (requestFSFunction) {
-    requestFSFunction.apply(element);
-   
-}
-else {
-    // element.requestFullScreen();jhvhgv
-    console.log("ERR:", "Fullscreen failed!");
-}
-}
-else {
-document.exitFullscreen();
-// console.log("DEBUG:",this.entity.findByTag("buttonText"));
-}
+            let element = document.body;
+            let requestFSFunction = element.requestFullScreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen || document.requestFullscreen || document.msRequestFullscreen || document.mozRequestFullScreen;
+            if (requestFSFunction) {
+                requestFSFunction.apply(element);
+              
+            }
+            else {
+                // element.requestFullScreen();jhvhgv
+                console.log("ERR:", "Fullscreen failed!");
+            }
+          }
+          else {
+            document.exitFullscreen();
+          // console.log("DEBUG:",this.entity.findByTag("buttonText"));
+          }
+          
           container = document.querySelector('#container');
           const urlParams = new URL(window.location.toLocaleString()).searchParams;
           let imageName = urlParams.get('image');
