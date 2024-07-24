@@ -350,6 +350,14 @@ document.exitFullscreen();
       audio.loop = false;
       audio.play();
 
+      audio.onended = function() {
+        //alert("The audio has ended");
+        PlaySound(imageSettings.question1);
+        console.log("The audio has ended");
+      };
+      
+      
+      
       //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
 
       //infospot.position.set(0, -1000, -1000);

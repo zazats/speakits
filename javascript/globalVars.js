@@ -28,6 +28,7 @@ window.imagesSettings = {
     "Session1": {
         "image": "assets/start2.jpg",
         "audio": "assets/zendel/MBCTDepression-01-Introduction.mp3",
+        "question1": "assets/Course1-Session1-Q1.mp3",
         "position": [
             0,
             0,
