@@ -152,7 +152,8 @@ const requestOptions = {
 };
 
 try {
-  const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=295", requestOptions);
+  //const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=295", requestOptions);
+  const response = await fetch("https://www.avxlabs.com/_functions/myFunction", requestOptions);
   
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status} statusText: ${response.statusText}`);
