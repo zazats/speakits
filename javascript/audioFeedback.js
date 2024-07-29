@@ -130,9 +130,9 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
         const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer ${CHATGPT1}${CHATGPT2}");
-myHeaders.append("Cookie", "XSRF-TOKEN=1722243320|z7tHdnABE4FU");
+//myHeaders.append("Cookie", "XSRF-TOKEN=1722243320|z7tHdnABE4FU");
 
-//myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+//myHeaders.append('Access-Control-Allow-Origin', '*');
 //myHeaders.append('Access-Control-Allow-Credentials', 'true');
 
 //myHeaders.append('GET', 'POST', 'OPTIONS');
@@ -152,9 +152,8 @@ const requestOptions = {
 };
 
 try {
-  //const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=295", requestOptions);
-  const response = await fetch("https://www.avxlabs.com/_functions/myFunction", requestOptions);
-  
+  const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=306", requestOptions);
+ 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status} statusText: ${response.statusText}`);
   }
