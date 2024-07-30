@@ -86,7 +86,39 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
     }
 }
 
-window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
+window.analyzeAnswer = async function analyzeAnswertest(protocol,question, prompt) {
+
+/*
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+//myHeaders.append("Authorization", "Bearer YOUR_ACTUAL_TOKEN_HERE");
+
+// Define the parameters
+const params = new URLSearchParams({
+  temperature: 13,
+  max_tokens: 11256,
+  siteRevision: 315
+}).toString();
+
+const requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+// Make the GET request with query parameters
+fetch(`https://www.avxlabs.com/_functions/myFunction?${params}`, requestOptions)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status} statusText: ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(result => console.log(result))
+  .catch(error => {
+    console.error('Fetch error:', error.message);
+  });*/
+
 
   /*const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -129,7 +161,7 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
         // Step 3: Send the parsed JSON to the second API
         const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer ${CHATGPT1}${CHATGPT2}");
+//myHeaders.append("Authorization", "Bearer ${CHATGPT1}${CHATGPT2}");
 //myHeaders.append("Cookie", "XSRF-TOKEN=1722243320|z7tHdnABE4FU");
 
 //myHeaders.append('Access-Control-Allow-Origin', '*');
@@ -152,7 +184,7 @@ const requestOptions = {
 };
 
 try {
-  const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=306", requestOptions);
+  const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=321", requestOptions);
  
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status} statusText: ${response.statusText}`);
@@ -168,11 +200,10 @@ try {
   return 'aaa;'
 }
 
-window.analyzeAnswer1 = async function analyzeAnswer1(protocol,question, prompt) {
+window.analyzeAnswer1 = async function analyzeAnswer(protocol,question, prompt) {
     try {
        
         // Call the function to fetch available models
-   //     fetchModels();
         // Make a request to the OpenAI API
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -194,7 +225,7 @@ window.analyzeAnswer1 = async function analyzeAnswer1(protocol,question, prompt)
                       {
                             "role": "user",
                             "content": "based on the following participant response please provide the scoring, scaling and following metrics: Curiosity , Reflection, Engagement, Emotional Response: " + prompt
-                          }
+                      }
                     ],
                     "temperature": 1,
                     "max_tokens": 256,
@@ -211,32 +242,37 @@ window.analyzeAnswer1 = async function analyzeAnswer1(protocol,question, prompt)
         // Extract generated questions from the response
        // const generatedQuestions = data.choices.map(choice => choice.text.trim());
         const generatedQuestions = data.choices[0].message.content;
-
-              
-  
-/*const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer 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");
-myHeaders.append("Cookie", "XSRF-TOKEN=1721913398|uT_iI0ebt2iG");
-
-const raw = JSON.stringify({
-  "temperature": 1,
-  "max_tokens": 256
-});
-
-const requestOptions = {
-  method: "POST",
-  headers: myHeaders,
-  body: raw,
-  redirect: "follow"
-};
-
-fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=281", requestOptions)
-  .then((response1) => response1.text())
-  .then((result1) => console.log(result1))
-  .catch((error1) => console.error(error1));
-  */
+         
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
         
+        const raw = JSON.stringify({
+          "temperature": 13,
+          "max_tokens": 11256
+        });
+        
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+        };
+        
+        try {
+          const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=321", requestOptions);
+         
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status} statusText: ${response.statusText}`);
+          }
+        
+          const result = await response.text();
+          console.log(result);
+        } catch (error) {
+          console.error('Fetch error:', error.message);
+          console.error('Request options:', requestOptions);
+        }
+  
+   
   
   return data.choices[0].message.content;
      

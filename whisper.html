@@ -274,7 +274,7 @@
           viewer.setPanorama(panorama);
 
 
-          analyzeAnswer('No protocol','Do you want to say anything about your experiences while eating?','my name is whisper'); 
+          //analyzeAnswer('No protocol','Do you want to say anything about your experiences while eating?','my name is whisper'); 
 
           
     }
@@ -368,7 +368,7 @@
 
       let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
       audio.loop = false;
-     // audio.play();
+     audio.play();
 
       audio.onended = function() {
         //alert("The audio has ended");
