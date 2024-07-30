@@ -86,7 +86,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
     }
 }
 
-window.analyzeAnswer = async function analyzeAnswertest(protocol,question, prompt) {
+window.analyzeAnswertest = async function analyzeAnswertest(protocol,question, prompt) {
 
 /*
 const myHeaders = new Headers();
@@ -200,7 +200,7 @@ try {
   return 'aaa;'
 }
 
-window.analyzeAnswer1 = async function analyzeAnswer(protocol,question, prompt) {
+window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
     try {
        
         // Call the function to fetch available models
