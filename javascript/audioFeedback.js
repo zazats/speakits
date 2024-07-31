@@ -113,7 +113,6 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
                     },
                     {
                       "role": "system",
-                      //"content": "the generated response should be in JSON format and for each key return the score as a number and the metric desription as a string."
                       "content": 'Please use the following JSON format :{"Curiosity":{"score":"Integer","description":"String"},"Reflection":{"score":"Integer","description":"String"},"Engagement":{"score":"Integer","description":"String"},"Emotional Response":{"score":"Integer","description":"String"}}'
 
                      },
@@ -122,7 +121,7 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
                           "content": "based on the following participant response please provide a response directly to participant in a JSON format for the following keys only: Curiosity , Reflection, Engagement, Emotional Response: " + prompt
                     }
                   ],
-                  "temperature": 1,
+                  "temperature": 0.0,
                   "max_tokens": 256,
                   "top_p": 1,
                   "frequency_penalty": 0,
