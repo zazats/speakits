@@ -153,7 +153,8 @@
 
       function analyseAnswer() {
 
-        questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
+        //questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
+        questionBuffer = 'I was thinking how strange that something quite so dried up and ordinary looking could taste so good . . . that if we did not know how it tasted, perhaps we would not bother trying it.'
         let protocol = 'I’m going to go around the class and give you each a raisin.Now, what I would like you to do is to see it as an object—just imagining that you have never seen anything like it before, as if you had dropped in from another planet this moment and you had never seen anything like it before in your life.Taking the object and holding it in the palm of your hand, or between your finger and thumb. Paying attention to seeing it. Looking at it carefully, as if you had never seen such a thing before.Turning it over between your fingers. Exploring its texture between your fingers. Examining the highlights where the light shines . . . the darker hollows and folds. Letting your eyes explore every part of it, as if you had never seen such a thing before. And if, while you are doing this, any thoughts come to mind about what a strange thing we are doing or what is the point of this or I don’t like this, then just noting them as thoughts and bringing your awareness back to the object. And now, taking the object and holding it beneath your nose, and with each in-breath, carefully seeing what you notice—does it have a smell? And now looking at it again. And now slowly taking the object to your mouth, maybe noticing how your hand and arm know exactly where to put it, perhaps noticing what happens in your mouth as it comes up. (And then gently placing the object in the mouth, noticing how it is received, without biting it, just exploring the sensations of having it in your mouth. Exploring the object with your tongue, noticing the sensations as you move it around the mouth. And when you are ready, very consciously taking a bite into it and noticing what happens—the tastes that it releases. Slowly chewing it, . . . noticing what’s happening in the mouth, . . . the change in consistency of the object. Then, when you feel ready to swallow, seeing if you can first detect the intention to swallow as it comes up, so that even this is experienced consciously, before you actually swallow it. Finally, seeing if you can follow the sensations of swallowing it, sensing it moving down to your stomach, any aftertaste, then noticing the absence of the raisin in the mouth—and what the tongue does when it is gone.';
         //analyzeAnswer(imagesSettings.question1,questionBuffer).then(function(response){
         analyzeAnswer(protocol,'Do you want to say anything about your experiences while eating?',questionBuffer).then(function(response){ 
@@ -276,7 +277,7 @@
 
           //analyzeAnswer('No protocol','Do you want to say anything about your experiences while eating?','my name is whisper'); 
 
-          
+          analyseAnswer();
     }
 
     function tougleLevel(){
@@ -297,7 +298,7 @@
     function PlaySound(audioPath) {
         let audio = new Audio(audioPath);
         audio.loop = false;
-        audio.play();
+        //audio.play();
 	 
     }
 
