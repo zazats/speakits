@@ -14,8 +14,8 @@
         <div class ="text">
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
-               click the Start button and inset it in the VR Set. <br> <br> <br>
-               v1.12 
+               click the Start button and inset it in the VR Set. <br> <br>
+               v1.13 
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -230,12 +230,26 @@
       }
     }
 
+    function handleCamera(event) {
+      const key = event.key; // "ArrowUp", "ArrowDown"
+      const camera = viewer.getCamera();
+      const moveDistance = 100; // Adjust this value for faster or slower movement
+
+      if (key === 'f') {
+        camera.translateZ(-moveDistance);
+      } else if (key === 'b') {
+        camera.translateZ(moveDistance);
+      }
+    }
 
     function startWhisper() {
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
              DeviceOrientationEvent.requestPermission();
-             //window.addEventListener('devicemotion', handleMotion, true);  
+             //window.addEventListener('devicemotion', handleMotion, true);    
           }
+          
+          window.addEventListener('keydown', handleCamera, true);
+
           if (!document.fullscreenElement) {
 
             let element = document.body;
