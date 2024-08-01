@@ -199,10 +199,36 @@
         infospot = null;
       }
     }
-  
+ 
+
+    let lastZ = null;
+    const threshold = 1.5; // Adjust this value to control sensitivity
+    const moveDistance = 0.05; // Adjust this value to control the movement speed
+    
+    function handleMotion(event) {
+      const camera = viewer.getCamera();
+      const z = event.accelerationIncludingGravity.z;
+
+      if (lastZ !== null) {
+        const deltaZ = z - lastZ;
+
+        if (deltaZ > threshold) {
+          // Move forward
+          camera.position.add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(moveDistance));
+        } else if (deltaZ < -threshold) {
+          // Move backward
+          camera.position.add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-moveDistance));
+        }
+      }
+
+      lastZ = z;
+    }
+
+
     function startWhisper() {
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-             DeviceOrientationEvent.requestPermission();  
+             DeviceOrientationEvent.requestPermission();
+             window.addEventListener('devicemotion', handleMotion, true);  
           }
           if (!document.fullscreenElement) {
 
