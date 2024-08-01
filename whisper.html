@@ -14,7 +14,9 @@
         <div class ="text">
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
-               click the Start button and inset it in the VR Set.</p>
+               click the Start button and inset it in the VR Set. <br> <br> <br>
+               v1.2 
+            </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
        
@@ -203,8 +205,8 @@
 
     let lastZ = null;
     const threshold = 1.5; // Adjust this value to control sensitivity
-    const moveDistance = 0.05; // Adjust this value to control the movement speed
-    
+    const moveDistance = 10; // Adjust this value to control the movement speed
+
     function handleMotion(event) {
       const camera = viewer.getCamera();
       const z = event.accelerationIncludingGravity.z;
