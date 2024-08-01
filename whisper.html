@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br> <br>
-               v1.9 
+               v1.10 
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -204,45 +204,42 @@
  
 
     let lastZ = null;
-    const threshold = 1.5; // Sensitivity threshold
-    const moveDistance = 0.05; // Distance moved per detected step
-    const smoothingFactor = 0.8;
-    let smoothedZ = 0;
-    const updateInterval = 100; // Process data every 100ms
-    let lastUpdate = Date.now();
+    const threshold = 1; // Adjust this value to control sensitivity
+    const moveDistance = 100; // Adjust this value for faster or slower movement
 
     function handleMotion(event) {
-      const now = Date.now();
-      if (now - lastUpdate > updateInterval) {
-        lastUpdate = now;
+      const acceleration = event.accelerationIncludingGravity;
+      if (acceleration) {
+          const z = acceleration.z;
 
-        const z = event.accelerationIncludingGravity.z;
-        smoothedZ = smoothingFactor * smoothedZ + (1 - smoothingFactor) * z;
+          if (lastZ !== null) {
+              const deltaZ = z - lastZ;
 
-        if (lastZ !== null) {
-          const deltaZ = smoothedZ - lastZ;
+              const camera = viewer.getCamera();
 
-          if (deltaZ > threshold) {
-            // Move forward
-            viewer.getCamera().position.add(viewer.getCamera().getWorldDirection(new THREE.Vector3()).multiplyScalar(moveDistance));
-          } else if (deltaZ < -threshold) {
-            // Move backward
-            viewer.getCamera().position.add(viewer.getCamera().getWorldDirection(new THREE.Vector3()).multiplyScalar(-moveDistance));
+              if (deltaZ > threshold) {
+                  // Move camera backward
+                  camera.translateZ(moveDistance);
+              } else if (deltaZ < -threshold) {
+                  // Move camera forward
+                  camera.translateZ(-moveDistance);
+              }
           }
-        }
 
-        lastZ = smoothedZ;
+          lastZ = z;
       }
     }
 
       lastZ = z;
     }
 
+    let initialPosition = new THREE.Vector3(0, 0, 0);
 
     function startWhisper() {
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
              DeviceOrientationEvent.requestPermission();
-             //window.addEventListener('devicemotion', handleMotion, true);  
+             viewer.getCamera().position.copy(initialPosition);
+             window.addEventListener('devicemotion', handleMotion, true);  
           }
           if (!document.fullscreenElement) {
 
