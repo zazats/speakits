@@ -233,12 +233,10 @@
       lastZ = z;
     }
 
-    let initialPosition = new THREE.Vector3(0, 0, 0);
 
     function startWhisper() {
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
              DeviceOrientationEvent.requestPermission();
-             viewer.getCamera().position.copy(initialPosition);
              window.addEventListener('devicemotion', handleMotion, true);  
           }
           if (!document.fullscreenElement) {
