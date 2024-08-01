@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br> <br>
-               v1.7 
+               v1.8 
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -204,26 +204,36 @@
  
 
     let lastZ = null;
-    const threshold = 0.5; // Adjust this value to control sensitivity
-    const moveDistance = 100; // Adjust this value to control the movement speed
+    const threshold = 1.5; // Sensitivity threshold
+    const moveDistance = 0.05; // Distance moved per detected step
+    const smoothingFactor = 0.8;
+    let smoothedZ = 0;
+    const updateInterval = 100; // Process data every 100ms
+    let lastUpdate = Date.now();
 
     function handleMotion(event) {
-      const camera = viewer.getCamera();
-      const z = event.acceleration.x;
+      const now = Date.now();
+      if (now - lastUpdate > updateInterval) {
+        lastUpdate = now;
 
-      if (lastZ !== null) {
-        const deltaZ = z - lastZ;
+        const z = event.accelerationIncludingGravity.z;
+        smoothedZ = smoothingFactor * smoothedZ + (1 - smoothingFactor) * z;
 
-        if (z > 0) {
-          // Move forward
-          //camera.position.add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(moveDistance));
-          camera.position.x += moveDistance;
-        } else if (z < 0) {
-          // Move backward
-          //camera.position.add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-moveDistance));
-          camera.position.x -= moveDistance;
+        if (lastZ !== null) {
+          const deltaZ = smoothedZ - lastZ;
+
+          if (deltaZ > threshold) {
+            // Move forward
+            viewer.getCamera().position.add(viewer.getCamera().getWorldDirection(new THREE.Vector3()).multiplyScalar(moveDistance));
+          } else if (deltaZ < -threshold) {
+            // Move backward
+            viewer.getCamera().position.add(viewer.getCamera().getWorldDirection(new THREE.Vector3()).multiplyScalar(-moveDistance));
+          }
         }
+
+        lastZ = smoothedZ;
       }
+    }
 
       lastZ = z;
     }
