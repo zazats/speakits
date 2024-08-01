@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br> <br>
-               v1.6 
+               v1.7 
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -214,11 +214,11 @@
       if (lastZ !== null) {
         const deltaZ = z - lastZ;
 
-        if (deltaZ > threshold) {
+        if (z > 0) {
           // Move forward
           //camera.position.add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(moveDistance));
           camera.position.x += moveDistance;
-        } else if (deltaZ < -threshold) {
+        } else if (z < 0) {
           // Move backward
           //camera.position.add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-moveDistance));
           camera.position.x -= moveDistance;
