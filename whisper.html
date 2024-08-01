@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br> <br>
-               v1.8 
+               v1.9 
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -242,7 +242,7 @@
     function startWhisper() {
           if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
              DeviceOrientationEvent.requestPermission();
-             window.addEventListener('devicemotion', handleMotion, true);  
+             //window.addEventListener('devicemotion', handleMotion, true);  
           }
           if (!document.fullscreenElement) {
 
