@@ -113,12 +113,13 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
                     },
                     {
                       "role": "system",
-                      "content": 'Please use the following JSON format :{"Curiosity":{"score":"Integer","description":"String"},"Reflection":{"score":"Integer","description":"String"},"Engagement":{"score":"Integer","description":"String"},"Emotional Response":{"score":"Integer","description":"String"}}'
+                     // "content": 'Please use the following JSON format :{"Curiosity":{"score":"Integer","description":"String"},"Reflection":{"score":"Integer","description":"String"},"Engagement":{"score":"Integer","description":"String"},"Emotional Response":{"score":"Integer","description":"String"}}'
+                      "content": 'Please use the following JSON format :{"Curiosity":{"score":"Integer","description":"String"},"Reflection":{"score":"Integer","description":"String"},"Engagement":{"score":"Integer","description":"String"},"Emotional Response":{"score":"Integer","description":"String"},"Stress":{"score":"Integer","description":"String"},"Focus":{"score":"Integer","description":"String"}}'
 
                      },
                     {
                           "role": "user",
-                          "content": "based on the following participant response please provide a response directly to participant in a JSON format for the following keys only: Curiosity , Reflection, Engagement, Emotional Response: " + prompt
+                          "content": "based on the following participant response please provide a response directly to participant in a JSON format for the following keys only: Curiosity , Reflection, Engagement, Emotional Response,Stress,Focus: " + prompt
                     }
                   ],
                   "temperature": 0.0,
@@ -142,7 +143,10 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
       myHeaders.append("Content-Type", "application/json");
       
       const raw = JSON.stringify({
-        "response": generatedQuestions
+        "response": generatedQuestions,
+        "currentUserId":window.currentUserId,
+        "currentCourse":'Course1',
+        "currentSession":window.sessionName
       });
       
       const requestOptions = {

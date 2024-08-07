@@ -224,12 +224,9 @@
           
           container = document.querySelector('#container');
           const urlParams = new URL(window.location.toLocaleString()).searchParams;
-          let imageName = urlParams.get('image');
-          //let imageNote = urlParams.get('cheat_note');
-          //let imagine_file_url = null;
-          //build AI generated venues
-          //if (imageName == "imagine") {
-          displayImage(imagesSettings[imageName]);
+          sessionName = urlParams.get('session');
+          currentUserId = urlParams.get('user');
+          displayImage(imagesSettings[sessionName]);
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
           //document.getElementById("count_down").style.display = "none";
@@ -365,7 +362,7 @@
     }
 
     async function displayImage(imageSettings) {
-      //const imageSettings = imagesSettings[imageName];
+      //const imageSettings = imagesSettings[sessionName];
 
       let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
       audio.loop = false;
@@ -384,7 +381,7 @@
       //infospot.position.set(0, -1000, -1000);
       //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
 
-      let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+      let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
       panorama = newPanorama;
       //panorama.add(infospot);
 
@@ -412,7 +409,7 @@
     }
 
     async function displayGeneratedImage(imageSettings) {
-        //const imageSettings = imagesSettings[imageName];
+        //const imageSettings = imagesSettings[sessionName];
       
         let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
         audio.loop = true;
@@ -422,7 +419,7 @@
       
         //infospot.position.set(0, -1000, -1000);
         //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-        panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + imageName, 50);
+        panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
         //panorama.add(infospot);
       
         const imagePosition = imageSettings.position;
@@ -453,14 +450,14 @@
 
           container = document.querySelector('#container');
           const urlParams = new URL(window.location.toLocaleString()).searchParams;
-          let imageName = urlParams.get('image');
+          let sessionName = urlParams.get('session');
           let imageNote = urlParams.get('cheat_note');
           let imagine_file_url = null;
           
           //build AI generated venues
-          if (imageName == "imagine") {
+          if (sessionName == "imagine") {
             let rnd = Math.floor(Math.random() * 5) + 1;
-              imageName = "imagine" + rnd;
+              sessionName = "imagine" + rnd;
               let myHeaders = new Headers();
               myHeaders.append("x-api-key", IMAGINE);
 
@@ -490,7 +487,7 @@
             channel = pusher.subscribe(data.pusher_channel);
             channel.bind(data.pusher_event, loadVenueEvent);      
           }else{
-            displayImage(imagesSettings[imageName]);
+            displayImage(imagesSettings[sessionName]);
           }
       }
 
