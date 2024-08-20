@@ -25,7 +25,7 @@ window.sessionName=null;
 //settings
 
 window.imagesSettings = {
-    "Session1": {
+    "Intro": {
         "image": "assets/start2.jpg",
         "audio": "assets/zendel/MBCTDepression-01-Introduction.mp3",
         "protocol": "",
@@ -37,7 +37,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session2": {
+    "S1T2": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-02-Raisin-Exercise.mp3",
         //"audio": "assets/zendel/MBCTDepression-01-Introduction.mp3",
@@ -50,7 +50,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session3": {
+    "S1T3": {
         "image": "assets/Lesson3.jpg",
         "audio": "assets/zendel/MBCTDepression-03-Body-Scan.mp3",
         "protocol" : "This body scan practice involves lying down in a comfortable position, bringing kind awareness to each part of your body, noticing sensations, and using your breath to gently explore and release any tension, finishing with a sense of calm and connectedness.",
@@ -62,7 +62,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session4": {
+    "S2T4": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-04-10-Min-Sitting-Meditation.mp3",
         "protocol": "Find a comfortable sitting position, align your spine, focus on the natural flow of your breath, and gently return attention to it whenever your mind wanders, anchoring yourself in the present moment.",
@@ -74,7 +74,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session5": {
+    "S3T6": {
         "image": "assets/Lesson3.jpg",
         "audio": "assets/zendel/MBCTDepression-06-Stretch-Breath-Meditation.mp3",
         "protocol": "This practice involves mindful stretches on a mat, focusing on breath and body sensations, honoring your limits, and being present without judgment, easing into stretches and tuning into the body's responses.",
@@ -86,7 +86,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session6": {
+    "S3T5": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-05-Mindful-Movement.mp3",
         "valid-protocol": "This guided meditation begins with simple standing stretches, followed by seated meditation, focusing on moment-by-moment awareness. As you move, explore your body’s sensations with curiosity, not judgment, honoring your physical limits. Start by standing with feet hip-width apart, knees unlocked, arms relaxed, and head up. Breathe deeply, feeling the sensations in your body as you stretch. Transition smoothly to a seated posture, ensuring comfort, with feet flat, back straight, and body relaxed. Focus on your breath in the lower abdomen, letting each inhale and exhale anchor you in the present. If discomfort arises, choose to adjust your posture mindfully or breathe into the sensation, exploring it without trying to change it. Finally, bring your attention back to your breath, feeling grounded and balanced, appreciating the moment-to-moment awareness you’ve cultivated.",
@@ -98,7 +98,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session7": {
+    "S3T8": {
         "image": "assets/Lesson3.jpg",
         "audio": "assets/zendel/MBCTDepression-08-3-Min-Breathing-Regular.mp3",
         "valid-protocol": "Begin by adjusting your posture to embody dignity and wakefulness, with an erect but relaxed back, shoulders dropped, chest open, and eyes closed if comfortable. First, become aware of your current experience: notice your thoughts, acknowledge any emotional discomfort, and scan for body sensations. Then, focus on the breath in the lower abdomen, feeling the gentle stretch on the in-breath and deflation on the out-breath, letting the breath anchor you in the present. Finally, expand awareness to the whole body, noticing posture, facial expression, and any tension, breathing into discomfort, and carrying this spacious awareness into the next moments of your day.",
@@ -110,7 +110,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session8": {
+    "S4T11": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-11-Sitting-Meditation.mp3",
         "valid-protocol": "Begin by finding a comfortable, relaxed sitting position, with your back straight but not stiff, hands resting on your thighs or lap, and feet flat on the floor if sitting on a chair. Close your eyes or softly focus your gaze. Bring attention to your body, feeling the spine lift, shoulders drop, and the weight of your body pressing down. Focus on your breath, noticing the sensations as it moves in and out, especially in the lower abdomen. Allow your breath to flow naturally, using it as an anchor. When your mind wanders, gently bring your focus back to the breath, reconnecting with the present moment. Expand your awareness to include sensations throughout the body, noticing touch, pressure, and warmth. Explore any intense sensations, observing them without judgment. Shift your focus to sounds, allowing them to arise and pass naturally. Lastly, bring awareness to your thoughts as they appear, treating them like clouds or leaves drifting by. If emotions arise, observe them without reacting, and if needed, refocus on how they affect your body, noticing any tension or aversion.",
@@ -122,7 +122,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session9": {
+    "S4T7": {
         "image": "assets/Lesson3.jpg",
         "audio": "assets/zendel/MBCTDepression-07-Mindful-Walking.mp3",
         "valid-protocol": "In this practice, we'll engage in mindful walking. Begin by finding a path of five to ten paces where you won't be disturbed. If comfortable, remove your shoes to feel the ground beneath you. Stand still at one end, feet parallel, knees slightly flexed, and arms relaxed. Focus on the sensations in the soles of your feet and the weight of your body. Gradually shift your weight to the right leg, lift your left foot, move it forward, and place it down. Feel the weight shift as the right foot lifts, moves, and lands. Walk slowly, focusing on each step—lifting, moving, placing, landing. When you reach the end of the path, pause, turn slowly, and continue. If your mind wanders, gently bring your attention back to your feet. If needed, pause, stand still, and reconnect with your breath and body. You can also expand your awareness to the whole body, noticing other sensations, the air on your skin, or sounds around you. Remember, you can return to this practice anytime during your day, bringing mindful awareness to your everyday walking.",
@@ -134,7 +134,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session10": {
+    "S4T9": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-09-3-Min-Breathing-Responsive.mp3",
         "valid-protocol": "The responsive breathing space is a practice for moments when you feel troubled in body or mind. Begin by adopting an erect and dignified posture, signaling a shift from automatic pilot. Close your eyes or lower your gaze if comfortable. Step one: Notice what’s happening for you right now—thoughts, feelings, and body sensations. Identify these experiences, like 'sadness is arising' or there's tightness in my neck. Step two: Shift your attention to the breath, focusing on the sensations in your abdomen. Follow each breath in and out, using it to anchor yourself in the present moment. If your mind wanders, gently bring it back to the breath, possibly counting each breath to help focus. Step three: Expand your awareness to your entire body, noticing posture and any tension. Breathe into these sensations, softening with each exhale. Acknowledge what’s present by saying, It’s already here. Let me feel it. If the discomfort fades, return to simply sitting, with your whole body breathing. Carry this expanded awareness into the next moments of your day.",
@@ -146,7 +146,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session11": {
+    "S5T12": {
         "image": "assets/Lesson3.jpg",
         "audio": "assets/zendel/MBCTDepression-12-Working-With-Difficulty.mp3",
         "valid-protocol": "Begin by finding a comfortable, wakeful sitting posture with a straight but relaxed back, balanced head, and soft facial expression. Become aware of your body’s contact with the chair or cushion, and notice any tension. Let go of any tightness, allowing yourself to simply be present, moment by moment. Focus on your breath, noticing sensations at the nose, chest, or abdomen. Choose one area and let your attention rest there, observing the natural rhythm of your breath without trying to control it. When your mind wanders, gently bring your focus back to the breath. Periodically, check your posture and expand your attention to include the whole body, noticing the sensations throughout. Allow yourself to explore any part of the body with curiosity. If recurring thoughts or distractions arise, gently acknowledge them and bring your attention back to the present moment, focusing on the breath or body.",
@@ -158,7 +158,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session12": {
+    "S6T4": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-04-10-Min-Sitting-Meditation.mp3",
         "protocol":"This guided meditation involves gentle standing stretches and a sitting practice, focusing on moment-by-moment awareness, honoring your body's limits, and using the breath to stay present without striving or judgment.",
@@ -170,7 +170,7 @@ window.imagesSettings = {
             0
         ]
     },
-    "Session13": {
+    "S6T10": {
         "image": "assets/Lesson1.jpg",
         "audio": "assets/zendel/MBCTDepression-10-20-Min-Sitting-Meditation.mp3",
         "valid-protocol":"Begin this 20-minute sitting meditation by finding a comfortable position, either on a chair with feet flat and legs uncrossed, or on the floor with support. Align your spine, neck, and head, and rest your hands on your thighs or lap. Close your eyes or let your gaze fall softly on the floor ahead. Start by noticing the sensations of sitting—the touch, contact, and pressure where your body meets the surface. Then, bring your focus to the sensations in your belly as you breathe. Notice the gentle expansion with each in-breath and release with each out-breath. Stay with these sensations for the full duration of each breath. If you prefer, focus on the breath sensations in your nostrils or chest. Let your body breathe naturally without control. If your mind wanders, briefly acknowledge where it went, then gently return your attention to the breath. This isn’t a failure; it’s an opportunity to practice patience and compassion. Continue to bring your awareness back to the breath whenever it drifts. In the final moments, remind yourself to simply be aware of your experience, moment by moment. Allow the meditation to end naturally, opening your eyes when ready.",
