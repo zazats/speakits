@@ -86,7 +86,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
     }
 }
 
-window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
+window.analyzeAnswerNoCallforAPI = async function analyzeAnswerNoCallforAPI(protocol,question, prompt) {
   try {
 
     
@@ -140,13 +140,12 @@ return data.choices[0].message.content;
     
   
 }
-window.analyzeAnswerAug18 = async function analyzeAnswerAug18(protocol,question, prompt) {
+window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
   try {
-
-    
-     
+   
       // Call the function to fetch available models
       // Make a request to the OpenAI API
+          return;
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -166,7 +165,6 @@ window.analyzeAnswerAug18 = async function analyzeAnswerAug18(protocol,question,
                     },
                     {
                       "role": "system",
-                     // "content": 'Please use the following JSON format :{"Curiosity":{"score":"Integer","description":"String"},"Reflection":{"score":"Integer","description":"String"},"Engagement":{"score":"Integer","description":"String"},"Emotional Response":{"score":"Integer","description":"String"}}'
                       "content": 'Please use the following JSON format :{"Curiosity":{"score":"Integer","description":"String"},"Reflection":{"score":"Integer","description":"String"},"Engagement":{"score":"Integer","description":"String"},"Emotional Response":{"score":"Integer","description":"String"},"Stress":{"score":"Integer","description":"String"},"Focus":{"score":"Integer","description":"String"}}'
 
                      },
@@ -186,8 +184,7 @@ window.analyzeAnswerAug18 = async function analyzeAnswerAug18(protocol,question,
 
       // Parse response
       const data = await response.json();
-    
-      
+          
       // Extract generated questions from the response
      // const generatedQuestions = data.choices.map(choice => choice.text.trim());
       const generatedQuestions = data.choices[0].message.content;

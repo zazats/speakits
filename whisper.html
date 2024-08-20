@@ -66,11 +66,10 @@
         // Variable to track if "Hi Whisper" has been spoken
         let hiWhisperSpoken = false;
         let welcomeSpoken = false;
-  
-     
+      
         // Event handler for receiving transcribed text
         recognition.onresult = function(event) {
-        
+                 
           speechBuffer = event.results;
           if (hiWhisperSpoken) {
             let result = event.results[event.results.length - 1];
@@ -136,7 +135,7 @@
               startAskingQuestions(true);
             } else if (transcript.toLowerCase().includes('over to you') ) {
               // call ChatGPT API to generate questions from the prompt
-              analyseAnswer();
+              analyseAnswer(imagesSettings[sessionName]);
             }
         }
       };
@@ -153,13 +152,11 @@
               })
       }
 
-      function analyseAnswer() {
+      function analyseAnswer(imageSettings) {
 
-        //questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
-        questionBuffer = 'I was thinking how strange that something quite so dried up and ordinary looking could taste so good . . . that if we did not know how it tasted, perhaps we would not bother trying it.'
-        let protocol = 'I’m going to go around the class and give you each a raisin.Now, what I would like you to do is to see it as an object—just imagining that you have never seen anything like it before, as if you had dropped in from another planet this moment and you had never seen anything like it before in your life.Taking the object and holding it in the palm of your hand, or between your finger and thumb. Paying attention to seeing it. Looking at it carefully, as if you had never seen such a thing before.Turning it over between your fingers. Exploring its texture between your fingers. Examining the highlights where the light shines . . . the darker hollows and folds. Letting your eyes explore every part of it, as if you had never seen such a thing before. And if, while you are doing this, any thoughts come to mind about what a strange thing we are doing or what is the point of this or I don’t like this, then just noting them as thoughts and bringing your awareness back to the object. And now, taking the object and holding it beneath your nose, and with each in-breath, carefully seeing what you notice—does it have a smell? And now looking at it again. And now slowly taking the object to your mouth, maybe noticing how your hand and arm know exactly where to put it, perhaps noticing what happens in your mouth as it comes up. (And then gently placing the object in the mouth, noticing how it is received, without biting it, just exploring the sensations of having it in your mouth. Exploring the object with your tongue, noticing the sensations as you move it around the mouth. And when you are ready, very consciously taking a bite into it and noticing what happens—the tastes that it releases. Slowly chewing it, . . . noticing what’s happening in the mouth, . . . the change in consistency of the object. Then, when you feel ready to swallow, seeing if you can first detect the intention to swallow as it comes up, so that even this is experienced consciously, before you actually swallow it. Finally, seeing if you can follow the sensations of swallowing it, sensing it moving down to your stomach, any aftertaste, then noticing the absence of the raisin in the mouth—and what the tongue does when it is gone.';
-        //analyzeAnswer(imagesSettings.question1,questionBuffer).then(function(response){
-        analyzeAnswer(protocol,'Do you want to say anything about your experiences while eating?',questionBuffer).then(function(response){ 
+        questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
+        //questionBuffer = 'I was thinking how strange that something quite so dried up and ordinary looking could taste so good . . . that if we did not know how it tasted, perhaps we would not bother trying it.'
+        analyzeAnswer(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
         consloe.log(response);
         
       })
@@ -275,40 +272,7 @@
           displayImage(imagesSettings[sessionName]);
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
-          //document.getElementById("count_down").style.display = "none";
-          //var audio = new Audio('assets/MBCTDepression-02-Raisin-Exercise.mp3');
-          //audio.loop = true;
-          //audio.play();
-
-/*
-        
-          panorama1 = new PANOLENS.ImagePanorama('assets/start.jpg', 50);
-          panorama2 = new PANOLENS.ImagePanorama('assets/v2_l1.jpg', 50);
-          panorama3 = new PANOLENS.ImagePanorama('assets/v3_l1.jpg', 50);
           
-          panorama = panorama1;
-
-          panorama1.addEventListener('enter-fade-start', () => {
-              viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
-          })
-          panorama2.addEventListener('enter-fade-start', () => {
-              viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
-          })
-          panorama3.addEventListener('enter-fade-start', () => {
-              viewer.tweenControlCenter(new THREE.Vector3(0,0,0), 0)
-          })
-          viewer = new PANOLENS.Viewer({ container: container });
-          viewer.add(panorama1, panorama2,panorama3);
-        
-          let ef = 1, ctrl = 0;
-          if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
-              ef = 2;
-              ctrl = 1;
-          }
-          viewer.enableControl(ctrl);
-          viewer.enableEffect(ef);
-          viewer.setCameraFov(90);
-          */
 
           exitBtn = createExitButton();
           questionsBtn = createQuestionsButton();
@@ -316,11 +280,7 @@
           relaxBtn = createRelaxButton();
 
           viewer.setPanorama(panorama);
-
-
-          //analyzeAnswer('No protocol','Do you want to say anything about your experiences while eating?','my name is whisper'); 
-
-          analyseAnswer();
+          //analyseAnswer();
     }
 
     function tougleLevel(){
@@ -341,7 +301,7 @@
     function PlaySound(audioPath) {
         let audio = new Audio(audioPath);
         audio.loop = false;
-        //audio.play();
+        audio.play();
 	 
     }
 
@@ -412,21 +372,19 @@
 
       let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
       audio.loop = false;
-     audio.play();
+      audio.play();
 
       audio.onended = function() {
-        //alert("The audio has ended");
-        PlaySound(imageSettings.question1);
-        console.log("The audio has ended");
+        //PlaySound(imageSettings.questionText);
+        if(imageSettings.questionBuffer != "") {
+          speak(imageSettings.questionText);
+          recognition.stop();
+          recognition.start();
+          console.log("The audio has ended");
+        }
       };
       
       
-      
-      //infospot = new PANOLENS.Infospot(300, 'assets/notes4.png', true);
-
-      //infospot.position.set(0, -1000, -1000);
-      //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-
       let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
       panorama = newPanorama;
       //panorama.add(infospot);
