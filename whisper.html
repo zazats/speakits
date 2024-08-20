@@ -156,7 +156,8 @@
 
         questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
         //questionBuffer = 'I was thinking how strange that something quite so dried up and ordinary looking could taste so good . . . that if we did not know how it tasted, perhaps we would not bother trying it.'
-        analyzeAnswer(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
+        //analyzeAnswer(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
+        analyzeAnswerNoCallforAPI(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
         consloe.log(response);
         
       })
