@@ -370,8 +370,14 @@
 
     async function displayImage(imageSettings) {
       //const imageSettings = imagesSettings[sessionName];
+      isDebug = urlParams.get('debug');
+      let audio;
+      if (isDebug == 1) {
+        audio = new Audio(imageSettings.audio );
+      } else {
+        audio = new Audio( 'assets/zendel/Debug.mp3');
+      }
 
-      let audio = new Audio(imageSettings.audio || 'assets/imagine_l1.mp3');
       audio.loop = false;
       audio.play();
 
