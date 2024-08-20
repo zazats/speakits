@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.19
+               v1.20
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -270,7 +270,9 @@
           const urlParams = new URL(window.location.toLocaleString()).searchParams;
           sessionName = urlParams.get('session');
           currentUserId = urlParams.get('user');
-          displayImage(imagesSettings[sessionName]);
+          let isDebug = urlParams.get('isDebug');
+
+          displayImage(imagesSettings[sessionName],isDebug);
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
           
@@ -368,11 +370,10 @@
       }
     }
 
-    async function displayImage(imageSettings) {
+    async function displayImage(imageSettings,isDebug) {
       //const imageSettings = imagesSettings[sessionName];
-      isDebug = urlParams.get('debug');
       let audio;
-      if (isDebug == 1) {
+      if (isDebug == 0) {
         audio = new Audio(imageSettings.audio );
       } else {
         audio = new Audio( 'assets/zendel/Debug.mp3');
