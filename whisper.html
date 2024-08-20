@@ -373,7 +373,7 @@
     async function displayImage(imageSettings,isDebug) {
       //const imageSettings = imagesSettings[sessionName];
       let audio;
-      if (isDebug == 0) {
+      if (isDebug == null || isDebug == 0) {
         audio = new Audio(imageSettings.audio );
       } else {
         audio = new Audio( 'assets/zendel/Debug.mp3');
