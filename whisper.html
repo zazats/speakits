@@ -271,8 +271,10 @@
           sessionName = urlParams.get('session');
           currentUserId = urlParams.get('user');
           let isDebug = urlParams.get('isDebug');
+          let demoMode = urlParams.get('demo');
 
-          displayImage(imagesSettings[sessionName],isDebug);
+
+          displayImage(imagesSettings[sessionName],isDebug,demoMode);
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
           
@@ -304,8 +306,7 @@
     function PlaySound(audioPath) {
         let audio = new Audio(audioPath);
         audio.loop = false;
-        audio.play();
-	 
+        audio.play(); 
     }
 
     function speak(textToSay) {
@@ -370,7 +371,7 @@
       }
     }
 
-    async function displayImage(imageSettings,isDebug) {
+    async function displayImage(imageSettings,isDebug,demoMode) {
       //const imageSettings = imagesSettings[sessionName];
       let audio;
       if (isDebug == null || isDebug == 0) {
@@ -382,17 +383,27 @@
       audio.loop = false;
       audio.play();
 
-      audio.onended = function() {
+      if (demoMode != null) {
+        setTimeout(() => {
+            audio.pause(); // Pause the audio
+            audio.currentTime = 0; // Reset the audio to the beginning
+            // Simulate the onended event
+            const endedEvent = new Event('ended');
+            audio.dispatchEvent(endedEvent);
+        }, 10000);
+    }
+        
+      audio.onended =  function() {
         //PlaySound(imageSettings.questionText);
         if(imageSettings.questionBuffer != "") {
+          sleep(3000);
           speak(imageSettings.questionText);
-          recognition.stop();
+          recognition.stop()
           recognition.start();
           console.log("The audio has ended");
         }
       };
-      
-      
+            
       let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
       panorama = newPanorama;
       //panorama.add(infospot);
@@ -656,7 +667,15 @@
 
         panorama.add(mesh);
         return mesh;
-      }     
+      }  
+
+      function sleep(ms) {
+        //return new Promise(resolve => setTimeout(resolve, ms));
+          const start = Date.now();
+          while (Date.now() - start < ms) {
+        // Just loop until the time has passed
+          }
+      }   
 
 </script>
 </body>
