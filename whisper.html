@@ -166,17 +166,12 @@
       }
 
       function analyseAnswer(imageSettings) {
-
         questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
-        //questionBuffer = 'I was thinking how strange that something quite so dried up and ordinary looking could taste so good . . . that if we did not know how it tasted, perhaps we would not bother trying it.'
-        //analyzeAnswer(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
         analyzeAnswerNoCallforAPI(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
         consloe.log(response);
         
       })
-    }
-      
-       
+    }   
         // Event handler for errors
       
       recognition.onerror = function(event) {
@@ -186,14 +181,12 @@
         // Browser doesn't support Web Speech API
         console.error('Browser does not support Web Speech API');
       }
-
       // Event handler for when speech recognition ends
       recognition.onend = function() {
         //console.log('Speech recognition ended');
       // Automatically restart speech recognition after it ends
         if(recognition != null) recognition.start();
       };
-
     window.showWhisper = function showWhisper(){
       if(infospot == null){
         infospot = new PANOLENS.Infospot(500, 'assets/talking_head1.gif', true);

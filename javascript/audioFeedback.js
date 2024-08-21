@@ -88,10 +88,7 @@ window.generateQuestions = async function generateQuestions(phrase, prompt) {
 
 window.analyzeAnswerNoCallforAPI = async function analyzeAnswerNoCallforAPI(protocol,question, prompt) {
   try {
-
-    
-     
-      
+         
       // Extract generated questions from the response
      // const generatedQuestions = data.choices.map(choice => choice.text.trim());
      let generatedQuestions;
@@ -229,84 +226,4 @@ return data.choices[0].message.content;
   
 }
 
-  
-  window.analyzeAnswerOrigin = async function analyzeAnswerOrigin(protocol,question, prompt) {
-      try {
-         
-          // Call the function to fetch available models
-          // Make a request to the OpenAI API
-              const response = await fetch('https://api.openai.com/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${CHATGPT1}${CHATGPT2}`
-              },
-              body: JSON.stringify({
-                      "model": "gpt-4",
-                      "messages": [
-                        {
-                          "role": "system",
-                          "content":"The following is a mindfulness session protocol:" + protocol 
-                        },
-                        {
-                          "role": "system",
-                          "content": "the following question was asked by trainer:" + question
-                        },
-                        {
-                              "role": "user",
-                              "content": "based on the following participant response please provide the scoring, scaling and following metrics: Curiosity , Reflection, Engagement, Emotional Response: " + prompt
-                        }
-                      ],
-                      "temperature": 1,
-                      "max_tokens": 256,
-                      "top_p": 1,
-                      "frequency_penalty": 0,
-                      "presence_penalty": 0
-                    
-              })
-          });
-  
-          // Parse response
-          const data = await response.json();
-          
-          // Extract generated questions from the response
-         // const generatedQuestions = data.choices.map(choice => choice.text.trim());
-          const generatedQuestions = data.choices[0].message.content;
-           
-          const myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/json");
-          
-          const raw = JSON.stringify({
-            "temperature": 13,
-            "max_tokens": 11256
-          });
-          
-          const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-          };
-          
-          try {
-            const response = await fetch("https://www.avxlabs.com/_functions/myFunction?siteRevision=321", requestOptions);
-           
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status} statusText: ${response.statusText}`);
-            }
-          
-            const result = await response.text();
-            console.log(result);
-          } catch (error) {
-            console.error('Fetch error:', error.message);
-            console.error('Request options:', requestOptions);
-          }
-     
-    return data.choices[0].message.content;
-       
-      } catch (error) {
-          console.error('Error:', error);
-      }
-        
-      
-  }
+ 
