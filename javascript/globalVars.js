@@ -19,6 +19,7 @@ window.speechBuffer = null;
 window.currentLevel = 0;
 window.currentUserId=null;
 window.sessionName=null;
+window.audioTrack=null;
  
 
 //myHeaders.append("x-api-key", IMAGINE_GEN_API_KEY);

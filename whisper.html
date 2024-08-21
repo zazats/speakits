@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.20
+               v1.21
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -107,7 +107,9 @@
               if (recognition != null) {
                 recognition.stop();
               }
-            }else if (transcript.toLowerCase().includes('next level')) { 
+              sleep(1000);
+              audioTrack.play();
+            } else if (transcript.toLowerCase().includes('next level')) { 
               hiWhisperSpoken=false;
               PlaySound( "assets/ok.mp3");
               hideWhisper();
@@ -115,6 +117,17 @@
                 recognition.stop();
               }
               tougleLevel();
+            } else if (transcript.toLowerCase().includes('stop')) { 
+              hiWhisperSpoken=false;
+              PlaySound( "assets/ok.mp3");
+              hideWhisper();
+              sleep(1000);
+              askQuestion(imagesSettings[sessionName]);
+              if (recognition != null) {
+                recognition.stop();
+              }
+              window.history.go(-1);
+              
             }
         }else {
             const transcript = event.results[event.results.length - 1][0].transcript;
@@ -140,7 +153,7 @@
         }
       };
   
-      function startAskingQuestions(isFromWhisper){
+      function startAskingQuestions(isFromWhisper) {
         let par2 = null;
         if(isFromWhisper) par2 = "any questions";
         
@@ -304,9 +317,10 @@
     }
 
     function PlaySound(audioPath) {
+        audioTrack.pause();
         let audio = new Audio(audioPath);
         audio.loop = false;
-        audio.play(); 
+        audio.play();
     }
 
     function speak(textToSay) {
@@ -373,35 +387,29 @@
 
     async function displayImage(imageSettings,isDebug,demoMode) {
       //const imageSettings = imagesSettings[sessionName];
-      let audio;
+      //let audio;
       if (isDebug == null || isDebug == 0) {
-        audio = new Audio(imageSettings.audio );
+        audioTrack = new Audio(imageSettings.audio );
       } else {
-        audio = new Audio( 'assets/zendel/Debug.mp3');
+        audioTrack = new Audio( 'assets/zendel/Debug.mp3');
       }
 
-      audio.loop = false;
-      audio.play();
+      audioTrack.loop = false;
+      audioTrack.play();
 
       if (demoMode != null) {
         setTimeout(() => {
-            audio.pause(); // Pause the audio
-            audio.currentTime = 0; // Reset the audio to the beginning
+          audioTrack.pause(); // Pause the audio
+          audioTrack.currentTime = 0; // Reset the audio to the beginning
             // Simulate the onended event
-            const endedEvent = new Event('ended');
-            audio.dispatchEvent(endedEvent);
+            //const endedEvent = new Event('ended');
+            //audioTrack.dispatchEvent(endedEvent);
+            askQuestion(imageSettings);
         }, 10000);
     }
         
-      audio.onended =  function() {
-        //PlaySound(imageSettings.questionText);
-        if(imageSettings.questionBuffer != "") {
-          sleep(3000);
-          speak(imageSettings.questionText);
-          recognition.stop()
-          recognition.start();
-          console.log("The audio has ended");
-        }
+    audioTrack.onended =  function() {
+        askQuestion();
       };
             
       let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
@@ -675,7 +683,17 @@
           while (Date.now() - start < ms) {
         // Just loop until the time has passed
           }
-      }   
+      } 
+      function askQuestion(imageSettings) {
+        //PlaySound(imageSettings.questionText);
+        if(imageSettings.questionBuffer != "") {
+          sleep(3000);
+          speak(imageSettings.questionText);
+          recognition.stop()
+          recognition.start();
+          console.log("The audio has ended");
+        }
+      }  
 
 </script>
 </body>
