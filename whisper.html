@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.22
+               v1.23
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -131,16 +131,7 @@
           }else {
             const transcript = event.results[event.results.length - 1][0].transcript;
             if (transcript.toLowerCase().includes('hey whisper')) {
-                hiWhisperSpoken = true;
-                showWhisper();
-                let whisperInitResponsePath = "assets/hi.mp3";
-                if (!welcomeSpoken){
-                  welcomeSpoken = true;
-                }else{
-                   whisperInitResponsePath = "assets/yes.mp3"
-                }
-
-                PlaySound(whisperInitResponsePath);
+                callForWhisper();
             } else if (transcript.toLowerCase().includes('any questions') || transcript.toLowerCase().includes('more questions')) {
               //PlaySound( "assets/questions_please.mp3");
               // call ChatGPT API to generate questions from the prompt
@@ -152,6 +143,18 @@
             }
           }
         };
+
+        function callForWhisper(){
+          hiWhisperSpoken = true;
+          showWhisper();
+          let whisperInitResponsePath = "assets/hi.mp3";
+          if (!welcomeSpoken){
+            welcomeSpoken = true;
+          }else{
+              whisperInitResponsePath = "assets/yes.mp3"
+          }
+          PlaySound(whisperInitResponsePath);
+        }
   
       function startAskingQuestions(isFromWhisper) {
         let par2 = null;
@@ -288,7 +291,7 @@
           exitBtn = createExitButton();
           questionsBtn = createQuestionsButton();
           levelBtn = createLevel1Button();
-          relaxBtn = createRelaxButton();
+          //relaxBtn = createRelaxButton();
 
           viewer.setPanorama(panorama);
           //analyseAnswer();
@@ -600,7 +603,8 @@
         
         mesh.addEventListener( 'click', function () {
           //PlaySound( "assets/questions_please.mp3");
-          startAskingQuestions(false);
+          //startAskingQuestions(false);
+          callForWhisper();
           panorama.add(mesh);
           panorama.add(questionsBtn);
           panorama.add(exitBtn);
