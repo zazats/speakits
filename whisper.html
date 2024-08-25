@@ -119,19 +119,12 @@
               tougleLevel();
             } else if (transcript.toLowerCase().includes('stop')) { 
               hiWhisperSpoken=false;
-<<<<<<< HEAD
               playSoundAndAskQuestion("assets/ok.mp3");
               /*PlaySound( "assets/ok.mp3");
               hideWhisper();
               sleep(300);
               askQuestion(imagesSettings[sessionName]);*/
               
-=======
-              //PlaySound( "assets/ok.mp3");
-              //hideWhisper();
-              //sleep(1000);
-              askQuestion(imagesSettings[sessionName]);
->>>>>>> 8e1beec922e8df69679a25c24d4e2844672c0c63
               if (recognition != null) {
                 recognition.stop();
               }
@@ -691,21 +684,10 @@
       } 
       function askQuestion(imageSettings) {
         if(imageSettings.questionBuffer != "") {
-<<<<<<< HEAD
           sleep(2000);
           speak(imageSettings.questionText);
           recognition.stop()
           recognition.start();
-=======
-          sleep(3000);
-          if(imageSettings.questionVoice != ""){
-            PlaySound(imageSettings.questionVoice);
-          }else{
-            speak(imageSettings.questionText);
-          }
-          //recognition.stop()
-          //recognition.start();
->>>>>>> 8e1beec922e8df69679a25c24d4e2844672c0c63
           console.log("The audio has ended");
         }
       }  
