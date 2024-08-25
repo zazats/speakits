@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.21
+               v1.23
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -67,14 +67,14 @@
         let hiWhisperSpoken = false;
         let welcomeSpoken = false;
       
+
         // Event handler for receiving transcribed text
-        recognition.onresult = function(event) {
-                 
+        recognition.onresult = function(event) {                 
           speechBuffer = event.results;
+          console.log(speechBuffer[speechBuffer.length - 1][0].transcript);
           if (hiWhisperSpoken) {
             let result = event.results[event.results.length - 1];
             let transcript = result[0].transcript;
-            let isFinal = result.isFinal;
             if (transcript.toLowerCase().includes('thank you')) { 
               const startPhrase = "hey whisper";
               const stopPhrase = "thank you";
@@ -119,41 +119,52 @@
               tougleLevel();
             } else if (transcript.toLowerCase().includes('stop')) { 
               hiWhisperSpoken=false;
+<<<<<<< HEAD
               playSoundAndAskQuestion("assets/ok.mp3");
               /*PlaySound( "assets/ok.mp3");
               hideWhisper();
               sleep(300);
               askQuestion(imagesSettings[sessionName]);*/
               
+=======
+              //PlaySound( "assets/ok.mp3");
+              //hideWhisper();
+              //sleep(1000);
+              askQuestion(imagesSettings[sessionName]);
+>>>>>>> 8e1beec922e8df69679a25c24d4e2844672c0c63
               if (recognition != null) {
                 recognition.stop();
               }
-              window.history.go(-1);
+              //window.history.go(-1);
               
             }
-        }else {
+          }else {
             const transcript = event.results[event.results.length - 1][0].transcript;
             if (transcript.toLowerCase().includes('hey whisper')) {
-                hiWhisperSpoken = true;
-                showWhisper();
-                let whisperInitResponsePath = "assets/hi.mp3";
-                if (!welcomeSpoken){
-                  welcomeSpoken = true;
-                }else{
-                   whisperInitResponsePath = "assets/yes.mp3"
-                }
-
-                PlaySound(whisperInitResponsePath);
+                callForWhisper();
             } else if (transcript.toLowerCase().includes('any questions') || transcript.toLowerCase().includes('more questions')) {
               //PlaySound( "assets/questions_please.mp3");
               // call ChatGPT API to generate questions from the prompt
               startAskingQuestions(true);
             } else if (transcript.toLowerCase().includes('over to you') ) {
               // call ChatGPT API to generate questions from the prompt
+              hideWhisper();
               analyseAnswer(imagesSettings[sessionName]);
             }
+          }
+        };
+
+        function callForWhisper(){
+          hiWhisperSpoken = true;
+          showWhisper();
+          let whisperInitResponsePath = "assets/hi.mp3";
+          if (!welcomeSpoken){
+            welcomeSpoken = true;
+          }else{
+              whisperInitResponsePath = "assets/yes.mp3"
+          }
+          PlaySound(whisperInitResponsePath);
         }
-      };
   
       function startAskingQuestions(isFromWhisper) {
         let par2 = null;
@@ -162,18 +173,17 @@
         if (questionBuffer == null) {
           questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, par2);
         }
-                generateQuestions("phrase", questionBuffer).then(function(response){ 
-                speak(response);
-              })
+        generateQuestions("phrase", questionBuffer).then(function(response){ 
+          speak(response);
+        })
       }
 
       function analyseAnswer(imageSettings) {
         questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
-        analyzeAnswerNoCallforAPI(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
-        consloe.log(response);
-        
-      })
-    }   
+          analyzeAnswerNoCallforAPI(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
+          console.log(response);   
+       })
+      }   
         // Event handler for errors
       
       recognition.onerror = function(event) {
@@ -189,16 +199,17 @@
       // Automatically restart speech recognition after it ends
         if(recognition != null) recognition.start();
       };
-    window.showWhisper = function showWhisper(){
-      if(infospot == null){
-        infospot = new PANOLENS.Infospot(500, 'assets/talking_head1.gif', true);
-        //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-        infospot.position.set(0, -0, -1000); //infospot.dispose();
-        panorama.add(infospot);
+    
+      window.showWhisper = function showWhisper(){
+        if(infospot == null){
+          infospot = new PANOLENS.Infospot(500, 'assets/talking_head1.gif', true);
+          //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
+          infospot.position.set(0, -0, -1000); //infospot.dispose();
+          panorama.add(infospot);
+        }
+    
+        infospot.show();
       }
-  
-      infospot.show();
-    }
   
     window.hideWhisper = function hideWhisper(){
       if(infospot != null){
@@ -290,7 +301,7 @@
           exitBtn = createExitButton();
           questionsBtn = createQuestionsButton();
           levelBtn = createLevel1Button();
-          relaxBtn = createRelaxButton();
+          //relaxBtn = createRelaxButton();
 
           viewer.setPanorama(panorama);
           //analyseAnswer();
@@ -323,12 +334,10 @@
           if ('speechSynthesis' in window) {
             // Create a new instance of SpeechSynthesisUtterance
             let utterance = new SpeechSynthesisUtterance(textToSay);
-
             // Optionally, configure speech parameters
             utterance.lang = 'en-US'; // Language setting (adjust as needed)
             utterance.pitch = 1;
             utterance.rate = 1;
-
             // Speak the text
             window.speechSynthesis.speak(utterance);
           } else {
@@ -401,9 +410,9 @@
             //audioTrack.dispatchEvent(endedEvent);
             askQuestion(imageSettings);
         }, 10000);
-    }
+      }
         
-    audioTrack.onended =  function() {
+      audioTrack.onended =  function() {
         askQuestion();
       };
             
@@ -468,9 +477,9 @@
         viewer.enableControl(ctrl);
         viewer.enableEffect(ef);
         viewer.setCameraFov(90);
-      }
+    }
 
-      async function loadVenue() {
+    async function loadVenue() {
           noSleep.enable();
           document.getElementById("btn").style.display = "none";
 
@@ -515,7 +524,7 @@
           }else{
             displayImage(imagesSettings[sessionName]);
           }
-      }
+    }
 
       //Generates the request to the Blockadel API to generate 360 inage from the prompt
       //the function generte asynchronous request. The response will be received by webhook function loadVenueEvent()
@@ -604,7 +613,8 @@
         
         mesh.addEventListener( 'click', function () {
           //PlaySound( "assets/questions_please.mp3");
-          startAskingQuestions(false);
+          //startAskingQuestions(false);
+          callForWhisper();
           panorama.add(mesh);
           panorama.add(questionsBtn);
           panorama.add(exitBtn);
@@ -680,12 +690,22 @@
           }
       } 
       function askQuestion(imageSettings) {
-        //PlaySound(imageSettings.questionText);
         if(imageSettings.questionBuffer != "") {
+<<<<<<< HEAD
           sleep(2000);
           speak(imageSettings.questionText);
           recognition.stop()
           recognition.start();
+=======
+          sleep(3000);
+          if(imageSettings.questionVoice != ""){
+            PlaySound(imageSettings.questionVoice);
+          }else{
+            speak(imageSettings.questionText);
+          }
+          //recognition.stop()
+          //recognition.start();
+>>>>>>> 8e1beec922e8df69679a25c24d4e2844672c0c63
           console.log("The audio has ended");
         }
       }  

@@ -129,7 +129,7 @@ window.analyzeAnswerNoCallforAPI = async function analyzeAnswerNoCallforAPI(prot
         console.error('Request options:', requestOptions);
       }
  
-return data.choices[0].message.content;
+    return data.choices[0].message.content;
    
   } catch (error) {
       console.error('Error:', error);
