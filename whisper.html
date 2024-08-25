@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.23
+               v1.24
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -706,7 +706,7 @@ async function playSoundAndAskQuestion(filePath) {
     try {
         // Wait for the sound to finish playing
         await PlayMySound(filePath);
-        hideWhisper();
+        //hideWhisper();
         // Once the sound is done, ask the question
         askQuestion(imagesSettings[sessionName]);
     } catch (error) {
