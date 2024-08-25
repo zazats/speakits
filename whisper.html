@@ -410,6 +410,9 @@
       };
             
       let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
+      let Panorama2 = new PANOLENS.ImagePanorama(imageSettings.image2 || 'assets/' + sessionName, 50);
+      let Panorama3 = new PANOLENS.ImagePanorama(imageSettings.image3 || 'assets/' + sessionName, 50);
+
       panorama = newPanorama;
       //panorama.add(infospot);
 
@@ -423,7 +426,7 @@
         //viewer.add(panorama);
       }
              
-      viewer.add(newPanorama);
+      viewer.add(newPanorama, Panorama2, Panorama3);
       viewer.setPanorama(newPanorama);
       
       let ef = 1, ctrl = 0;
@@ -560,7 +563,8 @@
         mesh.visible = true;
         mesh.name = "Exit";
         mesh.title = 'Exit';
-        mesh.position.set( -1000, 0, -1000 );
+        //mesh.position.set( -1000, 0, -1000 );
+        mesh.position.set( -1000, -400, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
         //mesh.addHoverText( 'Exit');
@@ -625,7 +629,8 @@
         mesh.visible = true;
         mesh.name = "Level 1";
         mesh.title = 'Level 1';
-        mesh.position.set( -1000, -400, -1000 );
+        mesh.position.set( -1000, 0, -1000 );
+        //mesh.position.set( -1000, -400, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
         //mesh.addHoverText( 'Level 1');
