@@ -119,10 +119,12 @@
               tougleLevel();
             } else if (transcript.toLowerCase().includes('stop')) { 
               hiWhisperSpoken=false;
-              PlaySound( "assets/ok.mp3");
+              playSoundAndAskQuestion("assets/ok.mp3");
+              /*PlaySound( "assets/ok.mp3");
               hideWhisper();
-              sleep(1000);
-              askQuestion(imagesSettings[sessionName]);
+              sleep(300);
+              askQuestion(imagesSettings[sessionName]);*/
+              
               if (recognition != null) {
                 recognition.stop();
               }
@@ -680,13 +682,35 @@
       function askQuestion(imageSettings) {
         //PlaySound(imageSettings.questionText);
         if(imageSettings.questionBuffer != "") {
-          sleep(3000);
+          sleep(2000);
           speak(imageSettings.questionText);
           recognition.stop()
           recognition.start();
           console.log("The audio has ended");
         }
       }  
+      // Function to handle playing sound and then asking a question
+
+      // Function to play the sound
+function PlayMySound(filePath) {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio(filePath);
+        audio.onended = resolve; // Resolve the promise when the sound ends
+        audio.onerror = reject;  // Reject the promise if there's an error
+        audio.play();
+    });
+}
+async function playSoundAndAskQuestion(filePath) {
+    try {
+        // Wait for the sound to finish playing
+        await PlayMySound(filePath);
+        hideWhisper();
+        // Once the sound is done, ask the question
+        askQuestion(imagesSettings[sessionName]);
+    } catch (error) {
+        console.error("An error occurred while playing the sound:", error);
+    }
+}
 
 </script>
 </body>
