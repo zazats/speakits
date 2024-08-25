@@ -141,6 +141,7 @@
               startAskingQuestions(true);
             } else if (transcript.toLowerCase().includes('over to you') ) {
               // call ChatGPT API to generate questions from the prompt
+              PlaySound( "assets/wonderfulsession.mp3");       
               hideWhisper();
               analyseAnswer(imagesSettings[sessionName]);
             }
