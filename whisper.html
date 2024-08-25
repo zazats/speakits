@@ -136,13 +136,12 @@
             if (transcript.toLowerCase().includes('hey whisper')) {
                 callForWhisper();
             } else if (transcript.toLowerCase().includes('any questions') || transcript.toLowerCase().includes('more questions')) {
-              //PlaySound( "assets/questions_please.mp3");
               // call ChatGPT API to generate questions from the prompt
               startAskingQuestions(true);
             } else if (transcript.toLowerCase().includes('over to you') ) {
               // call ChatGPT API to generate questions from the prompt
-              PlaySound( "assets/wonderfulsession.mp3");       
-              hideWhisper();
+              playSoundExtended( "assets/wonderful session.mp3",false,true);       
+              //hideWhisper();
               analyseAnswer(imagesSettings[sessionName]);
             }
           }
@@ -713,7 +712,24 @@ async function playSoundAndAskQuestion(filePath) {
     } catch (error) {
         console.error("An error occurred while playing the sound:", error);
     }
+    //hideWhisper();
 }
+
+async function playSoundExtended(filePath,showWhisper,hideWhisper) {
+    try {
+        // Wait for the sound to finish playing
+        if(showWhisper) {
+          showWhisper();
+        }
+        await PlayMySound(filePath);
+    } catch (error) {
+        console.error("An error occurred while playing the sound:", error);
+    }
+    if(hideWhisper){
+      hideWhisper();
+    }
+}
+
 
 </script>
 </body>
