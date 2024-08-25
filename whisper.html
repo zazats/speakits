@@ -715,17 +715,17 @@ async function playSoundAndAskQuestion(filePath) {
     //hideWhisper();
 }
 
-async function playSoundExtended(filePath,showWhisper,hideWhisper) {
+async function playSoundExtended(filePath,showWhisperP,hideWhisperP) {
     try {
         // Wait for the sound to finish playing
-        if(showWhisper) {
+        if(showWhisperP) {
           showWhisper();
         }
         await PlayMySound(filePath);
     } catch (error) {
         console.error("An error occurred while playing the sound:", error);
     }
-    if(hideWhisper){
+    if(hideWhisperP){
       hideWhisper();
     }
 }
