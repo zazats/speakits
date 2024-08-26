@@ -50,7 +50,7 @@ window.imagesSettings = {
         "questionText":"Do you want to say anything about your experiences while eating?",
         "position": [
             0,
-            0,
+            0, 
             0
         ]
     },
@@ -208,108 +208,28 @@ window.imagesSettings = {
             0
         ]
     },
-     "v1_l1": {
-        "image": "assets/v1_l1.jpg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            250,
-            -20,
-            40
-        ]
-    },
-    "v1_l2": {
-        "image": "assets/v1_l2.jpg",
-        "audio": "assets/office-room-tone-32341.mp3",
-        "position": [
-            200,
-            0,
-            100
-        ]
-    },
-    "v2_l1": {
-        "image": "assets/v2_l1.jpg",
-        "audio": "assets/imagine_l1.mp3",
+    "default": {
+        "image": "assets/floating_garden.jpg",
+        "image2": "assets/Interior_6.jpg",
+        "image3": "assets/Norway_summer_landscape_quiet_1.jpg",
+        "audio": "assets/zendel/MBCTDepression-10-20-Min-Sitting-Meditation.mp3",
+        "valid-protocol":"Begin this 20-minute sitting meditation by finding a comfortable position, either on a chair with feet flat and legs uncrossed, or on the floor with support. Align your spine, neck, and head, and rest your hands on your thighs or lap. Close your eyes or let your gaze fall softly on the floor ahead. Start by noticing the sensations of sitting—the touch, contact, and pressure where your body meets the surface. Then, bring your focus to the sensations in your belly as you breathe. Notice the gentle expansion with each in-breath and release with each out-breath. Stay with these sensations for the full duration of each breath. If you prefer, focus on the breath sensations in your nostrils or chest. Let your body breathe naturally without control. If your mind wanders, briefly acknowledge where it went, then gently return your attention to the breath. This isn’t a failure; it’s an opportunity to practice patience and compassion. Continue to bring your awareness back to the breath whenever it drifts. In the final moments, remind yourself to simply be aware of your experience, moment by moment. Allow the meditation to end naturally, opening your eyes when ready.",
+        "questionVoice": "",
+        "questionText":"Was it too long for you",
         "position": [
             0,
             0,
             0
         ]
     },
-    "v3_l1": {
-        "image": "assets/v3_l1.jpg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "v4_l1": {
-        "image": "assets/v4_l1.jpg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "imagine0": {
-        "image": "assets/imagine0.jpeg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "imagine1": {
-        "image": "assets/imagine1.jpeg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            200,
-            0,
-            100
-        ]
-    },
-    "imagine2": {
-        "image": "assets/imagine2.jpeg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "imagine3": {
-        "image": "assets/imagine3.jpeg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "imagine4": {
-        "image": "assets/imagine4.jpeg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "imagine5": {
-        "image": "assets/imagine5.jpeg",
-        "audio": "assets/imagine_l1.mp3",
-        "position": [
-            0,
-            0,
-            0
-        ]
-    },
-    "imagine6": {
-        "image": "assets/imagine6.jpeg",
-        "audio": "assets/imagine_l1.mp3",
+    "S2T1": {
+        "image": "assets/height3.jpg",
+        "image2": "assets/height2.jpg",
+        "image3": "assets/height1.jpg",
+        "audio": "assets/wind.mp3",
+        "valid-protocol":"Begin this 20-minute sitting meditation by finding a comfortable position, either on a chair with feet flat and legs uncrossed, or on the floor with support. Align your spine, neck, and head, and rest your hands on your thighs or lap. Close your eyes or let your gaze fall softly on the floor ahead. Start by noticing the sensations of sitting—the touch, contact, and pressure where your body meets the surface. Then, bring your focus to the sensations in your belly as you breathe. Notice the gentle expansion with each in-breath and release with each out-breath. Stay with these sensations for the full duration of each breath. If you prefer, focus on the breath sensations in your nostrils or chest. Let your body breathe naturally without control. If your mind wanders, briefly acknowledge where it went, then gently return your attention to the breath. This isn’t a failure; it’s an opportunity to practice patience and compassion. Continue to bring your awareness back to the breath whenever it drifts. In the final moments, remind yourself to simply be aware of your experience, moment by moment. Allow the meditation to end naturally, opening your eyes when ready.",
+        "questionVoice": "",
+        "questionText":"Was it too long for you",
         "position": [
             0,
             0,

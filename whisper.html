@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.24
+               v1.25
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -157,6 +157,8 @@
               whisperInitResponsePath = "assets/yes.mp3"
           }
           PlaySound(whisperInitResponsePath);
+          console.log(`Camera Position: x=${viewer.getCamera().position.x}, y=${viewer.getCamera().position.y}, z=${viewer.getCamera().position.z}`);
+          console.log(`Camera Rotation: x=${viewer.getCamera().rotation.x}, y=${viewer.getCamera().rotation.y}, z=${viewer.getCamera().rotation.z}`);
         }
   
       function startAskingQuestions(isFromWhisper) {
@@ -216,28 +218,27 @@
     let lastZ = null;
     const threshold = 1; // Adjust this value to control sensitivity
     const moveDistance = 100; // Adjust this value for faster or slower movement
-
+    let lastAcceleration = { x: 0, y: 0, z: 0 };
+    let stepThreshold = 1.2; // Adjust this threshold based on your testing
+    let stepDetected = false;
+    
     function handleMotion(event) {
-      const acceleration = event.accelerationIncludingGravity;
-      if (acceleration) {
-          const z = acceleration.z;
-
-          if (lastZ !== null) {
-              const deltaZ = z - lastZ;
-
-              const camera = viewer.getCamera();
-
-              if (deltaZ > threshold) {
-                  // Move camera backward
-                  camera.translateZ(moveDistance);
-              } else if (deltaZ < -threshold) {
-                  // Move camera forward
-                  camera.translateZ(-moveDistance);
-              }
-          }
-
-          lastZ = z;
+      const acc = event.accelerationIncludingGravity;
+      // Calculate the magnitude of the acceleration vector
+      const magnitude = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
+      // Simple step detection logic based on threshold
+      if (magnitude > stepThreshold && !stepDetected) {
+          console.log('Step detected!');
+          stepDetected = true;
+          // You can trigger your action here, e.g., updating UI or moving an object in a 3D scene
       }
+      // Reset step detection after a short delay to detect the next step
+      if (magnitude < stepThreshold) {
+          stepDetected = false;
+      }
+
+      // Save last acceleration for potential further processing
+      lastAcceleration = acc;
     }
 
     function handleCamera(event) {
@@ -246,58 +247,63 @@
       const moveDistance = 100; // Adjust this value for faster or slower movement
 
       if (key === 'f') {
-        camera.translateZ(-moveDistance);
+        //camera.translateZ(-moveDistance);
+        camera.fov = Math.max(60, camera.fov - 1);
+        camera.updateProjectionMatrix();
       } else if (key === 'b') {
-        camera.translateZ(moveDistance);
+        //camera.translateZ(moveDistance);
+        camera.fov = Math.min(120, camera.fov + 1);
+        camera.updateProjectionMatrix();
       }
+
     }
 
     function startWhisper() {
-          if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-             DeviceOrientationEvent.requestPermission();
-             //window.addEventListener('devicemotion', handleMotion, true);    
-          }
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission();
+          //window.addEventListener('devicemotion', handleMotion, true);    
+      }
+      
+      window.addEventListener('keydown', handleCamera, true);
+
+      if (!document.fullscreenElement) {
+
+        let element = document.body;
+        let requestFSFunction = element.requestFullScreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen || document.requestFullscreen || document.msRequestFullscreen || document.mozRequestFullScreen;
+        if (requestFSFunction) {
+            requestFSFunction.apply(element);
           
-          window.addEventListener('keydown', handleCamera, true);
-
-          if (!document.fullscreenElement) {
-
-            let element = document.body;
-            let requestFSFunction = element.requestFullScreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen || document.requestFullscreen || document.msRequestFullscreen || document.mozRequestFullScreen;
-            if (requestFSFunction) {
-                requestFSFunction.apply(element);
-              
-            }
-            else {
-                // element.requestFullScreen();jhvhgv
-                console.log("ERR:", "Fullscreen failed!");
-            }
-          }
-          else {
-            document.exitFullscreen();
-          // console.log("DEBUG:",this.entity.findByTag("buttonText"));
-          }
-          
-          container = document.querySelector('#container');
-          const urlParams = new URL(window.location.toLocaleString()).searchParams;
-          sessionName = urlParams.get('session');
-          currentUserId = urlParams.get('user');
-          let isDebug = urlParams.get('isDebug');
-          let demoMode = urlParams.get('demo');
+        }
+        else {
+            // element.requestFullScreen();jhvhgv
+            console.log("ERR:", "Fullscreen failed!");
+        }
+      }
+      else {
+        document.exitFullscreen();
+      // console.log("DEBUG:",this.entity.findByTag("buttonText"));
+      }
+      
+      container = document.querySelector('#container');
+      const urlParams = new URL(window.location.toLocaleString()).searchParams;
+      sessionName = urlParams.get('session');
+      currentUserId = urlParams.get('user');
+      let isDebug = urlParams.get('isDebug');
+      let demoMode = urlParams.get('demo');
 
 
-          displayImage(imagesSettings[sessionName],isDebug,demoMode);
-          noSleep.enable();
-          document.getElementById("btn").style.display = "none";
-          
+      displayImage(imagesSettings[sessionName],isDebug,demoMode);
+      noSleep.enable();
+      document.getElementById("btn").style.display = "none";
+      
 
-          exitBtn = createExitButton();
-          questionsBtn = createQuestionsButton();
-          levelBtn = createLevel1Button();
-          //relaxBtn = createRelaxButton();
+      exitBtn = createExitButton();
+      questionsBtn = createQuestionsButton();
+      levelBtn = createLevel1Button();
+      //relaxBtn = createRelaxButton();
 
-          viewer.setPanorama(panorama);
-          //analyseAnswer();
+      viewer.setPanorama(panorama);
+      //analyseAnswer();
     }
 
     function tougleLevel(){
@@ -390,7 +396,7 @@
       } else {
         audioTrack = new Audio( 'assets/zendel/Debug.mp3');
       }
-
+      
       audioTrack.loop = false;
       audioTrack.play();
 
@@ -398,10 +404,7 @@
         setTimeout(() => {
           audioTrack.pause(); // Pause the audio
           audioTrack.currentTime = 0; // Reset the audio to the beginning
-            // Simulate the onended event
-            //const endedEvent = new Event('ended');
-            //audioTrack.dispatchEvent(endedEvent);
-            askQuestion(imageSettings);
+          askQuestion(imageSettings);
         }, 10000);
       }
         
@@ -409,18 +412,18 @@
         askQuestion();
       };
             
-      let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
-      let Panorama2 = new PANOLENS.ImagePanorama(imageSettings.image2 || 'assets/' + sessionName, 50);
-      let Panorama3 = new PANOLENS.ImagePanorama(imageSettings.image3 || 'assets/' + sessionName, 50);
+      let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/tranquil_meditation_environment_set1.jpg', 50);
+      let Panorama2 = new PANOLENS.ImagePanorama(imageSettings.image2 || 'assets/tranquil_meditation_environment_set2.jpg', 50);
+      let Panorama3 = new PANOLENS.ImagePanorama(imageSettings.image3 || 'assets/tranquil_meditation_environment_set3.jpg', 50);
 
       panorama = newPanorama;
       //panorama.add(infospot);
 
       const imagePosition = imageSettings.position;
       newPanorama.addEventListener('enter-fade-start', () => {
-          viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
+        viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
       })
-
+      
       if (viewer == null) {
         viewer = new PANOLENS.Viewer({ container: container });
         //viewer.add(panorama);
@@ -431,12 +434,14 @@
       
       let ef = 1, ctrl = 0;
       if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
-          ef = 2;
-          ctrl = 1;
+        ef = 2;
+        ctrl = 1;
       }
+      
       viewer.enableControl(ctrl);
       viewer.enableEffect(ef);
-      viewer.setCameraFov(90);
+      viewer.setCameraFov(110);
+      viewer.camera.updateProjectionMatrix();
     }
 
     async function displayGeneratedImage(imageSettings) {
@@ -450,20 +455,20 @@
       
         //infospot.position.set(0, -1000, -1000);
         //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-        panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/' + sessionName, 50);
+        panorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/tranquil_meditation_environment_set1.jpg', 50);
         //panorama.add(infospot);
       
         const imagePosition = imageSettings.position;
         panorama.addEventListener('enter-fade-start', () => {
             viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
         })
+        
         if (viewer == null) {
-            viewer = new PANOLENS.Viewer({ container: container });
-            viewer.add(panorama);
-          }
-          else {
-            viewer.setPanorama(panorama);
-          }
+          viewer = new PANOLENS.Viewer({ container: container });
+          viewer.add(panorama);
+        }else {
+          viewer.setPanorama(panorama);
+        }
       
         let ef = 1, ctrl = 0;
         if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) {
@@ -472,7 +477,7 @@
         }
         viewer.enableControl(ctrl);
         viewer.enableEffect(ef);
-        viewer.setCameraFov(90);
+        viewer.setCameraFov(110);
     }
 
     async function loadVenue() {
