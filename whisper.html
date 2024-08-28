@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.25
+               v1.26
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button>
@@ -67,7 +67,6 @@
         let hiWhisperSpoken = false;
         let welcomeSpoken = false;
       
-
         // Event handler for receiving transcribed text
         recognition.onresult = function(event) {                 
           speechBuffer = event.results;
@@ -145,6 +144,7 @@
               analyseAnswer(imagesSettings[sessionName]);
             }
           }
+
         };
 
         function callForWhisper(){
@@ -157,8 +157,6 @@
               whisperInitResponsePath = "assets/yes.mp3"
           }
           PlaySound(whisperInitResponsePath);
-          console.log(`Camera Position: x=${viewer.getCamera().position.x}, y=${viewer.getCamera().position.y}, z=${viewer.getCamera().position.z}`);
-          console.log(`Camera Rotation: x=${viewer.getCamera().rotation.x}, y=${viewer.getCamera().rotation.y}, z=${viewer.getCamera().rotation.z}`);
         }
   
       function startAskingQuestions(isFromWhisper) {
@@ -194,19 +192,39 @@
       // Automatically restart speech recognition after it ends
         if(recognition != null) recognition.start();
       };
-    
+/*    
+       window.showWhisper = function showWhisper(){
+        if(infospot == null){
+          const textureLoader = new THREE.TextureLoader();
+          textureLoader.load('assets/talking_head1.gif', function (texture) {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(1, 1);
+            infospot = new PANOLENS.Infospot(500);
+            infospot.material.map = texture;
+            infospot.material.needsUpdate = true;
+            //infospot = new PANOLENS.Infospot(500, 'assets/talking_head1.gif', true);
+            infospot.position.set(0, -0, -1000); //infospot.dispose();
+            panorama.add(infospot);
+            infospot.show();
+          });  
+        }else{
+          infospot.show();
+        }
+      }
+*/
+      
       window.showWhisper = function showWhisper(){
         if(infospot == null){
           infospot = new PANOLENS.Infospot(500, 'assets/talking_head1.gif', true);
-          //infospot.addHoverElement(document.getElementById('cheat_note'), 200);
-          infospot.position.set(0, -0, -1000); //infospot.dispose();
+          let lookAtPosition = getCameraLookAtPosition();
+          infospot.position.set( lookAtPosition.x , lookAtPosition.y, lookAtPosition.z);
           panorama.add(infospot);
         }
-    
         infospot.show();
-      }
-  
-    window.hideWhisper = function hideWhisper(){
+      }  
+
+      window.hideWhisper = function hideWhisper(){
       if(infospot != null){
         infospot.hide();
         infospot.dispose();
@@ -254,6 +272,11 @@
         //camera.translateZ(moveDistance);
         camera.fov = Math.min(120, camera.fov + 1);
         camera.updateProjectionMatrix();
+      }else if (key === 'c'){
+        const imagePosition = [-542.0528342958434, -38.91181841929435,-838.251510716889];
+        viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
+        const targetPosition = new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]); // Desired direction in 3D space
+        viewer.getCamera().lookAt(targetPosition);
       }
 
     }
@@ -267,19 +290,16 @@
       window.addEventListener('keydown', handleCamera, true);
 
       if (!document.fullscreenElement) {
-
         let element = document.body;
         let requestFSFunction = element.requestFullScreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen || document.requestFullscreen || document.msRequestFullscreen || document.mozRequestFullScreen;
         if (requestFSFunction) {
             requestFSFunction.apply(element);
           
-        }
-        else {
+        }else {
             // element.requestFullScreen();jhvhgv
             console.log("ERR:", "Fullscreen failed!");
         }
-      }
-      else {
+      }else {
         document.exitFullscreen();
       // console.log("DEBUG:",this.entity.findByTag("buttonText"));
       }
@@ -288,22 +308,51 @@
       const urlParams = new URL(window.location.toLocaleString()).searchParams;
       sessionName = urlParams.get('session');
       currentUserId = urlParams.get('user');
-      let isDebug = urlParams.get('isDebug');
+      let isDebugParam = urlParams.get('isDebug');
+      if (isDebugParam == null || isDebugParam == 0) {
+        isDebug = false;
+      }else{
+        isDebug = true;
+      }
       let demoMode = urlParams.get('demo');
-
 
       displayImage(imagesSettings[sessionName],isDebug,demoMode);
       noSleep.enable();
       document.getElementById("btn").style.display = "none";
       
-
-      exitBtn = createExitButton();
-      questionsBtn = createQuestionsButton();
-      levelBtn = createLevel1Button();
+      //exitBtn = createExitButton();
+      //questionsBtn = createQuestionsButton();
+      //levelBtn = createLevel1Button();
       //relaxBtn = createRelaxButton();
 
       viewer.setPanorama(panorama);
       //analyseAnswer();
+
+      viewer.OrbitControls.addEventListener('change', () => {
+        if(isDebug){
+          const camera = viewer.getCamera();
+          // 1. Create a vector pointing forward in the camera's local space (negative z-axis)
+          const direction = new THREE.Vector3(0, 0, -1);
+          // 2. Apply the camera's rotation to this direction vector
+          direction.applyQuaternion(camera.quaternion);
+          // 3. Calculate the lookAt position
+          const distance = 1000; // Arbitrary distance (can be larger or smaller depending on how far you want to check)
+          const lookAtPosition = new THREE.Vector3().copy(camera.position).add(direction.multiplyScalar(distance));
+          // Log the calculated position
+          console.log(`Camera is looking at: [${lookAtPosition.x}, ${lookAtPosition.y}, ${lookAtPosition.z}]`);   
+        }
+      });   
+    }
+
+    function getCameraLookAtPosition(){
+      const camera = viewer.getCamera();
+        // 1. Create a vector pointing forward in the camera's local space (negative z-axis)
+      const direction = new THREE.Vector3(0, 0, -1);
+        // 2. Apply the camera's rotation to this direction vector
+      direction.applyQuaternion(camera.quaternion);
+        // 3. Calculate the lookAt position
+      const distance = 1000; // Arbitrary distance (can be larger or smaller depending on how far you want to check)
+      return new THREE.Vector3().copy(camera.position).add(direction.multiplyScalar(distance));
     }
 
     function tougleLevel(){
@@ -384,14 +433,14 @@
         panorama.add(levelBtn);
         panorama.add(questionsBtn);
         panorama.add(exitBtn);
-        panorama.add(relaxBtn);
+        //panorama.add(relaxBtn);
       }
     }
 
     async function displayImage(imageSettings,isDebug,demoMode) {
       //const imageSettings = imagesSettings[sessionName];
       //let audio;
-      if (isDebug == null || isDebug == 0) {
+      if (!isDebug) {
         audioTrack = new Audio(imageSettings.audio );
       } else {
         audioTrack = new Audio( 'assets/zendel/Debug.mp3');
@@ -419,16 +468,22 @@
       panorama = newPanorama;
       //panorama.add(infospot);
 
-      const imagePosition = imageSettings.position;
-      newPanorama.addEventListener('enter-fade-start', () => {
-        viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
-      })
-      
       if (viewer == null) {
         viewer = new PANOLENS.Viewer({ container: container });
         //viewer.add(panorama);
       }
              
+      newPanorama.addEventListener('enter-fade-start', () => {
+        const imagePosition = imageSettings.position;
+        //viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
+        //const targetPosition = new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]); // Desired direction in 3D space
+        //viewer.getCamera().lookAt(targetPosition);
+        //const imagePosition = [-542.0528342958434, -38.91181841929435,-838.251510716889];
+        viewer.tweenControlCenter(new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]), 0)
+        const targetPosition = new THREE.Vector3(imagePosition[0],imagePosition[1],imagePosition[2]); // Desired direction in 3D space
+        viewer.getCamera().lookAt(targetPosition);
+      })
+
       viewer.add(newPanorama, Panorama2, Panorama3);
       viewer.setPanorama(newPanorama);
       
@@ -481,50 +536,50 @@
     }
 
     async function loadVenue() {
-          noSleep.enable();
-          document.getElementById("btn").style.display = "none";
+      noSleep.enable();
+      document.getElementById("btn").style.display = "none";
 
-          container = document.querySelector('#container');
-          const urlParams = new URL(window.location.toLocaleString()).searchParams;
-          let sessionName = urlParams.get('session');
-          let imageNote = urlParams.get('cheat_note');
-          let imagine_file_url = null;
-          
-          //build AI generated venues
-          if (sessionName == "imagine") {
-            let rnd = Math.floor(Math.random() * 5) + 1;
-              sessionName = "imagine" + rnd;
-              let myHeaders = new Headers();
-              myHeaders.append("x-api-key", IMAGINE);
-
-              //trying to generate an image from the SkyBox
-            
+      container = document.querySelector('#container');
+      const urlParams = new URL(window.location.toLocaleString()).searchParams;
+      let sessionName = urlParams.get('session');
+      let imageNote = urlParams.get('cheat_note');
+      let imagine_file_url = null;
       
-              let requestOptions = {
-                  method: "POST",
-                  headers: myHeaders,
-                  redirect: "follow"
-              };
+      //build AI generated venues
+      if (sessionName == "imagine") {
+        let rnd = Math.floor(Math.random() * 5) + 1;
+          sessionName = "imagine" + rnd;
+          let myHeaders = new Headers();
+          myHeaders.append("x-api-key", IMAGINE);
 
-            const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imageNote}`, requestOptions);
-            //const response = await fetch('https://jsonplaceholder.typicode.com/posts/1',);
-            const data = await response.json();
-            console.log(data);
+          //trying to generate an image from the SkyBox
+        
+  
+          let requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              redirect: "follow"
+          };
 
-            Pusher.logToConsole = true;
-            pusher = new Pusher('a6a7b7662238ce4494d5', {
-              appId: "1555452",
-              key: "a6a7b7662238ce4494d5",
-              secret: "5b69dc3f0bb7800ed8d0",
-              cluster: "mt1"
-            });
-            
-            // Subscribe to the channel you want to receive events from
-            channel = pusher.subscribe(data.pusher_channel);
-            channel.bind(data.pusher_event, loadVenueEvent);      
-          }else{
-            displayImage(imagesSettings[sessionName]);
-          }
+        const response = await fetch(`https://backend.blockadelabs.com/api/v1/skybox?prompt=${imageNote}`, requestOptions);
+        //const response = await fetch('https://jsonplaceholder.typicode.com/posts/1',);
+        const data = await response.json();
+        console.log(data);
+
+        Pusher.logToConsole = true;
+        pusher = new Pusher('a6a7b7662238ce4494d5', {
+          appId: "1555452",
+          key: "a6a7b7662238ce4494d5",
+          secret: "5b69dc3f0bb7800ed8d0",
+          cluster: "mt1"
+        });
+        
+        // Subscribe to the channel you want to receive events from
+        channel = pusher.subscribe(data.pusher_channel);
+        channel.bind(data.pusher_event, loadVenueEvent);      
+      }else{
+        displayImage(imagesSettings[sessionName]);
+      }
     }
 
       //Generates the request to the Blockadel API to generate 360 inage from the prompt
@@ -572,18 +627,6 @@
         mesh.position.set( -1000, -400, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        //mesh.addHoverText( 'Exit');
-        //mesh.addHoverElement(document.getElementById('menu_exit'), 150);
-
-
-        //mesh.addEventListener( 'hoverenter', function () {
-          //speak("Enter");
-        //} );
-        
-        //mesh.addEventListener( 'hoverleave', function () {
-            //speak("Leave");
-        //} );
-        
         mesh.addEventListener( 'click', function () {
           PlaySound( "assets/see_you_later.mp3");
           window.history.go(-1);
@@ -593,6 +636,7 @@
 
         return mesh;
       }
+      
       function createQuestionsButton () {
         let mesh;
         mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/ask_me.png', true);
@@ -602,25 +646,11 @@
         mesh.position.set( -1000, -200, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        //mesh.addHoverText( 'Questions');
-        //mesh.addHoverElement(document.getElementById('menu_questions'), 150);
-
-        //mesh.addEventListener( 'hoverenter', function () {
-          //speak("Enter");
-        //} );
-        
-        //mesh.addEventListener( 'hoverleave', function () {
-            //speak("Leave");
-        //} );
-        
         mesh.addEventListener( 'click', function () {
-          //PlaySound( "assets/questions_please.mp3");
-          //startAskingQuestions(false);
           callForWhisper();
           panorama.add(mesh);
           panorama.add(questionsBtn);
           panorama.add(exitBtn);
-          panorama.add(relaxBtn);
         } );
 
         panorama.add(mesh);
@@ -638,23 +668,12 @@
         //mesh.position.set( -1000, -400, -1000 );
         mesh.material.opacity = 0;
         mesh.setCursorHoverStyle( 'default' );
-        //mesh.addHoverText( 'Level 1');
-        //mesh.addHoverElement(document.getElementById('menu_questions'), 150);
-
-        //mesh.addEventListener( 'hoverenter', function () {
-          //speak("Enter");
-        //} );
-        
-        //mesh.addEventListener( 'hoverleave', function () {
-            //speak("Leave");
-        //} );
-        
         mesh.addEventListener( 'click', function () {
           tougleLevel();
           panorama.add(mesh);
           panorama.add(questionsBtn);
           panorama.add(exitBtn);
-          panorama.add(relaxBtn);
+          //panorama.add(relaxBtn);
         } );
 
         panorama.add(mesh);
@@ -678,7 +697,7 @@
           panorama.add(mesh);
           panorama.add(questionsBtn);
           panorama.add(exitBtn);
-          panorama.add(relaxBtn);
+          //panorama.add(relaxBtn);
         } );
 
         panorama.add(mesh);
@@ -692,53 +711,58 @@
         // Just loop until the time has passed
           }
       } 
+
       function askQuestion(imageSettings) {
         if(imageSettings.questionBuffer != "") {
           sleep(2000);
-          speak(imageSettings.questionText);
+          if(imageSettings.questionVoice == ""){
+            speak(imageSettings.questionText);
+          }else{
+            PlaySound(imageSettings.questionVoice);
+          }
           recognition.stop()
           //recognition.start();
           console.log("The audio has ended");
         }
       }  
       // Function to handle playing sound and then asking a question
-
       // Function to play the sound
-function PlayMySound(filePath) {
-    return new Promise((resolve, reject) => {
-        const audio = new Audio(filePath);
-        audio.onended = resolve; // Resolve the promise when the sound ends
-        audio.onerror = reject;  // Reject the promise if there's an error
-        audio.play();
-    });
-}
-async function playSoundAndAskQuestion(filePath) {
-    try {
-        // Wait for the sound to finish playing
-        await PlayMySound(filePath);
-        //hideWhisper();
-        // Once the sound is done, ask the question
-        askQuestion(imagesSettings[sessionName]);
-    } catch (error) {
-        console.error("An error occurred while playing the sound:", error);
-    }
-    //hideWhisper();
-}
-
-async function playSoundExtended(filePath,showWhisperP,hideWhisperP) {
-    try {
-        // Wait for the sound to finish playing
-        if(showWhisperP) {
-          showWhisper();
+        function PlayMySound(filePath) {
+            return new Promise((resolve, reject) => {
+                const audio = new Audio(filePath);
+                audio.onended = resolve; // Resolve the promise when the sound ends
+                audio.onerror = reject;  // Reject the promise if there's an error
+                audio.play();
+            });
         }
-        await PlayMySound(filePath);
-    } catch (error) {
-        console.error("An error occurred while playing the sound:", error);
-    }
-    if(hideWhisperP){
-      hideWhisper();
-    }
-}
+        
+        async function playSoundAndAskQuestion(filePath) {
+            try {
+                // Wait for the sound to finish playing
+                await PlayMySound(filePath);
+                //hideWhisper();
+                // Once the sound is done, ask the question
+                askQuestion(imagesSettings[sessionName]);
+            } catch (error) {
+                console.error("An error occurred while playing the sound:", error);
+            }
+            //hideWhisper();
+        }
+
+        async function playSoundExtended(filePath,showWhisperP,hideWhisperP) {
+            try {
+                // Wait for the sound to finish playing
+                if(showWhisperP) {
+                  showWhisper();
+                }
+                await PlayMySound(filePath);
+            } catch (error) {
+                console.error("An error occurred while playing the sound:", error);
+            }
+            if(hideWhisperP){
+              hideWhisper();
+            }
+        }
 
 
 </script>
