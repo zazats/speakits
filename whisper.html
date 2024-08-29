@@ -15,12 +15,10 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.26
+               v1.27
             </p>
 	      </div>
-        <button class="button" onclick="startWhisper()">Start</button>
-       
-        
+        <button class="button" onclick="startWhisper()">Start</button> 
     </div>
     
     <div id="container"></div>
@@ -341,8 +339,10 @@
           // Log the calculated position
           console.log(`Camera is looking at: [${lookAtPosition.x}, ${lookAtPosition.y}, ${lookAtPosition.z}]`);   
         }
-      });   
+      });      
     }
+/* =================END Start Whisper ================================== */
+
 
     function getCameraLookAtPosition(){
       const camera = viewer.getCamera();
@@ -618,7 +618,7 @@
       }    
 
       function createExitButton () {
-        let mesh;
+/*        let mesh;
         mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/exit.png', true);
         mesh.visible = true;
         mesh.name = "Exit";
@@ -634,11 +634,24 @@
         } );
 
         panorama.add(mesh);
+ */ 
+        var btnCtrl = {
+         style: {
+          backgroundImage: 'url(assets/exit.png)'
+          },
+        
+          onTap: function(){
+            PlaySound( "assets/see_you_later.mp3");
+            window.history.go(-1);
+          }
+        };
+        viewer.appendControlItem(btnCtrl);
 
-        return mesh;
+ //       return mesh;
       }
       
       function createQuestionsButton () {
+/*
         let mesh;
         mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/ask_me.png', true);
         mesh.visible = true;
@@ -656,12 +669,23 @@
         } );
 
         panorama.add(mesh);
+*/
+        var btnCtrl = {
+         style: {
+          backgroundImage: 'url(assets/ask_me.png)'
+          },
+        
+          onTap: function(){
+            callForWhisper();
+          }
+        };
+        viewer.appendControlItem(btnCtrl);
 
-        return mesh;
+//        return mesh;
       }    
       
       function createLevel1Button () {
-        let mesh;
+/*        let mesh;
         mesh = new PANOLENS.Infospot( MENU_ICON_SIZE, 'assets/tougle.png', true);
         mesh.visible = true;
         mesh.name = "Level 1";
@@ -677,9 +701,18 @@
           panorama.add(exitBtn);
           //panorama.add(relaxBtn);
         } );
-
         panorama.add(mesh);
         return mesh;
+*/        
+        var btnCtrl = {
+         style: {
+          backgroundImage: 'url(assets/tougle.png)'
+          },
+        
+          onTap: function(){
+            tougleLevel();          }
+        };
+        viewer.appendControlItem(btnCtrl);
       }     
 
       function createRelaxButton () {
