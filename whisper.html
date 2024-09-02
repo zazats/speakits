@@ -15,7 +15,7 @@
 		        <h2>Start your MindSpace eXperience</h2>
 		        <p>Turn your phone to the horizontal position, <br> 
                click the Start button and inset it in the VR Set. <br> <br>
-               v1.27
+               v1.28
             </p>
 	      </div>
         <button class="button" onclick="startWhisper()">Start</button> 
@@ -462,7 +462,19 @@
         askQuestion();
       };
             
-      let newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/tranquil_meditation_environment_set1.jpg', 50);
+      let newPanorama = null;
+      if(imageSettings.image.endsWith("/")){ // load cubemap panorama
+          newPanorama = new PANOLENS.CubePanorama([imageSettings.image + 'cube_right.png',
+                                                  imageSettings.image + 'cube_left.png',
+                                                  imageSettings.image + 'cube_up.png',
+                                                  imageSettings.image + 'cube_down.png',
+                                                  imageSettings.image + 'cube_back.png',
+                                                  imageSettings.image + 'cube_front.png']
+        );
+      }else{
+        newPanorama = new PANOLENS.ImagePanorama(imageSettings.image || 'assets/tranquil_meditation_environment_set1.jpg', 50);
+      }
+       
       let Panorama2 = new PANOLENS.ImagePanorama(imageSettings.image2 || 'assets/tranquil_meditation_environment_set2.jpg', 50);
       let Panorama3 = new PANOLENS.ImagePanorama(imageSettings.image3 || 'assets/tranquil_meditation_environment_set3.jpg', 50);
 
