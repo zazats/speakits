@@ -142,7 +142,6 @@ window.analyzeAnswer = async function analyzeAnswer(protocol,question, prompt) {
    
       // Call the function to fetch available models
       // Make a request to the OpenAI API
-          return;
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
