@@ -195,5 +195,16 @@ window.imagesSettings = {
         "questionVoice": "assets/I believe it was bit scary.mp3",
         "questionText":"Was it too long for you",
         "position": [-542.0528342958434, -38.91181841929435,-838.251510716889]
+    },
+    "S2T2": {
+        "image": "assets/newyork_cube/",
+        "image2": "assets/height2.jpg",
+        "image3": "assets/height1.jpg",
+        "audio": "assets/wind.mp3",
+        "audio_loop" : true,
+        "protocol":"Begin this 20-minute sitting meditation by finding a comfortable position, either on a chair with feet flat and legs uncrossed, or on the floor with support. Align your spine, neck, and head, and rest your hands on your thighs or lap. Close your eyes or let your gaze fall softly on the floor ahead. Start by noticing the sensations of sitting—the touch, contact, and pressure where your body meets the surface. Then, bring your focus to the sensations in your belly as you breathe. Notice the gentle expansion with each in-breath and release with each out-breath. Stay with these sensations for the full duration of each breath. If you prefer, focus on the breath sensations in your nostrils or chest. Let your body breathe naturally without control. If your mind wanders, briefly acknowledge where it went, then gently return your attention to the breath. This isn’t a failure; it’s an opportunity to practice patience and compassion. Continue to bring your awareness back to the breath whenever it drifts. In the final moments, remind yourself to simply be aware of your experience, moment by moment. Allow the meditation to end naturally, opening your eyes when ready.",
+        "questionVoice": "assets/I believe it was bit scary.mp3",
+        "questionText":"Was it too long for you",
+        "position": [-542.0528342958434, -38.91181841929435,-838.251510716889]
     }
 }
