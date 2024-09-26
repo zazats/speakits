@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoveNet Single Person Pose Detection</title>
+    <style>
+        #video {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+        .eye-image {
+            position: absolute;
+            width: 50px; /* Set the size of the eye images */
+            height: 50px;
+        }
+        #left-eye, #right-eye {
+            display: none; /* Initially hide the eyes until detected */
+        }
+    </style>
+</head>
+<body>
+    <h1>MoveNet Single Person Pose Detection</h1>
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas" width="600" height="600" ></canvas>
+
+    <img id="left-eye" class="eye-image" src="assets/left_eye.png" alt="Left Eye">
+    <img id="right-eye" class="eye-image" src="assets/right_eye.png" alt="Right Eye">
+   
+
+
+    <!-- Load TensorFlow.js and Pose Detection Model from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+
+    <script type="text/javascript">
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const leftEyeImage = document.getElementById('left-eye');
+        const rightEyeImage = document.getElementById('right-eye');
+        const ly_left = leftEyeImage.offsetLeft;
+        const ly_top = leftEyeImage.offsetTop;
+        const ry_left = rightEyeImage.offsetLeft;
+        const ry_top = rightEyeImage.offsetTop;
+
+        async function setupCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+            video.srcObject = stream;
+
+            return new Promise((resolve) => {
+                video.onloadedmetadata = () => {
+                    resolve(video);
+                };
+            });
+        }
+
+        function drawSkeleton(keypoints) {
+            // Define pairs of keypoints that should be connected
+            const skeleton = [
+                ['left_shoulder', 'right_shoulder'],
+                ['left_shoulder', 'left_elbow'],
+                ['left_elbow', 'left_wrist'],
+                ['right_shoulder', 'right_elbow'],
+                ['right_elbow', 'right_wrist'],
+                ['left_shoulder', 'left_hip'],
+                ['right_shoulder', 'right_hip'],
+                ['left_hip', 'right_hip'],
+                ['left_hip', 'left_knee'],
+                ['left_knee', 'left_ankle'],
+                ['right_hip', 'right_knee'],
+                ['right_knee', 'right_ankle']
+            ];
+            const canvasCenterX = canvas.width / 2;
+            const canvasCenterY = canvas.height / 2;
+
+            // Get the keypoints for leftHip (11) and rightHip (12)
+            const leftHip = keypoints[11];
+            const rightHip = keypoints[12];
+            // Loop over the skeleton array and draw lines between keypoints
+            
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            const bodyCenterX = (leftHip.x + rightHip.x) / 2;
+            const bodyCenterY = (leftHip.y + rightHip.y) / 2;
+
+            // Calculate the translation offset to move the body center to the canvas center
+            const offsetX = canvasCenterX - bodyCenterX;
+            const offsetY = canvasCenterY - bodyCenterY;
+            
+            const rightEye = keypoints.find(point => point.name === 'left_eye');
+            const leftEye = keypoints.find(point => point.name === 'right_eye');
+            ctx.drawImage(document.getElementById("left-eye"), rightEye.x + offsetX, rightEye.y + offsetY, 50, 50);
+            ctx.drawImage(document.getElementById("right-eye"), leftEye.x + offsetX, leftEye.y + offsetY, 50, 50);
+            
+            skeleton.forEach(pair => {
+                const pointA = keypoints.find(point => point.name === pair[0]);
+                const pointB = keypoints.find(point => point.name === pair[1]);
+                if (pointA && pointB && pointA.score > 0.6 && pointB.score > 0.6) {
+                    ctx.beginPath();
+                    // Apply the offset to center the skeleton
+                    ctx.moveTo(pointA.x + offsetX, pointA.y + offsetY);
+                    ctx.lineTo(pointB.x + offsetX, pointB.y + offsetY);
+                    ctx.strokeStyle = 'lime';  // Set the line color
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            });
+        }
+
+        async function runPoseDetection() {
+            // Load the MoveNet model with configuration for single person detection
+            const detector = await poseDetection.createDetector(
+                poseDetection.SupportedModels.MoveNet, 
+                { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER }  // SINGLEPOSE_THUNDER for more accurate single-person detection
+            );
+
+            // Setup the camera
+            await setupCamera();
+
+            // Start detecting poses in real-time
+            const detectPose = async () => {
+                const poses = await detector.estimatePoses(video, { maxPoses: 1 });  // Limit to single person
+                if (poses.length > 0) {
+                    const keypoints = poses[0].keypoints;
+
+                    drawSkeleton(keypoints);
+
+                    // Extract and log eye positions (left eye and right eye)
+                    /*
+                    const rightEye = keypoints.find(point => point.name === 'left_eye');
+                    const leftEye = keypoints.find(point => point.name === 'right_eye');
+                    const score = keypoints.find(point => point.name === 'right_eye');
+
+                    if (leftEye && leftEye.score > 0.6) {
+                        leftEyeImage.style.display = 'block';  // Show the left eye image
+                        leftEyeImage.style.left = `${leftEye.x + 100}px`;
+                        leftEyeImage.style.top = `${leftEye.y}px`;
+                    } else {
+                        //leftEyeImage.style.display = 'none';  // Hide if not detected
+                    }
+
+                    // Update right eye position if detected with sufficient confidence
+                    if (rightEye && rightEye.score > 0.6) {
+                        rightEyeImage.style.display = 'block';  // Show the right eye image
+                        rightEyeImage.style.left = `${rightEye.x}px`;
+                        rightEyeImage.style.top = `${rightEye.y}px`;
+                    } else {
+                        //rightEyeImage.style.display = 'none';  // Hide if not detected
+                    }
+                        */
+                }
+                // Call the function recursively to keep the detection running
+                requestAnimationFrame(detectPose);
+            };
+
+            detectPose();  // Start pose detection
+        }
+
+        runPoseDetection();
+    </script>
+</body>
+</html>

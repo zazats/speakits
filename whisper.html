@@ -171,7 +171,7 @@
 
       function analyseAnswer(imageSettings) {
         questionBuffer = concatenateAfterSpecificPhrase(speechBuffer, null, 'over to you');
-          //analyzeAnswerNoCallforAPI(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
+        //analyzeAnswerNoCallforAPI(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){ 
         analyzeAnswer(imageSettings.protocol,imageSettings.questionText,questionBuffer).then(function(response){  
           console.log(response);   
         })
@@ -510,6 +510,30 @@
       viewer.enableEffect(ef);
       viewer.setCameraFov(110);
       viewer.camera.updateProjectionMatrix();
+
+      if(imageSettings.platform != undefined){
+        const textureLoader = new THREE.TextureLoader();
+        const woodTexture = textureLoader.load(imageSettings.platform .image);  // Load wood texture
+
+        const beamGeometry = new THREE.BoxGeometry(imageSettings.platform.l, 3, imageSettings.platform.w);  // Dimensions of the beam
+        const beamMaterial = new THREE.MeshBasicMaterial({ map: woodTexture });
+        platform = new THREE.Mesh(beamGeometry, beamMaterial);
+
+        // Position the beam at the bottom of the panorama
+        platform.position.set(0, -20, -1 * imageSettings.platform.w/2);  // Adjust coordinates as needed
+
+        // Add the wooden beam to the panorama
+        panorama.add(platform);
+        animate();
+      }
+    }
+
+    let waveAmplitude = 0.2;  // Maximum height of the wave
+    let waveFrequency = 1;  // Speed of the wave motionfunction animate() {
+      function animate() {
+        requestAnimationFrame(animate);
+        const time = Date.now() * 0.001;  // Get current time
+        platform.position.y = -20 + Math.sin(time * waveFrequency) * waveAmplitude;
     }
 
     async function displayGeneratedImage(imageSettings) {

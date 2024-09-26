@@ -18,7 +18,13 @@
             "request": "launch",
             "url": "http://127.0.0.1:3000/audioFeedback.html"
      
+        },
+        {
+            "type": "chrome",
+            "name": "Pose",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/pose.html"
+     
         }
-
     ]
 }
