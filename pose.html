@@ -5,11 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoveNet Single Person Pose Detection</title>
     <style>
-        #video {
-            display: block;
+        #container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+        }
+        video, canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 600px;
-            display: none;
+            height: 100%;
+        }
+        video {
+            z-index: 1;  /* Video behind */
+        }
+        canvas {
+            z-index: 2;  /* Canvas on top */
+            pointer-events: none;  /* Allows interaction with video while canvas is transparent */
         }
         .eye-image {
             position: absolute;
@@ -46,9 +59,16 @@
         const ry_left = rightEyeImage.offsetLeft;
         const ry_top = rightEyeImage.offsetTop;
 
+        // Set canvas and video dimensions
+        const width = 640;
+        const height = 480;
+        canvas.width = width;
+        canvas.height = height;
+
+
         async function setupCamera() {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: true
+                video: true, facingMode: 'user'
             });
             video.srcObject = stream;
 
@@ -93,18 +113,18 @@
             
             const rightEye = keypoints.find(point => point.name === 'left_eye');
             const leftEye = keypoints.find(point => point.name === 'right_eye');
-            ctx.drawImage(document.getElementById("left-eye"), rightEye.x + offsetX, rightEye.y + offsetY, 50, 50);
-            ctx.drawImage(document.getElementById("right-eye"), leftEye.x + offsetX, leftEye.y + offsetY, 50, 50);
+            
+            ctx.drawImage(document.getElementById("left-eye"), rightEye.x - 25, rightEye.y - 25, 50, 50);
+            ctx.drawImage(document.getElementById("right-eye"), leftEye.x - 25, leftEye.y - 25, 50, 50);
             
             skeleton.forEach(pair => {
                 const pointA = keypoints.find(point => point.name === pair[0]);
                 const pointB = keypoints.find(point => point.name === pair[1]);
                 if (pointA && pointB && pointA.score > 0.6 && pointB.score > 0.6) {
                     ctx.beginPath();
-                    // Apply the offset to center the skeleton
-                    ctx.moveTo(pointA.x + offsetX, pointA.y + offsetY);
-                    ctx.lineTo(pointB.x + offsetX, pointB.y + offsetY);
-                    ctx.strokeStyle = 'lime';  // Set the line color
+                    ctx.moveTo(pointA.x, pointA.y);
+                    ctx.lineTo(pointB.x, pointB.y);
+                    ctx.strokeStyle = 'lime';
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 }
